@@ -20,6 +20,7 @@ import Player from './Player';
 import Head from 'next/head'
 import Icons from '../Images/Icons';
 import Putin from '../public/putin.jpg';
+import Image from 'next/image';
 
 const FilmInfo = observer((props) => {
 
@@ -168,13 +169,13 @@ const FilmInfo = observer((props) => {
             </Head>
             <div className={`${style.screen} ${expand ? style.expand : ''}`}>
                 {(Layout?.trailer || Layout?.poster) && (<div className={style.preview}>
-                    {Layout?.trailer && youtube !== null && (<YouTube videoId={youtube} opts={opts} onReady={onReady} />)}
+                    {/*Layout?.trailer && youtube !== null && (<YouTube videoId={youtube} opts={opts} onReady={onReady} />)*/}
                     {Layout?.poster && (
                         <div className={style.hero_poster} ref={node => setWidth(node?.offsetWidth)}>
                             {Info?.info?.kp !== undefined && (<picture className={style.hero_picture} key={Info?.info?.kp}>
                                 <source media="(max-width: 767px)" srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=100/media/${Info?.info?.kp}/big_app_cinema_media_${Info?.info?.kp}_big.jpg`} />
                                 <source media="(min-width: 767px)" srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${Info?.info?.kp}/wide_app_cinema_media_${Info?.info?.kp}.jpg`} />
-                                <img className={style.hero_poster_img} src={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${Info?.info?.kp}/wide_app_cinema_media_${Info?.info?.kp}.jpg`} onError={(e) => { e.target.onerror = null; e.target.src = Putin.src }} />
+                                <Image className={style.hero_poster_img} src={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${Info?.info?.kp}/wide_app_cinema_media_${Info?.info?.kp}.jpg`} onError={(e) => { e.target.onerror = null; e.target.src = Putin.src }} />
                                 {/*<Img
                                     src={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${Info?.info?.kp}/wide_app_cinema_media_${Info?.info?.kp}.jpg`}
                                     className={style.hero_poster_img}

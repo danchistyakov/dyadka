@@ -9,6 +9,7 @@ import Skeleton from "react-loading-skeleton";
 import { SkeletonTheme } from "react-loading-skeleton";
 import Link from 'next/link';
 import style from '../styles/Header.module.sass';
+import Image from 'next/image';
 
 SwiperCore.use([Navigation]);
 
@@ -87,7 +88,7 @@ const Header = observer(() => {
                                 <div className={style.search_result} key={key}>
                                     <Link draggable='false' href='/media/[id]' as={`/media/${res?.id}`}>
                                         <a className={style.search_result} key={key} onClick={() => { setDisplay(!display); setBorder('') }}>
-                                            {res?.poster !== undefined && (<img className={style.result_image} alt={res?.title} src={res?.poster?.replace(40, 220)}></img>)}
+                                            {res?.poster !== undefined && (<Image className={style.result_image} alt={res?.title} src={res?.poster?.replace(40, 220)} />)}
                                             <div className={style.search_result_info}>
                                                 <p>{res?.title}</p>
                                                 {res?.rating !== undefined && (<p>Рейтинг: {res?.rating} ({res?.ratingVoteCount})</p>)}

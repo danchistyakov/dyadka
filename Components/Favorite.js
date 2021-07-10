@@ -25,9 +25,9 @@ const Favorite = () => {
             <p className={style.favorite_title}>Избранное</p>
             <div className={style.favorite}>
                 {favorite?.map((res, key) => (
-                    <Link href='/media/[id]' as={`/media/${res?.id}`}>
-                        <a key={key}>
-                            <div className={style.favorite_item} key={key}>
+                    <Link href='/media/[id]' as={`/media/${res?.id}`} key={key}>
+                        <a>
+                            <div className={style.favorite_item}>
                                 {res?.blank && (<p>{res?.blank}</p>)}
                                 <Image className={style.favorite_image} alt={res?.name} src={res?.poster} />
                                 <p className={style.favorite_name}>{res?.name}</p>
