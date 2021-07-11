@@ -35,11 +35,11 @@ const GetUrl = async (req, res) => {
         });*/
 
         const Translate = async () => {
-            const rezkatranslate = (await axios.get(`https://rezkion.com/series/comedy/${req.query.id}-teoriya-bolshogo-vzryva-2007.html`,
+            const rezkatranslate = (await axios.get(`https://rezkance.com/series/comedy/${req.query.id}-teoriya-bolshogo-vzryva-2007.html`,
                 {
                     headers: {
-                        'Origin': 'https://rezkion.com',
-                        'Referer': 'https://rezkion.com/',
+                        'Origin': 'https://rezkance.com',
+                        'Referer': 'https://rezkance.com/',
                         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36',
                     }
                 })).data;
@@ -53,18 +53,18 @@ const GetUrl = async (req, res) => {
         const Urls = async () => {
             if (req.query.season !== undefined && req.query.episode !== undefined) {
                 if (req.query.translation !== undefined) {
-                    const rezkaapi = await axios.post('https://rezkion.com/ajax/get_cdn_series/?t=1624443285637', querystring.stringify({ 'id': req.query.id, 'translator_id': req.query.translation, 'season': req.query.season, 'episode': req.query.episode, 'action': 'get_episodes' }));
+                    const rezkaapi = await axios.post('https://rezkance.com/ajax/get_cdn_series/?t=1624443285637', querystring.stringify({ 'id': req.query.id, 'translator_id': req.query.translation, 'season': req.query.season, 'episode': req.query.episode, 'action': 'get_episodes' }));
                     return rezkaapi.data
                 } else {
-                    const rezkaapi = await axios.post('https://rezkion.com/ajax/get_cdn_series/?t=1624443285637', querystring.stringify({ 'id': req.query.id, 'translator_id': (await Translate())[0].id, 'season': req.query.season, 'episode': req.query.episode, 'action': 'get_episodes' }));
+                    const rezkaapi = await axios.post('https://rezkance.com/ajax/get_cdn_series/?t=1624443285637', querystring.stringify({ 'id': req.query.id, 'translator_id': (await Translate())[0].id, 'season': req.query.season, 'episode': req.query.episode, 'action': 'get_episodes' }));
                     return rezkaapi.data
                 }
             } else {
                 if (req.query.translation !== undefined) {
-                    const rezkaapi = await axios.post('https://rezkion.com/ajax/get_cdn_series/?t=1624443285637', querystring.stringify({ 'id': req.query.id, 'translator_id': req.query.translation, 'action': 'get_episodes' }));
+                    const rezkaapi = await axios.post('https://rezkance.com/ajax/get_cdn_series/?t=1624443285637', querystring.stringify({ 'id': req.query.id, 'translator_id': req.query.translation, 'action': 'get_episodes' }));
                     return rezkaapi.data
                 } else {
-                    const rezkaapi = await axios.post('https://rezkion.com/ajax/get_cdn_series/?t=1624443285637', querystring.stringify({ 'id': req.query.id, 'translator_id': (await Translate())[0].id, 'action': 'get_episodes' }));
+                    const rezkaapi = await axios.post('https://rezkance.com/ajax/get_cdn_series/?t=1624443285637', querystring.stringify({ 'id': req.query.id, 'translator_id': (await Translate())[0].id, 'action': 'get_episodes' }));
                     return rezkaapi.data
                 }
             }

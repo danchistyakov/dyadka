@@ -9,7 +9,6 @@ import Skeleton from "react-loading-skeleton";
 import { SkeletonTheme } from "react-loading-skeleton";
 import Link from 'next/link';
 import style from '../styles/Header.module.sass';
-import Image from 'next/image';
 
 SwiperCore.use([Navigation]);
 
@@ -90,9 +89,9 @@ const Header = observer(() => {
                                         <a className={style.search_result} key={key} onClick={() => { setDisplay(!display); setBorder('') }}>
                                             {res?.poster !== undefined && (<img className={style.result_image} alt={res?.title} src={res?.poster?.replace(40, 220)} />)}
                                             <div className={style.search_result_info}>
-                                                <p>{res?.title}</p>
-                                                {res?.rating !== undefined && (<p>Рейтинг: {res?.rating} ({res?.ratingVoteCount})</p>)}
-                                                {res?.year !== undefined && (<p>Год: {res?.year}</p>)}
+                                                <p className={style.result_title}>{res?.title}</p>
+                                                {res?.rating !== undefined && (<p className={style.result_rating}>Рейтинг: {res?.rating} ({res?.ratingVoteCount})</p>)}
+                                                {res?.year !== undefined && (<p className={style.result_year}>Год: {res?.year}</p>)}
                                                 {/*res?.countries[0].name !== undefined && (<p>Страна: {res?.countries[0].name}</p>)*/}
                                             </div>
                                         </a>
