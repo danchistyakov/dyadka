@@ -5,6 +5,7 @@ class Playlist {
     season = null
     episode = 1
     id = 1
+    quality = null
     playlist = null
     speed = 1
     urls = null
@@ -27,6 +28,10 @@ class Playlist {
 
     setId(id) {
         this.id = id
+    }
+
+    setQuality(quality) {
+        this.quality = quality
     }
 
     autoNext(playlist) {

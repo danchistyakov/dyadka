@@ -1,3 +1,6 @@
 module.exports = {
-  reactStrictMode: false,
+  reactStrictMode: true,
+  images: {
+    domains: ['cdn.statically.io', 'thumbs.bookdevelop.club'],
+  },
 }

@@ -175,7 +175,7 @@ const FilmInfo = observer((props) => {
                             {Info?.info?.kp !== undefined && (<picture className={style.hero_picture} key={Info?.info?.kp}>
                                 <source media="(max-width: 767px)" srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=100/media/${Info?.info?.kp}/big_app_cinema_media_${Info?.info?.kp}_big.jpg`} />
                                 <source media="(min-width: 767px)" srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${Info?.info?.kp}/wide_app_cinema_media_${Info?.info?.kp}.jpg`} />
-                                <Image className={style.hero_poster_img} src={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${Info?.info?.kp}/wide_app_cinema_media_${Info?.info?.kp}.jpg`} onError={(e) => { e.target.onerror = null; e.target.src = Putin.src }} />
+                                <img className={style.hero_poster_img} src={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${Info?.info?.kp}/wide_app_cinema_media_${Info?.info?.kp}.jpg`} onError={(e) => { e.target.onerror = null; e.target.src = Putin.src }} />
                                 {/*<Img
                                     src={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${Info?.info?.kp}/wide_app_cinema_media_${Info?.info?.kp}.jpg`}
                                     className={style.hero_poster_img}

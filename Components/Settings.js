@@ -26,9 +26,10 @@ const Settings = observer(() => {
     }, []);
 
     const handleQuality = (item) => {
-        console.log(item)
+        console.log(item);
         Playlist.setUrl(item.urls[0]);
-        setQualityOptions({ quality: item?.quality, qvisible: false })
+        setQualityOptions({ quality: item?.quality, qvisible: false });
+        Playlist.setQuality(item?.quality);
     }
 
     return (

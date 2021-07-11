@@ -29,7 +29,7 @@ const Favorite = () => {
                         <a>
                             <div className={style.favorite_item}>
                                 {res?.blank && (<p>{res?.blank}</p>)}
-                                <Image className={style.favorite_image} alt={res?.name} src={res?.poster} />
+                                <img className={style.favorite_image} alt={res?.name} src={res?.poster} />
                                 <p className={style.favorite_name}>{res?.name}</p>
                             </div>
                         </a>
