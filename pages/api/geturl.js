@@ -35,14 +35,7 @@ const GetUrl = async (req, res) => {
         });*/
 
         const Translate = async () => {
-            const rezkatranslate = (await axios.get(`https://rezkance.com/series/comedy/${req.query.id}-teoriya-bolshogo-vzryva-2007.html`,
-                {
-                    headers: {
-                        'Origin': 'https://rezkance.com',
-                        'Referer': 'https://rezkance.com/',
-                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36',
-                    }
-                })).data;
+            const rezkatranslate = (await axios.get(`http://f0561301.xsph.ru/?id=1154`)).data;
             const selector = cheerio.load(rezkatranslate);
             const translations = selector('.b-translator__item').map((i, x) => (
                 { id: selector(x).attr('data-translator_id'), name: selector(x).attr('title') }
@@ -79,7 +72,7 @@ const GetUrl = async (req, res) => {
                 []
             );
 
-            res.status(200).json({ translations: await Translate(), urls: urls });
+            res.status(200).json({ /*translations: await Translate(), */urls: urls });
         } catch (err) {
             res.status(200).json({ err });
 
