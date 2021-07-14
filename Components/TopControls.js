@@ -8,6 +8,7 @@ import { get, set } from 'idb-keyval';
 import PlayerControls from '../Store/PlayerControls';
 import style from '../styles/TopControls.module.sass';
 import Icons from '../Images/Icons';
+import Video from '../Store/Video';
 
 const TopControls = observer(({ setPirate }) => {
     const [translations, setTranslations] = useState(null);
@@ -31,7 +32,7 @@ const TopControls = observer(({ setPirate }) => {
             }
         }
         BookMarks();
-    }, []);
+    }, [Info?.videocdn?.kinopoisk_id]);
 
     const handleContinue = async () => {
         const info = await get('Длительность');
@@ -43,7 +44,7 @@ const TopControls = observer(({ setPirate }) => {
 
     const handleTranslation = async (id, name) => {
         setTranslations(!translations);
-        Playlist.setTranslation(id, name);
+        Video.setTranslation({ id: id, name: name });
         var info = await get('Длительность') !== undefined ? await get('Длительность') : [];
         if (Info?.videocdn?.kinopoisk_id !== undefined) {
             var search = info?.findIndex(item => item?.kinopoisk_id === Info?.videocdn?.kinopoisk_id);
@@ -53,11 +54,11 @@ const TopControls = observer(({ setPirate }) => {
         }
     }
 
-    useEffect(() => {
+    /*useEffect(() => {
         if (Playlist?.translations !== null) {
             Playlist.setTranslation(null, Playlist?.translations[0]?.name)
         }
-    }, [Playlist?.translations])
+    }, [Playlist?.translations])*/
 
     return (
         <div className={style.top_controls}>
@@ -67,7 +68,7 @@ const TopControls = observer(({ setPirate }) => {
                 {continueTime !== false /* && !parsing*/ && (<button onClick={handleContinue} className={style.button_continue}>Продолжить</button>)}
             </div>
             <div className={style.top_right} key={translations}>
-                <div className={style.translation_preview} onClick={(e) => { e.stopPropagation(); Playlist?.translations?.length > 1 && setTranslations(!translations) }}>{Playlist?.translation?.name} {Playlist?.translations?.length > 1 && (translations ? <Icons icon='ExpandLessIcon' className={style.translations_icon} /> : <Icons icon='ExpandMoreIcon' className={style.translations_icon} />)}</div>
+                <div className={style.translation_preview} onClick={(e) => { e.stopPropagation(); Playlist?.translations?.length > 1 && setTranslations(!translations) }}>{Video?.translation?.name} {Playlist?.translations?.length > 1 && (translations ? <Icons icon='ExpandLessIcon' className={style.translations_icon} /> : <Icons icon='ExpandMoreIcon' className={style.translations_icon} />)}</div>
                 {translations && Playlist?.translations?.length > 1 && (<div className={style.translations_list} ref={translateModal}>
                     {Playlist?.translations?.map((res, key) => (
                         <span className={style.translation_item} onClick={() => handleTranslation(res?.id, res?.name)} key={key}>{res?.name}</span>

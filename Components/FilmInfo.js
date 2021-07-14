@@ -21,6 +21,7 @@ import Head from 'next/head'
 import Icons from '../Images/Icons';
 import Putin from '../public/putin.jpg';
 import Image from 'next/image';
+import Video from '../Store/Video';
 
 const FilmInfo = observer((props) => {
 
@@ -43,7 +44,7 @@ const FilmInfo = observer((props) => {
         Info.videoCDN(null);
         Info.setInfo(null);
         Info.setDetails(null);
-        Playlist.setUrl(null);
+        Video.setUrl(null);
         Playlist.setTranslations(null);
         const Favorite = async () => {
             var arr = await get('Избранное');
@@ -60,14 +61,13 @@ const FilmInfo = observer((props) => {
             var search = arr?.findIndex(item => item?.kinopoisk_id === film);
             try {
                 if (arr[search]?.translationId !== undefined) {
-                    Playlist.setTranslation(arr[search]?.translationId, arr[search]?.translationName);
+                    Video.setTranslation(arr[search]?.translationId, arr[search]?.translationName);
                 } else {
-                    Playlist.setTranslation(null, null);
+                    Video.setTranslation(null, null);
                 }
             }
-
             catch (err) {
-                Playlist.setTranslation(null, null);
+                Video.setTranslation(null, null);
             }
         }
 
@@ -89,7 +89,7 @@ const FilmInfo = observer((props) => {
         const Fetch = async () => {
             window.scrollTo(0, 0);
             if (toJS(Info?.info?.kp) !== undefined) {
-                const response = await fetch(`https://videocdn.tv/api/${toJS(Info?.info?.serial) && 'tv-series'}?kinopoisk_id=${Info?.info?.kp}&api_token=hN5DM7MixFeDKcu9KiwLrGBBlFKbwOHp`);
+                const response = await fetch(`https://videocdn.tv/api/${toJS(Info?.info?.serial) ? 'tv-series' : 'movies'}?kinopoisk_id=${Info?.info?.kp}&api_token=hN5DM7MixFeDKcu9KiwLrGBBlFKbwOHp`);
                 const result = await response.json();
                 Info.videoCDN(result?.data[0]);
                 PlayerOptions.setId(result?.data[0]?.id);

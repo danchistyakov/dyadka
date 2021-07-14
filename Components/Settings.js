@@ -7,6 +7,9 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';*/
 import Icons from '../Images/Icons';
 import { observer } from 'mobx-react-lite';
 import { toJS } from 'mobx';
+import Video from '../Store/Video';
+import Info from '../Store/Info';
+import { get, set } from 'idb-keyval';
 
 const Settings = observer(() => {
     const [qualityOptions, setQualityOptions] = useState({
@@ -26,11 +29,21 @@ const Settings = observer(() => {
     }, []);
 
     const handleQuality = (item) => {
-        console.log(item);
-        Playlist.setUrl(item.urls[0]);
+        Video.setUrl(item.urls[0]);
         setQualityOptions({ quality: item?.quality, qvisible: false });
         Playlist.setQuality(item?.quality);
     }
+
+    useEffect(() => {
+        const Last = async () => {
+            if (await get('Длительность') !== undefined) {
+                var info = await get('Длительность');
+                var search = info.findIndex(item => item?.kinopoisk_id === Info?.videocdn?.kinopoisk_id);
+                info[search]?.quality !== undefined && setQualityOptions({ ...qualityOptions, quality: info[search]?.quality });
+            }
+        }
+        Last();
+    }, [Info?.videocdn?.kinopoisk_id]);
 
     return (
         <div>
@@ -78,7 +91,7 @@ const Settings = observer(() => {
                             <span className={style.option_name}>Качество</span>
                         </div>
                         <div className={style.choice_list}>
-                            {toJS(Playlist?.urls)?.map((item, key) => (
+                            {toJS(Video?.urls)?.map((item, key) => (
                                 <span key={key} className={style.settings_choice} onClick={() => handleQuality(item)}>
                                     {item?.quality}
                                 </span>

@@ -42,20 +42,8 @@ class Playlist {
         this.speed = speed;
     }
 
-    setUrls(urls) {
-        this.urls = urls;
-    }
-
-    setTranslation(id, name) {
-        this.translation = { id: id, name: name };
-    }
-
     setTranslations(translations) {
         this.translations = translations;
-    }
-
-    setUrl(url) {
-        this.url = url;
     }
 
     setLast(last) {

@@ -10,6 +10,8 @@ import { observer } from 'mobx-react-lite';
 import ReactPlayer from 'react-player';
 import { get, set } from 'idb-keyval';
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
+import { GetUrl } from './GetUrl';
+import Video from '../Store/Video';
 
 const Player = observer(() => {
 
@@ -42,110 +44,58 @@ const Player = observer(() => {
     PlayerControls.setCurrentTime(playerRef.current ? playerRef.current.getCurrentTime() : '00:00');
     PlayerControls.setCurrentDuration(playerRef.current ? playerRef.current.getDuration() : '00:00');
 
-    useEffect(() => {
-        const BookMarks = async () => {
-            var info = await get('Длительность') !== undefined ? await get('Длительность') : [];
-            if (Info?.videocdn?.kinopoisk_id !== undefined && PlayerControls?.currentTime > 10) {
-                var search = info?.findIndex(item => item?.kinopoisk_id === Info?.videocdn?.kinopoisk_id);
-                search = (search !== -1) ? search : info.length
-                if (Playlist?.translation?.id !== undefined && Playlist?.translation?.name !== undefined) {
-                    info[search] = { kinopoisk_id: Info?.videocdn?.kinopoisk_id, season: Playlist?.season, episode: Playlist?.episode, currentTime: PlayerControls?.currentTime, translationId: Playlist?.translation?.id, translationName: Playlist?.translation?.name };
-                    set('Длительность', info);
-                } else {
-                    info[search] = { kinopoisk_id: Info?.videocdn?.kinopoisk_id, season: Playlist?.season, episode: Playlist?.episode, currentTime: PlayerControls?.currentTime };
-                    set('Длительность', info);
-                }
-            }
-        }
-        BookMarks();
-    }, [PlayerControls?.currentTime]);
-
-    const gettingUrl = async () => {
+    /*const gettingUrl = async () => {
         PlayerOptions.setParsing(true);
         if (Info?.videocdn !== undefined) {
             console.log(Info);
-
-            while (true) {
-                try {
-                    PlayerOptions.setBuffering(true)
-                    //const url = Info?.videocdn?.content_type === 'tv_series' ? `/film?type=tv_series&id=${Info?.videocdn?.id}&season=${Playlist?.season}&episode=${Playlist?.episode}&translation=${Playlist?.translation?.id}&source=vcdn` : `/film?id=${Info?.videocdn?.id}?translation=${Playlist?.translation?.id}&source=vcdn`;
-                    var url;
-                    if (Playlist?.translation?.id !== null) {
-                        url = Info?.videocdn?.content_type === 'tv_series' ? `/api/geturl?type=tv_series&kp=${Info?.videocdn?.kinopoisk_id}&season=${Playlist?.season}&episode=${Playlist?.episode}&translation=${Playlist?.translation?.id}&id=${Info?.info.hdrezka_id}&source=rezka` : `/api/film?kp=${Info?.videocdn?.kinopoisk_id}&translation=${Playlist?.translation?.id}&id=${Info.info.hdrezka_id}&source=rezka`;
-                    } else {
-                        url = Info?.videocdn?.content_type === 'tv_series' ? `/api/geturl?type=tv_series&kp=${Info?.videocdn?.kinopoisk_id}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&source=rezka` : `/api/film?kp=${Info?.videocdn?.kinopoisk_id}&id=${Info.info.hdrezka_id}&source=rezka`;
-                    }
-                    const response = await fetch(url);
-                    const result = await response.json();
-                    Playlist.setUrl(result?.urls[0]?.urls[0]);
-                    PlayerOptions.setBuffering(false)
-                    PlayerOptions.setError(false);
-                    PlayerOptions.setParsing(false);
-                    break;
-                } catch {
-                    PlayerOptions.setError(true);
+            try {
+                PlayerOptions.setBuffering(true)
+                //const url = Info?.videocdn?.content_type === 'tv_series' ? `/film?type=tv_series&id=${Info?.videocdn?.id}&season=${Playlist?.season}&episode=${Playlist?.episode}&translation=${Playlist?.translation?.id}&source=vcdn` : `/film?id=${Info?.videocdn?.id}?translation=${Playlist?.translation?.id}&source=vcdn`;
+                var url;
+                if (Playlist?.translation?.id !== null) {
+                    url = Info?.videocdn?.content_type === 'tv_series' ? `/api/geturl?type=tv_series&kp=${Info?.videocdn?.kinopoisk_id}&season=${Playlist?.season}&episode=${Playlist?.episode}&translation=${Playlist?.translation?.id}&id=${Info?.info.hdrezka_id}&source=rezka` : `/api/film?kp=${Info?.videocdn?.kinopoisk_id}&translation=${Playlist?.translation?.id}&id=${Info.info.hdrezka_id}&source=rezka`;
+                } else {
+                    url = Info?.videocdn?.content_type === 'tv_series' ? `/api/geturl?type=tv_series&kp=${Info?.videocdn?.kinopoisk_id}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&source=rezka` : `/api/film?kp=${Info?.videocdn?.kinopoisk_id}&id=${Info.info.hdrezka_id}&source=rezka`;
                 }
+                const response = await fetch(url);
+                const result = await response.json();
+                Playlist.setUrl(result?.urls[0]?.urls[0]);
+                PlayerOptions.setBuffering(false)
+                PlayerOptions.setError(false);
+                PlayerOptions.setParsing(false);
+            } catch {
+                PlayerOptions.setError(true);
             }
+
         }
-    }
+    }*/
 
     useEffect(() => {
         const Last = async () => {
-            Playlist.setUrl(null);
-            if (Playlist?.translation !== 'loading') {
-                if (await get('Длительность') !== undefined) {
-                    var info = await get('Длительность');
-                    var search = info.findIndex(item => item?.kinopoisk_id === Info?.videocdn?.kinopoisk_id);
-                    search !== -1 && setLast(info[search]?.currentTime);
-                }
-                PlayerOptions.setBuffering(true)
+            Video.setUrl(null);
+            if (await get('Длительность') !== undefined) {
+                var info = await get('Длительность');
+                var search = info.findIndex(item => item?.kinopoisk_id === Info?.videocdn?.kinopoisk_id);
+                search !== -1 && setLast(info[search]?.currentTime);
+                info[search]?.quality !== undefined && Playlist.setQuality(info[search]?.quality)
+                //Playlist.setTranslation({ id: info[search]?.translationId, name: info[search]?.translationName })
             }
+            PlayerOptions.setBuffering(true)
         }
         Last();
-    }, [Info?.videocdn?.kinopoisk_id, Playlist?.translation?.id]);
-
-    var success = false;
+    }, [Info?.videocdn?.kinopoisk_id]);
 
     useEffect(() => {
         const parsingUrl = async () => {
-            if (success === false && Playlist?.season !== null) {
-                try {
-                    //const url = Info?.videocdn?.content_type === 'tv_series' ? `/api/film?type=tv_series&id=${Info?.videocdn?.id}&season=${Playlist?.season}&episode=${Playlist?.episode}&translation=${Playlist?.translation?.id}&source=vcdn` : `/api/film?id=${Info?.videocdn?.id}?translation=${Playlist?.translation?.id}&source=vcdn`;
-                    var url;
-                    console.log(Playlist?.translation?.id)
-                    if (Playlist?.translation?.id !== null && Playlist?.translation?.id !== undefined) {
-                        url = Info?.info.serial ? `/api/geturl?kp=${Info?.info?.kp}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&translation=${Playlist?.translation?.id}&source=rezka` : `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&id=${Info.info.hdrezka_id}&translation=${Playlist?.translation?.id}&source=rezka`;
-                        const response = await fetch(url);
-                        const result = await response.json();
-                        Playlist.setUrl(result?.urls[0].urls[0]);
-                        Playlist.setUrls(result.urls);
-                    }
-
-                    if (Playlist?.translation?.id === null || Playlist?.translation?.id === undefined) {
-                        const response1 = await fetch(`/api/translations?id=${Info.info.hdrezka_id}`);
-                        const translations = await response1.json();
-                        Playlist?.translation?.name === null && Playlist.setTranslation(translations?.translations[0]?.id, translations?.translations[0]?.name);
-                        Playlist.setTranslations(translations?.translations);
-                        const response2 = await fetch(Info?.info.serial ? `/api/geturl?kp=${Info?.info?.kp}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&translation=${translations?.translations[0]?.id}&source=rezka` : `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&id=${Info.info.hdrezka_id}&translation=${translations?.translations[0]?.id}&source=rezka`);
-                        const urls = await response2.json();
-                        Playlist.setUrl(urls?.urls[0].urls[0]);
-                        Playlist.setUrls(urls.urls);
-                    }
-                    PlayerOptions.setError(false);
-                    setParsing(false);
-                    //search !== -1 && playerRef.current?.seekTo(info[search]?.currentTime);
-                    PlayerControls.setPlaying(true);
-                    success = true;
-                    //break;
-                } catch (err) {
-                    PlayerOptions.setError(true)
-                }
+            console.log('parsingUrl')
+            if (Info.info.hdrezka_id !== undefined) {
+                GetUrl();
             }
         }
 
         parsingUrl();
 
-    }, [Info?.videocdn?.kinopoisk_id, Playlist?.translation?.id, success])
+    }, [Info?.videocdn?.kinopoisk_id, Playlist?.translation?.id/*, success*/])
 
     useEffect(() => {
         const Quality = async () => {
@@ -223,82 +173,6 @@ const Player = observer(() => {
         }
     }
 
-    useEffect(() => {
-        const Preload = async () => {
-            var arr;
-            setState({ ...state, newurl: null });
-            if (Info?.videocdn?.content_type === 'tv_series' && Info?.kp?.data?.seasons !== undefined) {
-                arr = toJS(Info?.kp?.data?.seasons);
-                const search = arr?.filter((res) => {
-                    if (res?.number === Playlist?.season) {
-                        return res
-                    }
-                })
-                var season;
-                var episode;
-
-                if (Playlist?.episode < search[0]?.episodes.length) {
-                    season = Playlist?.season;
-                    episode = (Number(Playlist?.episode) + 1);
-                }
-
-                while (true) {
-                    try {
-                        setState({ ...state, preload: 'pending' });
-                        //const url = `/film?type=tv_series&id=${Info?.videocdn?.id}&season=${season}&episode=${episode}&translation=${Playlist?.translation?.id}&source=vcdn`;
-                        var url;
-                        /*if (Playlist?.translation?.id !== null) {
-                            url = Info?.videocdn?.content_type === 'tv_series' ? `/api/film?type=tv_series&kp=${Info?.videocdn?.kinopoisk_id}&season=${season}&episode=${episode}&translation=${Playlist?.translation?.id}&source=rezka` : `/api/film?kp=${Info?.videocdn?.kinopoisk_id}&translation=${Playlist?.translation?.id}&source=rezka`;
-                        } else {
-                            url = Info?.videocdn?.content_type === 'tv_series' ? `/api/film?type=tv_series&kp=${Info?.videocdn?.kinopoisk_id}&season=${season}&episode=${episode}&source=rezka` : `/api/film?kp=${Info?.videocdn?.kinopoisk_id}&source=rezka`;
-                        }
-                        const response = await fetch(url);
-                        const result = await response.json();
-                        setState({ ...state, newurl: result?.url });*/
-                        if (Playlist?.translation?.id !== null && Playlist?.translation?.id !== undefined) {
-                            url = Info?.info.serial ? `/api/geturl?kp=${Info?.info?.kp}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&translation=${Playlist?.translation?.id}&source=rezka` : `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&id=${Info.info.hdrezka_id}&translation=${Playlist?.translation?.id}&source=rezka`;
-                            const response = await fetch(url);
-                            const result = await response.json();
-                            Playlist.setUrl(result?.urls[0].urls[0]);
-                            Playlist.setUrls(result.urls);
-                        }
-
-                        if (Playlist?.translation?.id === null || Playlist?.translation?.id === undefined) {
-                            const response1 = await fetch(`/api/translations?id=${Info.info.hdrezka_id}`);
-                            const translations = await response1.json();
-                            Playlist?.translation?.name === null && Playlist.setTranslation(translations?.translations[0]?.id, translations?.translations[0]?.name);
-                            Playlist.setTranslations(translations?.translations);
-                            const response2 = await fetch(Info?.info.serial ? `/api/geturl?kp=${Info?.info?.kp}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&translation=${translations?.translations[0]?.id}&source=rezka` : `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&id=${Info.info.hdrezka_id}&translation=${translations?.translations[0]?.id}&source=rezka`);
-                            const urls = await response2.json();
-                            Playlist.setUrl(urls?.urls[0].urls[0]);
-                            Playlist.setUrls(urls.urls);
-                        }
-                        break;
-                    } catch (err) {
-                    }
-                }
-            } else {
-                if (Playlist?.season < arr?.length) {
-                    const season = (Number(Playlist?.season) + 1);
-                    const episode = (1);
-                    while (true) {
-                        try {
-                            setState({ ...state, preload: 'pending' });
-                            /*const url = `/api/film?type=tv_series&id=${Info?.videocdn?.id}&season=${season}&episode=${episode}&translation=${Playlist?.translation?.id}&source=vcdn`;
-                            const response = await fetch(url);
-                            const result = await response.json();
-                            setState({ ...state, newurl: result?.url });*/
-                            break;
-                        } catch (err) {
-                        }
-                    }
-                }
-            }
-        }
-
-        Preload();
-    }, [Playlist?.season, Playlist?.episode, Playlist?.translation?.id])
-
     const handleSeekChange = (e, newValue) => {
         PlayerControls.setPlayed(parseFloat(newValue / 100));
         playerRef.current.seekTo(newValue / 100);
@@ -312,7 +186,7 @@ const Player = observer(() => {
     }, [Playlist?.last])
 
     const prevEpisode = () => {
-        Playlist.setUrl(null);
+        Video.setUrl(null);
         const arr = toJS(Playlist?.playlist?.data?.seasons);
         const search = arr?.filter((res) => {
             if (res?.number === Playlist?.season) {
@@ -322,18 +196,18 @@ const Player = observer(() => {
 
         if (Playlist?.episode > 1) {
             Playlist.setEpisode(Playlist?.episode - 1);
-            gettingUrl();
+            GetUrl();
         } else {
             if (Playlist?.season > 1) {
                 Playlist.setSeason(Playlist?.season - 1);
                 Playlist.setEpisode(search[0]?.episodes.length);
-                gettingUrl();
+                GetUrl();
             }
         }
     }
 
     const nextEpisode = () => {
-        Playlist.setUrl(null);
+        Video.setUrl(null);
         const info = toJS(Info?.videocdn);
         console.log(info);
 
@@ -345,12 +219,12 @@ const Player = observer(() => {
 
         if (Playlist?.episode < search.length) {
             Playlist.setEpisode(Number(Playlist?.episode) + 1);
-            gettingUrl();
+            GetUrl();
         } else {
             if (Playlist?.season < info?.season_count) {
                 Playlist.setSeason(Number(Playlist?.season) + 1);
                 Playlist.setEpisode(1);
-                gettingUrl();
+                GetUrl();
             }
         }
     }
@@ -365,12 +239,12 @@ const Player = observer(() => {
 
         if (Playlist?.episode < search.length) {
             Playlist.setEpisode(Number(Playlist?.episode) + 1);
-            gettingUrl();
+            GetUrl();
         } else {
             if (Playlist?.season < info?.season_count) {
                 Playlist.setSeason(Number(Playlist?.season) + 1);
                 Playlist.setEpisode(1);
-                gettingUrl();
+                GetUrl();
             }
         }
     }
@@ -412,7 +286,7 @@ const Player = observer(() => {
                     </div>)}
                     <div className='left_rewind' onDoubleClick={handleRewind}></div>
                     <ReactPlayer
-                        url={Playlist?.url}
+                        url={Video?.url}
                         muted={PlayerControls?.mute}
                         playing={PlayerControls?.playing}
                         width={'100%'}
@@ -423,7 +297,7 @@ const Player = observer(() => {
                         playbackRate={Playlist?.speed}
                         onProgress={handleProgress}
                         onEnded={autoNext}
-                        onBuffer={() => { PlayerOptions.setBuffering(true); PlayerControls.setPlaying(true); }}
+                        onBuffer={() => { PlayerOptions.setBuffering(true); PlayerControls.setPlaying(true) }}
                         onBufferEnd={() => PlayerOptions.setBuffering(false)}
                     />
                     <div className='right_forward' onDoubleClick={handleForward}></div>

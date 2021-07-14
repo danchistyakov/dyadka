@@ -15,6 +15,7 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import "swiper/swiper.min.css";
 import SwiperCore, { Navigation } from "swiper/core";
+import Video from '../Store/Video';
 
 SwiperCore.use([Navigation]);
 
@@ -79,31 +80,29 @@ const Episodes = observer(() => {
 
     const gettingUrl = async () => {
         if (PlayerOptions?.watch === true) {
-            Playlist.setUrl(null);
+            Video.setUrl(null);
             PlayerOptions.setParsing(true);
             if (Info?.videocdn?.id !== undefined && Playlist?.translation !== 'loading') {
-                while (true) {
-                    try {
-                        PlayerOptions.setBuffering(true)
-                        //const url = Info?.videocdn?.content_type === 'tv_series' ? `/film?type=tv_series&id=${Info?.videocdn?.id}&season=${Playlist?.season}&episode=${Playlist?.episode}&translation=${Playlist?.translation?.id}&source=vcdn` : `/film?id=${Info?.videocdn?.id}?translation=${Playlist?.translation?.id}&source=vcdn`;
-                        var url;
-                        if (Playlist?.translation?.id !== null) {
-                            url = Info?.info.serial ? `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&translation=${Playlist?.translation?.id}&source=rezka` : `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&id=${Info.info.hdrezka_id}&translation=${Playlist?.translation?.id}&source=rezka`;
-                        } else {
-                            url = Info?.info.serial ? `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&source=rezka` : `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&id=${Info.info.hdrezka_id}&source=rezka`;
-                        }
-                        const response = await fetch(url);
-                        const result = await response.json();
-                        Playlist.setUrl(result?.urls[0]?.urls[0]);
-                        PlayerOptions.setBuffering(false)
-                        PlayerControls.setPlaying(true);
-                        PlayerOptions.setError(false);
-                        PlayerOptions.setParsing(false);
-                        break;
-                    } catch {
-                        PlayerOptions.setError(true);
+                try {
+                    PlayerOptions.setBuffering(true)
+                    //const url = Info?.videocdn?.content_type === 'tv_series' ? `/film?type=tv_series&id=${Info?.videocdn?.id}&season=${Playlist?.season}&episode=${Playlist?.episode}&translation=${Playlist?.translation?.id}&source=vcdn` : `/film?id=${Info?.videocdn?.id}?translation=${Playlist?.translation?.id}&source=vcdn`;
+                    var url;
+                    if (Playlist?.translation?.id !== null) {
+                        url = Info?.info.serial ? `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&translation=${Playlist?.translation?.id}&source=rezka` : `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&id=${Info.info.hdrezka_id}&translation=${Playlist?.translation?.id}&source=rezka`;
+                    } else {
+                        url = Info?.info.serial ? `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&source=rezka` : `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&id=${Info.info.hdrezka_id}&source=rezka`;
                     }
+                    const response = await fetch(url);
+                    const result = await response.json();
+                    Video.setUrl(result?.urls[0]?.urls[0]);
+                    PlayerOptions.setBuffering(false)
+                    PlayerControls.setPlaying(true);
+                    PlayerOptions.setError(false);
+                    PlayerOptions.setParsing(false);
+                } catch {
+                    PlayerOptions.setError(true);
                 }
+
             }
         }
     }

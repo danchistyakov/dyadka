@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Settings from './Settings';
 import PlayerControls from '../Store/PlayerControls';
 import { observer } from 'mobx-react-lite';
@@ -8,6 +8,10 @@ import Slider from '@material-ui/core/Slider';
 import Tooltip from '@material-ui/core/Tooltip';
 import style from '../styles/BottomControls.module.sass'
 import Icons from '../Images/Icons';
+import { get, set } from 'idb-keyval';
+import Info from '../Store/Info';
+import Playlist from '../Store/Playlist';
+import Video from '../Store/Video';
 
 //import VolumeMuteIcon from '@material-ui/icons/VolumeMute';
 //import CastIcon from '@material-ui/icons/Cast';
@@ -17,6 +21,24 @@ const BottomControls = observer(({ video, handleSeekChange, prevEpisode, nextEpi
     const [remaining, setRemaining] = useState(false);
     const [slider, setSlider] = useState(false);
     const [volume, setVolume] = useState(100);
+
+    useEffect(() => {
+        const BookMarks = async () => {
+            var info = await get('Длительность') !== undefined ? await get('Длительность') : [];
+            if (Info?.videocdn?.kinopoisk_id !== undefined && PlayerControls?.currentTime > 10) {
+                var search = info?.findIndex(item => item?.kinopoisk_id === Info?.videocdn?.kinopoisk_id);
+                search = (search !== -1) ? search : info.length;
+                if (Video?.translation?.id !== undefined && Video?.translation?.id !== null) {
+                    info[search] = { kinopoisk_id: Info?.videocdn?.kinopoisk_id, season: Playlist?.season, episode: Playlist?.episode, currentTime: PlayerControls?.currentTime, translationId: Number(Video?.translation?.id), translationName: Video?.translation?.name, quality: Playlist?.quality };
+                    set('Длительность', info);
+                } else {
+                    info[search] = { kinopoisk_id: Info?.videocdn?.kinopoisk_id, season: Playlist?.season, episode: Playlist?.episode, currentTime: PlayerControls?.currentTime, quality: Playlist?.quality };
+                    set('Длительность', info);
+                }
+            }
+        }
+        BookMarks();
+    }, [PlayerControls?.currentTime]);
 
     const format = (data) => {
         if (isNaN(data)) {
