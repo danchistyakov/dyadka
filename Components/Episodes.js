@@ -16,6 +16,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import "swiper/swiper.min.css";
 import SwiperCore, { Navigation } from "swiper/core";
 import Video from '../Store/Video';
+import { GetUrl } from './GetUrl';
 
 SwiperCore.use([Navigation]);
 
@@ -78,35 +79,6 @@ const Episodes = observer(() => {
         Season();
     }, [Info?.videocdn?.kinopoisk_id])
 
-    const gettingUrl = async () => {
-        if (PlayerOptions?.watch === true) {
-            Video.setUrl(null);
-            PlayerOptions.setParsing(true);
-            if (Info?.videocdn?.id !== undefined && Playlist?.translation !== 'loading') {
-                try {
-                    PlayerOptions.setBuffering(true)
-                    //const url = Info?.videocdn?.content_type === 'tv_series' ? `/film?type=tv_series&id=${Info?.videocdn?.id}&season=${Playlist?.season}&episode=${Playlist?.episode}&translation=${Playlist?.translation?.id}&source=vcdn` : `/film?id=${Info?.videocdn?.id}?translation=${Playlist?.translation?.id}&source=vcdn`;
-                    var url;
-                    if (Playlist?.translation?.id !== null) {
-                        url = Info?.info.serial ? `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&translation=${Playlist?.translation?.id}&source=rezka` : `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&id=${Info.info.hdrezka_id}&translation=${Playlist?.translation?.id}&source=rezka`;
-                    } else {
-                        url = Info?.info.serial ? `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&source=rezka` : `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&id=${Info.info.hdrezka_id}&source=rezka`;
-                    }
-                    const response = await fetch(url);
-                    const result = await response.json();
-                    Video.setUrl(result?.urls[0]?.urls[0]);
-                    PlayerOptions.setBuffering(false)
-                    PlayerControls.setPlaying(true);
-                    PlayerOptions.setError(false);
-                    PlayerOptions.setParsing(false);
-                } catch {
-                    PlayerOptions.setError(true);
-                }
-
-            }
-        }
-    }
-
     const Error = () => {
         setError('error')
     }
@@ -151,8 +123,7 @@ const Episodes = observer(() => {
 
                         {epArray?.map((res, key) => {
                             return (
-                                <SwiperSlide className={style.episode} key={key} onClick={() => { Playlist.setSeason(season); Playlist.setEpisode(key + 1); gettingUrl(); PlayerOptions.setWatch(true); Layout.setTrailer(false); Layout.setPoster(false); window.scrollTo(0, 0); }}>
-                                    {/*<div onClick={() => { Playlist.setSeason(season); Playlist.setEpisode(key + 1); gettingUrl(); PlayerOptions.setWatch(true); Layout.setTrailer(false); Layout.setPoster(false); window.scrollTo(0, 0); }}>*/}
+                                <SwiperSlide className={style.episode} key={key} onClick={() => { Playlist.setSeason(season); Playlist.setEpisode(key + 1); GetUrl(); PlayerOptions.setWatch(true); Layout.setTrailer(false); Layout.setPoster(false); window.scrollTo(0, 0); }}>
                                     <LazyLoadImage
                                         src={`https://cdn.statically.io/img/blackmedia.top/f=auto,q=80/media/${Info?.info?.kp}/preview_app_cinema_media_${Info?.info?.kp}_s${season}e${key + 1}.png`}
                                         className={style.cover_section}

@@ -95,7 +95,7 @@ const Player = observer(() => {
 
         parsingUrl();
 
-    }, [Info?.videocdn?.kinopoisk_id, Playlist?.translation?.id/*, success*/])
+    }, [Info?.videocdn?.kinopoisk_id, Video?.translation?.id/*, success*/])
 
     useEffect(() => {
         const Quality = async () => {

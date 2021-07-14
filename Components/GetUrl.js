@@ -10,6 +10,7 @@ export const GetUrl = async () => {
         var url;
         PlayerOptions.setBuffering(true)
         if (Video?.translation?.id !== null && Video?.translation?.id !== undefined) {
+            console.log(Video?.translation?.id, Video?.translation?.name)
             url = Info?.info.serial ? `/api/geturl?kp=${Info?.info?.kp}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&translation=${Video?.translation?.id}&source=rezka` : `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&id=${Info.info.hdrezka_id}&translation=${Video?.translation?.id}&source=rezka`;
             const response = await fetch(url);
             const result = await response.json();
@@ -24,11 +25,9 @@ export const GetUrl = async () => {
             Playlist.setTranslations(translations?.translations);
             const response2 = await fetch(Info?.info.serial ? `/api/geturl?kp=${Info?.info?.kp}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&translation=${translations?.translations[0]?.id}&source=rezka` : `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&id=${Info.info.hdrezka_id}&translation=${translations?.translations[0]?.id}&source=rezka`);
             const urls = await response2.json();
-            console.log(Playlist?.quality)
             if (Playlist?.quality !== undefined) {
                 urls?.urls.filter((quality) => {
                     if (quality?.quality === Playlist?.quality) {
-                        console.log(quality?.urls[0])
                         Video.setUrl(quality?.urls[0]);
                     }
                 })
