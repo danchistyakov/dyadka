@@ -100,14 +100,30 @@ const FilmInfo = observer((props) => {
 
     useEffect(() => {
         const Details = async () => {
-            if (film !== undefined) {
-                const response = await fetch(`/api/details?id=${film}`);
+            if (toJS(Info?.info?.kp) !== undefined) {
+                const response = await fetch(`/api/details?id=${toJS(Info?.info?.kp)}`);
                 const result = await response.json();
                 Info.setDetails(result.details);
             }
         }
         Details();
-    }, [film])
+    }, [Info?.info?.kp])
+
+    useEffect(() => {
+        const Episodes = async () => {
+            if (Info?.info?.kp !== undefined) {
+                //console.log(Info?.info?.kp)
+                const response = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.1/films/${Info?.info?.kp}`, {
+                    headers: {
+                        'X-API-KEY': 'ceff3505-c77c-450a-8abb-aa29f638f5ee'
+                    }
+                })
+                const result = await response.json();
+                Info.setKinopoisk(result?.data);
+            }
+        }
+        Episodes();
+    }, [Info?.info?.kp]);
 
     const Fav = async () => {
         var arr = await get('Избранное');
@@ -202,18 +218,18 @@ const FilmInfo = observer((props) => {
                             {/*Info?.kp?.data?.premiereWorldCountry !== null && (<>{Info?.kp?.data?.premiereWorldCountry} • </>)*/}
                             {Info?.info?.genre !== undefined && (<>{Info?.info?.genre} • </>)}
                             {Info?.info?.country !== undefined && (<>{Info?.info?.country} • </>)}
-                            {Info?.info?.ageLimits !== undefined && (<>{Info?.info?.ageLimits}+</>)}
+                            {Info?.info?.ageLimits !== undefined && (<>{Info?.info?.ageLimits}</>)}
                         </p>)}</div>
                         : <Skeleton className={style.film_info_loader} count={1} duration={2} />}
                 </div>
                 <div className={style.rating_block}>
                     <div className={style.rating_item}>
-                        {Info?.details?.ratingKinopoisk !== undefined ? <p className={style.rating_value}>{Info?.details?.ratingKinopoisk}</p> : <Skeleton className={style.rating_value_loader} count={1} duration={2} />}
-                        {Info?.details?.ratingKinopoisk !== undefined ? <p className={style.rating_name}>КиноПоиск</p> : <Skeleton className={style.rating_name_loader} count={1} duration={2} />}
+                        {Info?.details?.ratingData?.rating !== undefined ? <p className={style.rating_value}>{Info?.details?.ratingData?.rating}</p> : <Skeleton className={style.rating_value_loader} count={1} duration={2} />}
+                        {Info?.details?.ratingData?.rating !== undefined ? <p className={style.rating_name}>КиноПоиск</p> : <Skeleton className={style.rating_name_loader} count={1} duration={2} />}
                     </div>
                     <div className={style.rating_item}>
-                        {Info?.details?.ratingImdb !== undefined ? <p className={style.rating_value}>{Info?.details?.ratingImdb}</p> : <Skeleton className={style.rating_value_loader} count={1} duration={2} />}
-                        {Info?.details?.ratingImdb !== undefined ? <p className={style.rating_name}>IMDb</p> : <Skeleton className={style.rating_name_loader} count={1} duration={2} />}
+                        {Info?.details?.ratingData?.ratingIMDb !== undefined ? <p className={style.rating_value}>{Info?.details?.ratingData?.ratingIMDb}</p> : <Skeleton className={style.rating_value_loader} count={1} duration={2} />}
+                        {Info?.details?.ratingData?.ratingIMDb !== undefined ? <p className={style.rating_name}>IMDb</p> : <Skeleton className={style.rating_name_loader} count={1} duration={2} />}
                     </div>
                 </div>
                 <div className={style.buttons_block}>

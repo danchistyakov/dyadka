@@ -23,7 +23,7 @@ export const GetUrl = async () => {
             const translations = await response1.json();
             Video.setTranslation(translations?.translations[0]);
             Playlist.setTranslations(translations?.translations);
-            const response2 = await fetch(Info?.info.serial ? `/api/geturl?kp=${Info?.info?.kp}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&translation=${translations?.translations[0]?.id}&source=rezka` : `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&id=${Info.info.hdrezka_id}&translation=${translations?.translations[0]?.id}&source=rezka`);
+            const response2 = await fetch(Info?.info.serial ? `/api/geturl?kp=${Info?.info?.kp}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&translation=${translations?.translations[0]?.id || 110}&source=rezka` : `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&id=${Info.info.hdrezka_id}&translation=${translations?.translations[0]?.id || 110}&source=rezka`);
             const urls = await response2.json();
             if (Playlist?.quality !== undefined) {
                 urls?.urls.filter((quality) => {

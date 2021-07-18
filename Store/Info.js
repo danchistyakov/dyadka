@@ -5,6 +5,7 @@ class Info {
     details = null
     videocdn = null
     info = null
+    kinopoisk = null
 
     constructor() {
         makeAutoObservable(this)
@@ -20,6 +21,10 @@ class Info {
 
     setInfo(data) {
         this.info = data
+    }
+
+    setKinopoisk(data) {
+        this.kinopoisk = data
     }
 }
 

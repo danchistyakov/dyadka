@@ -38,19 +38,11 @@ const Episodes = observer(() => {
     const [width, setWidth] = useState(null);
 
     useEffect(() => {
-        Info?.videocdn?.season_count !== undefined && setLength(Info?.videocdn?.season_count < 9 ? Info?.videocdn?.season_count : 9)
-    }, [Info?.videocdn?.season_count])
+        Info?.kinopoisk?.seasons?.length !== undefined && setLength(Info?.kinopoisk?.seasons?.length < 9 ? Info?.kinopoisk?.seasons?.length : 9)
+    }, [Info?.kinopoisk?.seasons?.length])
 
     const breakpointsSeasons = { 320: { slidesPerView: 3.5 }, 768: { slidesPerView: length } };
     const breakpointsEpisodes = { 320: { slidesPerView: 1.8 }, 768: { slidesPerView: 4.9 } };
-
-    const epArray = toJS(Info?.videocdn?.episodes)?.filter(res => {
-        if (season === Number(res?.season_num)) {
-            return res
-        } else {
-            return null
-        }
-    })
 
     useEffect(() => {
         const Season = async () => {
@@ -85,13 +77,13 @@ const Episodes = observer(() => {
 
     return (
         <SkeletonTheme color="#202020" highlightColor="#444">
-            <section className={style.nav_section} key={Playlist?.episode + Playlist?.season}>
-                {Playlist?.episode !== undefined ?
+            <section className={style.nav_section} key={[length, Playlist?.season]}>
+                {Info?.kinopoisk?.seasons !== undefined ?
                     <Swiper
                         initialSlide={Playlist?.season ? Playlist?.season - 1 : 1}
                         freeMode={true}
                         navigation={navigationSeasons}
-                        key={length}
+                        key={Info?.kinopoisk?.seasons}
                         breakpoints={breakpointsSeasons}
                         centeredSlidesBounds={true}
                         centeredSlides={true}
@@ -99,8 +91,7 @@ const Episodes = observer(() => {
                     >
                         <div className='swiper-button-prev seasons'></div>
                         <div className='swiper-button-next seasons'></div>
-
-                        {Array.from(Array(Info?.videocdn?.season_count), (_, i) => (
+                        {Array.from(Array(Info?.kinopoisk?.seasons?.length), (_, i) => (
                             <SwiperSlide className={style.season_block} key={i} onClick={() => { setSeason(i + 1); setError() }}>
                                 <p className={`${style.season}${i + 1 === season ? ` ${style.active}` : ''}`}>{i + 1}-й сезон</p>
                             </SwiperSlide> || <Skeleton count={1} duration={2} width={'10vw'} height={'2vw'} style={{ marginRight: '1vw' }} />
@@ -109,7 +100,7 @@ const Episodes = observer(() => {
                 }
                 <div className={style.episodes_section} key={Playlist?.episode}>
                     <Swiper
-                        key={epArray}
+                        key={Info?.kinopoisk}
                         initialSlide={(Playlist?.season === season && Playlist?.episode !== null) ? Playlist?.episode - 1 : 0}
                         freeMode={true}
                         navigation={navigationEpisodes}
@@ -121,7 +112,7 @@ const Episodes = observer(() => {
                         <div className='swiper-button-prev episodes'></div>
                         <div className='swiper-button-next episodes'></div>
 
-                        {epArray?.map((res, key) => {
+                        {Info?.kinopoisk?.seasons[season - 1]?.episodes.map((res, key) => {
                             return (
                                 <SwiperSlide className={style.episode} key={key} onClick={() => { Playlist.setSeason(season); Playlist.setEpisode(key + 1); GetUrl(); PlayerOptions.setWatch(true); Layout.setTrailer(false); Layout.setPoster(false); window.scrollTo(0, 0); }}>
                                     <LazyLoadImage
@@ -132,8 +123,8 @@ const Episodes = observer(() => {
                                         wrapperClassName={error}
                                         placeholderSrc={`https://cdn.statically.io/img/kinopoiskapiunofficial.tech/blackmedia.top/f=auto,q=100/images/posters/kp_small/${Info?.info?.kp}.jpg`}
                                     />
-                                    <p className={style.duration}>{parseInt(res?.media[0].duration / 60)}:{res?.media[0].duration % 60 < 10 ? '0' + (res?.media[0].duration % 60) : res?.media[0].duration % 60}</p>
-                                    {(<p className={style.episode_number}>{key + 1}-я серия</p> || <Skeleton count={1} duration={2} width={'7vw'} height={'1.5vw'} style={{ marginTop: '1vw' }} />)}
+                                    {/*<p className={style.duration}>{parseInt(res?.media[0].duration / 60)}:{res?.media[0].duration % 60 < 10 ? '0' + (res?.media[0].duration % 60) : res?.media[0].duration % 60}</p>*/}
+                                    {(<p className={style.episode_number}>{res?.episodeNumber}-я серия</p> || <Skeleton count={1} duration={2} width={'7vw'} height={'1.5vw'} style={{ marginTop: '1vw' }} />)}
                                 </SwiperSlide>
                             )
                         })}
