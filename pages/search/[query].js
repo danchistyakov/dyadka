@@ -21,7 +21,7 @@ const Search = () => {
 
     return (
         <div>
-            {search !== 'null' && search !== ' ' && (<h1 className={style.search_title}>Результаты поиска по запросу: "{search}"</h1>)}
+            {search !== 'null' && search !== ' ' && (<h1 className={style.search_title}>Результаты поиска по запросу: {search}</h1>)}
             {(search === 'null' || search === ' ') && (<h1 className={style.search_title}>Пустой поисковый запрос</h1>)}
             {/*(search !== 'null' && search !== ' ' && (Number(number) > Number(result?.pagesCount))) && (<h1 className={style.genre_title}>Результатов поиска оказалось немного меньше :(</h1>)*/}
 
