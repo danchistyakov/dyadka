@@ -3,12 +3,7 @@ import cheerio from 'cheerio';
 
 const Search = async (req, res) => {
     try {
-        const search = (await axios.get(`https://rezkance.com/search/?do=search&subaction=search&q=${encodeURIComponent(req.query.q)}&page=1`,
-            {
-                headers: {
-                    'Cookie': 'PHPSESSID=i9nisa3paglukt9sb66qtrvd15; dle_user_token=8e75b8a65e227e477abd3a31a2d258be'
-                }
-            })).data
+        const search = (await axios.get(`http://f0561301.xsph.ru/search.php?q=${encodeURIComponent(req.query.q)}`)).data
 
         const selector = cheerio.load(search);
 

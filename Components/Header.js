@@ -100,7 +100,7 @@ const Header = observer(() => {
                             ))}
                         </div>)}
                     </div>
-                    <Link href={`/search/${input}/1`} onClick={() => { setDisplay(false); setBorder('') }}><a className={style.search_button}>Найти</a></Link>
+                    <Link href={`/search/${input}`} onClick={() => { setDisplay(false); setBorder('') }}><a className={style.search_button}>Найти</a></Link>
                 </div>
 
             </header>
