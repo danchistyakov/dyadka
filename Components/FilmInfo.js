@@ -131,12 +131,12 @@ const FilmInfo = observer((props) => {
         if (arr?.find(item => item.id === film) === undefined) {
             if (arr === undefined) {
                 arr = [];
-                arr.push({ name: Info?.info?.title, poster: Info?.details?.poster, id: film });
+                arr.push({ name: Info?.info?.title, poster: `https://kinopoiskapiunofficial.tech/images/posters/kp_small/${Info?.info?.kp}.jpg`, id: film });
                 set('Избранное', arr);
                 setAdd(true)
             } else {
                 if (arr?.find(item => item.id === film) === undefined) {
-                    arr.push({ name: Info?.info?.title, poster: Info?.details?.poster, id: film });
+                    arr.push({ name: Info?.info?.title, poster: `https://kinopoiskapiunofficial.tech/images/posters/kp_small/${Info?.info?.kp}.jpg`, id: film });
                     set('Избранное', arr);
                     setAdd(true)
                 }

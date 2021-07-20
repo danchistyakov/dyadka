@@ -33,36 +33,35 @@ const GetUrl = async (req, res) => {
             headless: chromium.headless,
             ignoreHTTPSErrors: true,
         });*/
+        try {
+            const Translate = async () => {
+                const rezkatranslate = (await axios.get(`http://f0561301.xsph.ru/?id=1154`)).data;
+                const selector = cheerio.load(rezkatranslate);
+                const translations = selector('.b-translator__item').map((i, x) => (
+                    { id: selector(x).attr('data-translator_id'), name: selector(x).attr('title') }
+                )).toArray();
 
-        const Translate = async () => {
-            const rezkatranslate = (await axios.get(`http://f0561301.xsph.ru/?id=1154`)).data;
-            const selector = cheerio.load(rezkatranslate);
-            const translations = selector('.b-translator__item').map((i, x) => (
-                { id: selector(x).attr('data-translator_id'), name: selector(x).attr('title') }
-            )).toArray();
-
-            return translations;
-        }
-        const Urls = async () => {
-            if (req.query.season !== undefined && req.query.episode !== undefined) {
-                if (req.query.translation !== undefined) {
-                    const rezkaapi = await axios.post('https://rezkance.com/ajax/get_cdn_series/?t=1624443285637', querystring.stringify({ 'id': req.query.id, 'translator_id': req.query.translation, 'season': req.query.season, 'episode': req.query.episode, 'action': 'get_episodes' }));
-                    return rezkaapi.data
+                return translations;
+            }
+            const Urls = async () => {
+                if (req.query.season !== undefined && req.query.episode !== undefined) {
+                    if (req.query.translation !== undefined) {
+                        const rezkaapi = await axios.post('https://rezkance.com/ajax/get_cdn_series', querystring.stringify({ 'id': req.query.id, 'translator_id': req.query.translation, 'season': req.query.season, 'episode': req.query.episode, 'action': 'get_episodes' }));
+                        return rezkaapi.data
+                    } else {
+                        const rezkaapi = await axios.post('https://rezkance.com/ajax/get_cdn_series', querystring.stringify({ 'id': req.query.id, 'translator_id': (await Translate())[0].id, 'season': req.query.season, 'episode': req.query.episode, 'action': 'get_episodes' }));
+                        return rezkaapi.data
+                    }
                 } else {
-                    const rezkaapi = await axios.post('https://rezkance.com/ajax/get_cdn_series/?t=1624443285637', querystring.stringify({ 'id': req.query.id, 'translator_id': (await Translate())[0].id, 'season': req.query.season, 'episode': req.query.episode, 'action': 'get_episodes' }));
-                    return rezkaapi.data
-                }
-            } else {
-                if (req.query.translation !== undefined) {
-                    const rezkaapi = await axios.post('https://rezkance.com/ajax/get_cdn_series/?t=1624443285637', querystring.stringify({ 'id': req.query.id, 'translator_id': req.query.translation, 'action': 'get_episodes' }));
-                    return rezkaapi.data
-                } else {
-                    const rezkaapi = await axios.post('https://rezkance.com/ajax/get_cdn_series/?t=1624443285637', querystring.stringify({ 'id': req.query.id, 'translator_id': (await Translate())[0].id, 'action': 'get_episodes' }));
-                    return rezkaapi.data
+                    if (req.query.translation !== undefined) {
+                        const rezkaapi = await axios.post('https://rezkance.com/ajax/get_cdn_series', querystring.stringify({ 'id': req.query.id, 'translator_id': req.query.translation, 'action': 'get_movie' }));
+                        return rezkaapi.data
+                    } else {
+                        const rezkaapi = await axios.post('https://rezkance.com/ajax/get_cdn_series', querystring.stringify({ 'id': req.query.id, 'translator_id': (await Translate())[0].id, 'action': 'get_movie' }));
+                        return rezkaapi.data
+                    }
                 }
             }
-        }
-        try {
             const urls = (await Urls()).url.split(',').reverse().reduce(
                 (acc, item) => {
                     const [_, quality, url1, url2] = item.match(/\[(.+?)\](.+?) or (.+)/);
@@ -74,7 +73,7 @@ const GetUrl = async (req, res) => {
 
             res.status(200).json({ /*translations: await Translate(), */urls: urls });
         } catch (err) {
-            res.status(200).json({ err });
+            res.status(200).json({ err: err });
 
         }
     }
