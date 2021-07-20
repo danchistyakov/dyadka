@@ -44,32 +44,6 @@ const Player = observer(() => {
     PlayerControls.setCurrentTime(playerRef.current ? playerRef.current.getCurrentTime() : '00:00');
     PlayerControls.setCurrentDuration(playerRef.current ? playerRef.current.getDuration() : '00:00');
 
-    /*const gettingUrl = async () => {
-        PlayerOptions.setParsing(true);
-        if (Info?.videocdn !== undefined) {
-            console.log(Info);
-            try {
-                PlayerOptions.setBuffering(true)
-                //const url = Info?.videocdn?.content_type === 'tv_series' ? `/film?type=tv_series&id=${Info?.videocdn?.id}&season=${Playlist?.season}&episode=${Playlist?.episode}&translation=${Playlist?.translation?.id}&source=vcdn` : `/film?id=${Info?.videocdn?.id}?translation=${Playlist?.translation?.id}&source=vcdn`;
-                var url;
-                if (Playlist?.translation?.id !== null) {
-                    url = Info?.videocdn?.content_type === 'tv_series' ? `/api/geturl?type=tv_series&kp=${Info?.videocdn?.kinopoisk_id}&season=${Playlist?.season}&episode=${Playlist?.episode}&translation=${Playlist?.translation?.id}&id=${Info?.info.hdrezka_id}&source=rezka` : `/api/film?kp=${Info?.videocdn?.kinopoisk_id}&translation=${Playlist?.translation?.id}&id=${Info.info.hdrezka_id}&source=rezka`;
-                } else {
-                    url = Info?.videocdn?.content_type === 'tv_series' ? `/api/geturl?type=tv_series&kp=${Info?.videocdn?.kinopoisk_id}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&source=rezka` : `/api/film?kp=${Info?.videocdn?.kinopoisk_id}&id=${Info.info.hdrezka_id}&source=rezka`;
-                }
-                const response = await fetch(url);
-                const result = await response.json();
-                Playlist.setUrl(result?.urls[0]?.urls[0]);
-                PlayerOptions.setBuffering(false)
-                PlayerOptions.setError(false);
-                PlayerOptions.setParsing(false);
-            } catch {
-                PlayerOptions.setError(true);
-            }
-
-        }
-    }*/
-
     useEffect(() => {
         const Last = async () => {
             Video.setUrl(null);
@@ -87,15 +61,15 @@ const Player = observer(() => {
 
     useEffect(() => {
         const parsingUrl = async () => {
-            console.log('parsingUrl')
-            if (Info.info.hdrezka_id !== undefined) {
+            console.log(Info?.videocdn?.kinopoisk_id, Video?.translation?.id)
+            if (Info?.videocdn?.kinopoisk_id !== undefined) {
                 GetUrl();
             }
         }
 
         parsingUrl();
 
-    }, [Info?.videocdn?.kinopoisk_id, Video?.translation?.id/*, success*/])
+    }, [Info?.videocdn?.kinopoisk_id, Video?.translation?.id])
 
     useEffect(() => {
         const Quality = async () => {

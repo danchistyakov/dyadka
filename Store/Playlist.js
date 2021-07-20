@@ -5,7 +5,7 @@ class Playlist {
     season = null
     episode = 1
     id = 1
-    quality = null
+    quality = '1080p Ultra'
     playlist = null
     speed = 1
     urls = null
