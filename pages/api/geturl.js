@@ -46,18 +46,18 @@ const GetUrl = async (req, res) => {
             const Urls = async () => {
                 if (req.query.season !== undefined && req.query.episode !== undefined) {
                     if (req.query.translation !== undefined) {
-                        const rezkaapi = await axios.post('https://rezkance.com/ajax/get_cdn_series', querystring.stringify({ 'id': req.query.id, 'translator_id': req.query.translation, 'season': req.query.season, 'episode': req.query.episode, 'action': 'get_episodes' }));
+                        const rezkaapi = await axios.post('http://rezkance.com/ajax/get_cdn_series/', querystring.stringify({ 'id': req.query.id, 'translator_id': req.query.translation, 'season': req.query.season, 'episode': req.query.episode, 'action': 'get_episodes' }));
                         return rezkaapi.data
                     } else {
-                        const rezkaapi = await axios.post('https://rezkance.com/ajax/get_cdn_series', querystring.stringify({ 'id': req.query.id, 'translator_id': (await Translate())[0].id, 'season': req.query.season, 'episode': req.query.episode, 'action': 'get_episodes' }));
+                        const rezkaapi = await axios.post('http://rezkance.com/ajax/get_cdn_series/', querystring.stringify({ 'id': req.query.id, 'translator_id': (await Translate())[0].id, 'season': req.query.season, 'episode': req.query.episode, 'action': 'get_episodes' }));
                         return rezkaapi.data
                     }
                 } else {
                     if (req.query.translation !== undefined) {
-                        const rezkaapi = await axios.post('https://rezkance.com/ajax/get_cdn_series', querystring.stringify({ 'id': req.query.id, 'translator_id': req.query.translation, 'action': 'get_movie' }));
+                        const rezkaapi = await axios.post('http://rezkance.com/ajax/get_cdn_series/', querystring.stringify({ 'id': req.query.id, 'translator_id': req.query.translation, 'action': 'get_movie' }));
                         return rezkaapi.data
                     } else {
-                        const rezkaapi = await axios.post('https://rezkance.com/ajax/get_cdn_series', querystring.stringify({ 'id': req.query.id, 'translator_id': (await Translate())[0].id, 'action': 'get_movie' }));
+                        const rezkaapi = await axios.post('http://rezkance.com/ajax/get_cdn_series/', querystring.stringify({ 'id': req.query.id, 'translator_id': (await Translate())[0].id, 'action': 'get_movie' }));
                         return rezkaapi.data
                     }
                 }
