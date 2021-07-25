@@ -218,7 +218,7 @@ const FilmInfo = observer((props) => {
                             {/*Info?.kp?.data?.premiereWorldCountry !== null && (<>{Info?.kp?.data?.premiereWorldCountry} • </>)*/}
                             {Info?.info?.genre !== undefined && (<>{Info?.info?.genre} • </>)}
                             {Info?.info?.country !== undefined && (<>{Info?.info?.country} • </>)}
-                            {Info?.info?.ageLimits !== undefined && (<>{Info?.info?.ageLimits}</>)}
+                            {Info?.info?.ageLimits !== undefined && (<>{Info?.info?.ageLimits}+</>)}
                         </p>)}</div>
                         : <Skeleton className={style.film_info_loader} count={1} duration={2} />}
                 </div>
