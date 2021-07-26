@@ -43,8 +43,9 @@ const TopControls = observer(({ setPirate }) => {
     }
 
     const handleTranslation = async (id, name) => {
+        Video.setUrl(null);
         setTranslations(!translations);
-        Video.setTranslation({ id: id, name: name });
+        Video.setTranslation(id, name);
         var info = await get('Длительность') !== undefined ? await get('Длительность') : [];
         if (Info?.videocdn?.kinopoisk_id !== undefined) {
             var search = info?.findIndex(item => item?.kinopoisk_id === Info?.videocdn?.kinopoisk_id);
@@ -59,7 +60,7 @@ const TopControls = observer(({ setPirate }) => {
             Playlist.setTranslation(null, Playlist?.translations[0]?.name)
         }
     }, [Playlist?.translations])*/
-
+    console.log('TOPC: ', Video?.translation?.name)
     return (
         <div className={style.top_controls}>
             <div className={style.top_left}>

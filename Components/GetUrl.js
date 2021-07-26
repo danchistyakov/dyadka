@@ -31,6 +31,10 @@ export const GetUrl = async () => {
             const transresponse = await fetch(`/api/translations?id=${Info.info.hdrezka_id}`);
             const translations = await transresponse.json();
             Playlist.setTranslations(translations?.translations);
+            if (Video?.translation?.id === undefined || Video?.translation?.id === null) {
+                console.log('UPD: ', translations?.translations[0]?.id, translations?.translations[0]?.name)
+                Video.setTranslation(translations?.translations[0]?.id, translations?.translations[0]?.name);
+            }
         }
         PlayerOptions.setBuffering(false)
         PlayerOptions.setError(false);

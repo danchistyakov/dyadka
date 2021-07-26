@@ -60,7 +60,7 @@ const FilmInfo = observer((props) => {
             var arr = await get('Длительность');
             var search = arr?.findIndex(item => item?.kinopoisk_id === film);
             try {
-                if (arr[search]?.translationId !== undefined) {
+                if (arr[search]?.translationId !== undefined && arr[search]?.translationName !== undefined) {
                     Video.setTranslation(arr[search]?.translationId, arr[search]?.translationName);
                 } else {
                     Video.setTranslation(null, null);

@@ -61,7 +61,6 @@ const Player = observer(() => {
 
     useEffect(() => {
         const parsingUrl = async () => {
-            console.log(Info?.videocdn?.kinopoisk_id, Video?.translation?.id)
             if (Info?.videocdn?.kinopoisk_id !== undefined) {
                 GetUrl();
             }

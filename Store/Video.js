@@ -18,8 +18,8 @@ class Video {
         this.urls = urls;
     }
 
-    setTranslation(translation) {
-        this.translation = translation
+    setTranslation(id, name) {
+        this.translation = { id: id, name: name };
     }
 }
 
