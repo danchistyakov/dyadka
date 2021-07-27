@@ -43,7 +43,6 @@ const TopControls = observer(({ setPirate }) => {
     }
 
     const handleTranslation = async (id, name) => {
-        Video.setUrl(null);
         setTranslations(!translations);
         Video.setTranslation(id, name);
         var info = await get('Длительность') !== undefined ? await get('Длительность') : [];

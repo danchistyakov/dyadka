@@ -7,6 +7,7 @@ import { toJS } from 'mobx';
 
 export const GetUrl = async () => {
     try {
+        Video.setUrl(null);
         var url;
         PlayerOptions.setBuffering(true)
         if (Video?.translation?.id !== null && Video?.translation?.id !== undefined) {
@@ -33,10 +34,10 @@ export const GetUrl = async () => {
             Playlist.setTranslations(translations?.translations);
             if (Video?.translation?.id === undefined || Video?.translation?.id === null) {
                 console.log('UPD: ', translations?.translations[0]?.id, translations?.translations[0]?.name)
-                Video.setTranslation(translations?.translations[0]?.id, translations?.translations[0]?.name);
+                Video.setTranslation(null, translations?.translations[0]?.name);
             }
         }
-        PlayerOptions.setBuffering(false)
+        //PlayerOptions.setBuffering(false)
         PlayerOptions.setError(false);
     } catch (err) {
         PlayerOptions.setError(true)

@@ -68,7 +68,7 @@ const Player = observer(() => {
 
         parsingUrl();
 
-    }, [Info?.videocdn?.kinopoisk_id, Video?.translation?.id])
+    }, [Info?.videocdn?.kinopoisk_id, Video?.translation?.name])
 
     useEffect(() => {
         const Quality = async () => {
@@ -115,6 +115,7 @@ const Player = observer(() => {
 
     const handleMouseMove = () => {
         controlsRef.current.style.visibility = 'visible';
+        document.body.style.cursor = 'auto';
         setCount(0);
     }
 
@@ -135,6 +136,7 @@ const Player = observer(() => {
 
         if (count > 3) {
             controlsRef.current.style.visibility = 'hidden';
+            document.body.style.cursor = 'none';
         }
 
         if (controlsRef.current.style.visibility === 'visible') {
