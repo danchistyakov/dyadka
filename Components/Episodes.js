@@ -35,7 +35,7 @@ const Episodes = observer(() => {
     const [season, setSeason] = useState(null);
     const [error, setError] = useState();
     const [length, setLength] = useState(9);
-    const [width, setWidth] = useState(null);
+    const [data, setData] = useState([]);
 
     useEffect(() => {
         Info?.kinopoisk?.seasons?.length !== undefined && setLength(Info?.kinopoisk?.seasons?.length < 9 ? Info?.kinopoisk?.seasons?.length : 9)
@@ -75,6 +75,25 @@ const Episodes = observer(() => {
         setError('error')
     }
 
+    useEffect(() => {
+        const Fetch = async () => {
+            const response = await fetch(`https://api.alloha.tv/?token=04941a9a3ca3ac16e2b4327347bbc1&kp=${Info?.info?.kp}`);
+            const data = (await response.json()).data.seasons;
+            const result = Object.keys(data).map((key) => (
+                {
+                    episodes: Object.keys(data[key].episodes).map((res) => (
+                        data[key].episodes[res]
+                    )),
+                    season: Number(key)
+                }
+            ));
+            console.log(result);
+            setData(result)
+        }
+
+        Fetch();
+    }, [Info?.info?.kp])
+    console.log(season)
     return (
         <SkeletonTheme color="#202020" highlightColor="#444">
             <section className={style.nav_section} key={[length, Playlist?.season]}>
@@ -91,9 +110,9 @@ const Episodes = observer(() => {
                     >
                         <div className='swiper-button-prev seasons'></div>
                         <div className='swiper-button-next seasons'></div>
-                        {Array.from(Array(Info?.kinopoisk?.seasons?.length), (_, i) => (
-                            <SwiperSlide className={style.season_block} key={i} onClick={() => { setSeason(i + 1); setError() }}>
-                                <p className={`${style.season}${i + 1 === season ? ` ${style.active}` : ''}`}>{i + 1}-й сезон</p>
+                        {data?.map((res, key) => (
+                            <SwiperSlide className={style.season_block} key={key} onClick={() => { setSeason(res?.season); setError() }}>
+                                <p className={`${style.season}${res?.season === season ? ` ${style.active}` : ''}`}>{res?.season}-й сезон</p>
                             </SwiperSlide> || <Skeleton count={1} duration={2} width={'10vw'} height={'2vw'} style={{ marginRight: '1vw' }} />
                         ))}
                     </Swiper> : <></>
@@ -112,22 +131,21 @@ const Episodes = observer(() => {
                         <div className='swiper-button-prev episodes'></div>
                         <div className='swiper-button-next episodes'></div>
 
-                        {Info?.kinopoisk?.seasons[season - 1]?.episodes.map((res, key) => {
-                            return (
-                                <SwiperSlide className={style.episode} key={key} onClick={() => { Playlist.setSeason(season); Playlist.setEpisode(key + 1); GetUrl(); PlayerOptions.setWatch(true); Layout.setTrailer(false); Layout.setPoster(false); window.scrollTo(0, 0); }}>
-                                    <LazyLoadImage
-                                        src={`https://cdn.statically.io/img/blackmedia.top/f=auto,q=80/media/${Info?.info?.kp}/preview_app_cinema_media_${Info?.info?.kp}_s${season}e${key + 1}.png`}
-                                        className={style.cover_section}
-                                        effect="blur"
-                                        onError={Error}
-                                        wrapperClassName={error}
-                                        placeholderSrc={`https://cdn.statically.io/img/kinopoiskapiunofficial.tech/blackmedia.top/f=auto,q=100/images/posters/kp_small/${Info?.info?.kp}.jpg`}
-                                    />
-                                    {/*<p className={style.duration}>{parseInt(res?.media[0].duration / 60)}:{res?.media[0].duration % 60 < 10 ? '0' + (res?.media[0].duration % 60) : res?.media[0].duration % 60}</p>*/}
-                                    {(<p className={style.episode_number}>{res?.episodeNumber}-я серия</p> || <Skeleton count={1} duration={2} width={'7vw'} height={'1.5vw'} style={{ marginTop: '1vw' }} />)}
-                                </SwiperSlide>
-                            )
-                        })}
+                        {data[season - 1]?.episodes.map((res, key) => (
+                            <SwiperSlide className={style.episode} key={key} onClick={() => { Playlist.setSeason(season); Playlist.setEpisode(res?.episode); GetUrl(); PlayerOptions.setWatch(true); Layout.setTrailer(false); Layout.setPoster(false); window.scrollTo(0, 0); }}>
+                                <LazyLoadImage
+                                    src={`https://cdn.statically.io/img/blackmedia.top/f=auto,q=80/media/${Info?.info?.kp}/preview_app_cinema_media_${Info?.info?.kp}_s${season}e${res?.episode}.png`}
+                                    className={style.cover_section}
+                                    effect="blur"
+                                    onError={Error}
+                                    wrapperClassName={error}
+                                    placeholderSrc={`https://cdn.statically.io/img/kinopoiskapiunofficial.tech/blackmedia.top/f=auto,q=100/images/posters/kp_small/${Info?.info?.kp}.jpg`}
+                                />
+                                {/*<p className={style.duration}>{parseInt(res?.media[0].duration / 60)}:{res?.media[0].duration % 60 < 10 ? '0' + (res?.media[0].duration % 60) : res?.media[0].duration % 60}</p>*/}
+                                {(<p className={style.episode_number}>{res?.episode}-я серия</p> || <Skeleton count={1} duration={2} width={'7vw'} height={'1.5vw'} style={{ marginTop: '1vw' }} />)}
+                            </SwiperSlide>
+                        )
+                        )}
                     </Swiper>
                 </div>
             </section>

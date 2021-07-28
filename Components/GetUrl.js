@@ -33,7 +33,6 @@ export const GetUrl = async () => {
             const translations = await transresponse.json();
             Playlist.setTranslations(translations?.translations);
             if (Video?.translation?.id === undefined || Video?.translation?.id === null) {
-                console.log('UPD: ', translations?.translations[0]?.id, translations?.translations[0]?.name)
                 Video.setTranslation(Video?.translation?.id, translations?.translations[0]?.name);
             }
         }

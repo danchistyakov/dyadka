@@ -2,8 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import Info from '../Store/Info';
 import Playlist from '../Store/Playlist';
-/*import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';*/
 import { get, set } from 'idb-keyval';
 import PlayerControls from '../Store/PlayerControls';
 import style from '../styles/TopControls.module.sass';
@@ -13,8 +11,6 @@ import Video from '../Store/Video';
 const TopControls = observer(({ setPirate }) => {
     const [translations, setTranslations] = useState(null);
     const [continueTime, setContinueTime] = useState(false);
-    //const [pirate, setPirate] = useState(false);
-    const modalContainer = useRef(null);
     const translateModal = useRef(null);
 
     useEffect(() => {
@@ -54,17 +50,12 @@ const TopControls = observer(({ setPirate }) => {
         }
     }
 
-    /*useEffect(() => {
-        if (Playlist?.translations !== null) {
-            Playlist.setTranslation(null, Playlist?.translations[0]?.name)
-        }
-    }, [Playlist?.translations])*/
     return (
         <div className={style.top_controls}>
             <div className={style.top_left}>
                 {Info?.info?.serial && (<p className={style.episode_info}>{Info?.info?.title}. Сезон {Playlist?.season}. Серия {Playlist?.episode}</p>)}
                 {!Info?.info?.serial && (<p className={style.episode_info}>{Info?.info?.title}</p>)}
-                {continueTime !== false /* && !parsing*/ && (<button onClick={handleContinue} className={style.button_continue}>Продолжить</button>)}
+                {continueTime !== false && (<button onClick={handleContinue} className={style.button_continue}>Продолжить</button>)}
             </div>
             <div className={style.top_right} key={translations}>
                 <div className={style.translation_preview} onClick={(e) => { e.stopPropagation(); Playlist?.translations?.length > 1 && setTranslations(!translations) }}>{Video?.translation?.name} {Playlist?.translations?.length > 1 && (translations ? <Icons icon='ExpandLessIcon' className={style.translations_icon} /> : <Icons icon='ExpandMoreIcon' className={style.translations_icon} />)}</div>
