@@ -22,7 +22,6 @@ const navigationCategories = {
 
 const Header = observer(() => {
 
-    const [nav, setNav] = useState(null);
     const [display, setDisplay] = useState(false);
     const [border, setBorder] = useState('');
     const [search, setSearch] = useState(['Загрузка...']);
@@ -30,7 +29,7 @@ const Header = observer(() => {
     const [input, setInput] = useState(null);
     //const history = useHistory();
     const history = {};
-    useEffect(() => {
+    /*useEffect(() => {
         const Nav = async () => {
             const response = await fetch('https://kinopoiskapiunofficial.tech/api/v2.1/films/filters', {
                 headers: {
@@ -41,7 +40,8 @@ const Header = observer(() => {
             setNav(result.genres)
         }
         Nav();
-    }, [])
+    }, [])*/
+    const nav = [{ title: 'Сейчас смотрят', link: 'watching' }, { title: 'Новинки', link: 'last' }, { title: 'Фильмы', link: 'films' }, { title: 'Сериалы', link: 'series' }, { title: 'Мультфильмы', link: 'cartoons' }, { title: 'Телепередачи', link: 'show' }, { title: 'Аниме', link: 'animation' }];
 
     /*useEffect(() => {
         const overflow = display === false ? 'auto' : 'hidden'
@@ -116,7 +116,7 @@ const Header = observer(() => {
                     >
                         {nav?.map((res, key) => (
                             <SwiperSlide className={style.categories_item} key={key}>
-                                <Link as='/genre/[genre]' href={`/genre/${res?.genre}`} key={key} draggable='false' className={style.nav_element} activeClassName={style.pages_a_active}>{res?.genre}</Link>
+                                <Link href='/category/[category]' as={`/category/${res?.link}`} key={key} draggable='false' className={style.nav_element} activeClassName={style.pages_a_active}>{res?.title}</Link>
                             </SwiperSlide>
                         ))}
                     </Swiper>

@@ -39,7 +39,7 @@ const FilmInfo = observer((props) => {
         window.scrollTo(0, 0)
     }
 
-    document.body.style.cursor = 'auto';
+    //document.body.style.cursor = 'auto';
 
     useEffect(() => {
         PlayerOptions.setWatch(false);

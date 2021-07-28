@@ -1,27 +1,29 @@
 import axios from 'axios';
+import cheerio from 'cheerio';
 
 const Categories = async (req, res) => {
-    if (req.query.category === 'viewing') {
-        const category = (await axios.get(`http://103.119.112.27/partner_api/viewing?page=0`,
-            {
-                headers: {
-                    "X-FX-Token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImp0aSI6ImZ4LTYwZWFiNmEzZWM0OGYifQ.eyJpc3MiOiJodHRwczpcL1wvZmlsbWl4Lm1lIiwiYXVkIjoiaHR0cHM6XC9cL2ZpbG1peC5tZSIsImp0aSI6ImZ4LTYwZWFiNmEzZWM0OGYiLCJpYXQiOjE2MjU5OTQ5MTUsIm5iZiI6MTYyNTk4NDExNSwiZXhwIjoxNjI4NTg2OTE1LCJwYXJ0bmVyX2lkIjoiMiIsImhhc2giOiI1MmI3MmU4M2E4YzA0Y2M0ZWQ5YmRiYjU4NmNmMGFkZTM2MDc3OTFhIiwidXNlcl9pZCI6bnVsbCwiaXNfcHJvIjpmYWxzZSwiaXNfcHJvX3BsdXMiOmZhbHNlLCJzZXJ2ZXIiOiIifQ.-jooDI9dRoN9Sd6f8sb82cmvP9Lqx-TjUiVQEuLGpmo"
-                }
-            })).data
+    const data = (await axios.get(`http://f0561301.xsph.ru/categories.php?category=${req.query.category}`)).data
+    const selector = cheerio.load(data);
 
-        res.status(200).json({ category: category })
-    }
+    const title = selector('.b-content__htitle h1').text();
 
-    if (req.query.category === 'popular') {
-        const category = (await axios.get(`http://103.119.112.27/partner_api/popular?page=0`,
-            {
-                headers: {
-                    "X-FX-Token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImp0aSI6ImZ4LTYwZWFiNmEzZWM0OGYifQ.eyJpc3MiOiJodHRwczpcL1wvZmlsbWl4Lm1lIiwiYXVkIjoiaHR0cHM6XC9cL2ZpbG1peC5tZSIsImp0aSI6ImZ4LTYwZWFiNmEzZWM0OGYiLCJpYXQiOjE2MjU5OTQ5MTUsIm5iZiI6MTYyNTk4NDExNSwiZXhwIjoxNjI4NTg2OTE1LCJwYXJ0bmVyX2lkIjoiMiIsImhhc2giOiI1MmI3MmU4M2E4YzA0Y2M0ZWQ5YmRiYjU4NmNmMGFkZTM2MDc3OTFhIiwidXNlcl9pZCI6bnVsbCwiaXNfcHJvIjpmYWxzZSwiaXNfcHJvX3BsdXMiOmZhbHNlLCJzZXJ2ZXIiOiIifQ.-jooDI9dRoN9Sd6f8sb82cmvP9Lqx-TjUiVQEuLGpmo"
-                }
-            })).data
+    const titles = selector('.b-content__inline_item-link a').map((i, x) => (
+        selector(x).text()
+    )).toArray();
 
-        res.status(200).json({ category: category })
-    }
+    const ids = selector('.b-content__inline_item').map((i, x) => (
+        selector(x).attr('data-id')
+    )).toArray();
+
+    const images = selector('.b-content__inline_item-cover img').map((i, x) => (
+        selector(x).attr('src')
+    )).toArray();
+
+    const result = ids.map((res, key) => (
+        { id: ids[key], title: titles[key], poster: images[key] }
+    ));
+
+    res.status(200).json({ items: result, title: title })
 }
 
 export default Categories

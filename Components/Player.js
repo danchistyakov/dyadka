@@ -136,7 +136,7 @@ const Player = observer(() => {
 
         if (count > 3) {
             controlsRef.current.style.visibility = 'hidden';
-            document.body.style.cursor = 'none';
+            //document.body.style.cursor = 'none';
         }
 
         if (controlsRef.current.style.visibility === 'visible') {
