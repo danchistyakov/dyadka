@@ -42,7 +42,7 @@ const BottomControls = observer(({ video, handleSeekChange, prevEpisode, nextEpi
 
     const format = (data) => {
         if (isNaN(data)) {
-            return '00:00';
+            return '0:00';
         }
         const date = new Date(data * 1000);
         const hours = date.getUTCHours();

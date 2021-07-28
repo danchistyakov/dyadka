@@ -59,7 +59,6 @@ const TopControls = observer(({ setPirate }) => {
             Playlist.setTranslation(null, Playlist?.translations[0]?.name)
         }
     }, [Playlist?.translations])*/
-    console.log('TOPC: ', Video?.translation?.name)
     return (
         <div className={style.top_controls}>
             <div className={style.top_left}>

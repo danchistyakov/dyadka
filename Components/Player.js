@@ -62,13 +62,14 @@ const Player = observer(() => {
     useEffect(() => {
         const parsingUrl = async () => {
             if (Info?.videocdn?.kinopoisk_id !== undefined) {
+                console.log('ID: ' + Video?.translation?.id)
                 GetUrl();
             }
         }
 
         parsingUrl();
 
-    }, [Info?.videocdn?.kinopoisk_id, Video?.translation?.name])
+    }, [Info?.videocdn?.kinopoisk_id, Video?.translation?.id])
 
     useEffect(() => {
         const Quality = async () => {
