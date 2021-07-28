@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import style from "../../styles/Genre.module.sass";
 //import Navigation from "../../Components/Navigation";
 import Link from 'next/link';
-import Image from 'next/image';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const Genre = () => {
     const [result, setResult] = useState(null);
@@ -12,12 +12,15 @@ const Genre = () => {
     const number = 1;
     useEffect(() => {
         const Fetch = async () => {
-            const response = await fetch(`/api/categories?category=${category}`);
-            const result = await response.json();
-            setResult(result)
+            if (category !== undefined) {
+                setResult({ items: [] })
+                const response = await fetch(`/api/categories?category=${category}`);
+                const result = await response.json();
+                setResult(result)
+            }
         }
         Fetch();
-    }, [category, number])
+    }, [category])
 
     return (
         <div>
@@ -28,7 +31,7 @@ const Genre = () => {
                     <div className={style.genre_item} key={key}>
                         <Link href='/media/[id]' as={`/media/${res?.id}`}>
                             <a>
-                                <img className={style.genre_poster} alt={res?.title} src={`${res?.poster}`} />
+                                <LazyLoadImage className={style.genre_poster} alt={res?.title} src={`${res?.poster}`} effect="blur" />
                                 <div className={style.item_title}>
                                     <p>{res?.title}</p>
                                 </div>

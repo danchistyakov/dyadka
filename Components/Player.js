@@ -47,6 +47,7 @@ const Player = observer(() => {
     useEffect(() => {
         const Last = async () => {
             Video.setUrl(null);
+            PlayerOptions.setError(false);
             if (await get('Длительность') !== undefined) {
                 var info = await get('Длительность');
                 var search = info.findIndex(item => item?.kinopoisk_id === Info?.videocdn?.kinopoisk_id);
@@ -61,7 +62,7 @@ const Player = observer(() => {
 
     useEffect(() => {
         const parsingUrl = async () => {
-            if (Info?.videocdn?.kinopoisk_id !== undefined) {
+            if (Info.info.hdrezka_id !== undefined) {
                 console.log('ID: ' + Video?.translation?.id)
                 GetUrl();
             }

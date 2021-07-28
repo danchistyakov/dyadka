@@ -5,7 +5,7 @@ const Categories = async (req, res) => {
     const data = (await axios.get(`http://f0561301.xsph.ru/categories.php?category=${req.query.category}`)).data
     const selector = cheerio.load(data);
 
-    const title = selector('.b-content__htitle h1').text();
+    const title = selector('.b-content__htitle h1').text() !== '' ? selector('.b-content__htitle h1').text() : selector('.b-content__main_filters_link.active').text();
 
     const titles = selector('.b-content__inline_item-link a').map((i, x) => (
         selector(x).text()
