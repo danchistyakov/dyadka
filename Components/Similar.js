@@ -26,9 +26,9 @@ const Similar = observer((data) => {
     const [width, setWidth] = useState(null);
 
     useEffect(() => {
-        if (Info?.videocdn?.kinopoisk_id !== undefined) {
+        if (Info?.info?.kp !== undefined) {
             const Fetch = async () => {
-                const response = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/${Info?.videocdn?.kinopoisk_id}/similars`, {
+                const response = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/${Info?.info?.kp}/similars`, {
                     headers: {
                         "X-API-KEY": "ceff3505-c77c-450a-8abb-aa29f638f5ee"
                     }
@@ -38,7 +38,7 @@ const Similar = observer((data) => {
             }
             Fetch();
         }
-    }, [Info?.videocdn?.kinopoisk_id])
+    }, [Info?.info?.kp])
 
     return (
         <SkeletonTheme color="#202020" highlightColor="#444">

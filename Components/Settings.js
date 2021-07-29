@@ -38,12 +38,12 @@ const Settings = observer(() => {
         const Last = async () => {
             if (await get('Длительность') !== undefined) {
                 var info = await get('Длительность');
-                var search = info.findIndex(item => item?.kinopoisk_id === Info?.videocdn?.kinopoisk_id);
+                var search = info.findIndex(item => item?.kinopoisk_id === Info?.info?.kp);
                 info[search]?.quality !== undefined && setQualityOptions({ ...qualityOptions, quality: info[search]?.quality });
             }
         }
         Last();
-    }, [Info?.videocdn?.kinopoisk_id]);
+    }, [Info?.info?.kp]);
 
     return (
         <div>

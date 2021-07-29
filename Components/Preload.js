@@ -23,15 +23,15 @@
                         //const url = `/film?type=tv_series&id=${Info?.videocdn?.id}&season=${season}&episode=${episode}&translation=${Playlist?.translation?.id}&source=vcdn`;
                         var url;
                         /*if (Playlist?.translation?.id !== null) {
-                            url = Info?.videocdn?.content_type === 'tv_series' ? `/api/film?type=tv_series&kp=${Info?.videocdn?.kinopoisk_id}&season=${season}&episode=${episode}&translation=${Playlist?.translation?.id}&source=rezka` : `/api/film?kp=${Info?.videocdn?.kinopoisk_id}&translation=${Playlist?.translation?.id}&source=rezka`;
+                            url = Info?.videocdn?.content_type === 'tv_series' ? `/api/film?type=tv_series&kp=${Info?.info?.kp}&season=${season}&episode=${episode}&translation=${Playlist?.translation?.id}&source=rezka` : `/api/film?kp=${Info?.info?.kp}&translation=${Playlist?.translation?.id}&source=rezka`;
                         } else {
-                            url = Info?.videocdn?.content_type === 'tv_series' ? `/api/film?type=tv_series&kp=${Info?.videocdn?.kinopoisk_id}&season=${season}&episode=${episode}&source=rezka` : `/api/film?kp=${Info?.videocdn?.kinopoisk_id}&source=rezka`;
+                            url = Info?.videocdn?.content_type === 'tv_series' ? `/api/film?type=tv_series&kp=${Info?.info?.kp}&season=${season}&episode=${episode}&source=rezka` : `/api/film?kp=${Info?.info?.kp}&source=rezka`;
                         }
                         const response = await fetch(url);
                         const result = await response.json();
                         setState({ ...state, newurl: result?.url });
                         if (Playlist?.translation?.id !== null && Playlist?.translation?.id !== undefined) {
-                            url = Info?.info.serial ? `/api/geturl?kp=${Info?.info?.kp}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&translation=${Playlist?.translation?.id}&source=rezka` : `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&id=${Info.info.hdrezka_id}&translation=${Playlist?.translation?.id}&source=rezka`;
+                            url = Info?.info.serial ? `/api/geturl?kp=${Info?.info?.kp}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&translation=${Playlist?.translation?.id}&source=rezka` : `/api/geturl?kp=${Info?.info?.kp}&id=${Info.info.hdrezka_id}&translation=${Playlist?.translation?.id}&source=rezka`;
                             const response = await fetch(url);
                             const result = await response.json();
                             Playlist.setUrl(result?.urls[0].urls[0]);
@@ -43,7 +43,7 @@
                             const translations = await response1.json();
                             Playlist?.translation?.name === null && Playlist.setTranslation(translations?.translations[0]?.id, translations?.translations[0]?.name);
                             Playlist.setTranslations(translations?.translations);
-                            const response2 = await fetch(Info?.info.serial ? `/api/geturl?kp=${Info?.info?.kp}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&translation=${translations?.translations[0]?.id}&source=rezka` : `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&id=${Info.info.hdrezka_id}&translation=${translations?.translations[0]?.id}&source=rezka`);
+                            const response2 = await fetch(Info?.info.serial ? `/api/geturl?kp=${Info?.info?.kp}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&translation=${translations?.translations[0]?.id}&source=rezka` : `/api/geturl?kp=${Info?.info?.kp}&id=${Info.info.hdrezka_id}&translation=${translations?.translations[0]?.id}&source=rezka`);
                             const urls = await response2.json();
                             Playlist.setUrl(urls?.urls[0].urls[0]);
                             Playlist.setUrls(urls.urls);
@@ -57,7 +57,7 @@
                 try {
                     setState({ ...state, preload: 'pending' });
                     if (Playlist?.translation?.id !== null && Playlist?.translation?.id !== undefined) {
-                        url = Info?.info.serial ? `/api/geturl?kp=${Info?.info?.kp}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&translation=${Playlist?.translation?.id}&source=rezka` : `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&id=${Info.info.hdrezka_id}&translation=${Playlist?.translation?.id}&source=rezka`;
+                        url = Info?.info.serial ? `/api/geturl?kp=${Info?.info?.kp}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&translation=${Playlist?.translation?.id}&source=rezka` : `/api/geturl?kp=${Info?.info?.kp}&id=${Info.info.hdrezka_id}&translation=${Playlist?.translation?.id}&source=rezka`;
                         const response = await fetch(url);
                         const result = await response.json();
                         Playlist.setUrl(result?.urls[0].urls[0]);
@@ -69,7 +69,7 @@
                         const translations = await response1.json();
                         Playlist?.translation?.name === null && Playlist.setTranslation(translations?.translations[0]?.id, translations?.translations[0]?.name);
                         Playlist.setTranslations(translations?.translations);
-                        const response2 = await fetch(Info?.info.serial ? `/api/geturl?kp=${Info?.info?.kp}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&translation=${translations?.translations[0]?.id}&source=rezka` : `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&id=${Info.info.hdrezka_id}&translation=${translations?.translations[0]?.id}&source=rezka`);
+                        const response2 = await fetch(Info?.info.serial ? `/api/geturl?kp=${Info?.info?.kp}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&translation=${translations?.translations[0]?.id}&source=rezka` : `/api/geturl?kp=${Info?.info?.kp}&id=${Info.info.hdrezka_id}&translation=${translations?.translations[0]?.id}&source=rezka`);
                         const urls = await response2.json();
                         Playlist.setUrl(urls?.urls[0].urls[0]);
                         Playlist.setUrls(urls.urls);

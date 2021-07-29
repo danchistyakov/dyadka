@@ -25,14 +25,14 @@ const BottomControls = observer(({ video, handleSeekChange, prevEpisode, nextEpi
     useEffect(() => {
         const BookMarks = async () => {
             var info = await get('Длительность') !== undefined ? await get('Длительность') : [];
-            if (Info?.videocdn?.kinopoisk_id !== undefined && PlayerControls?.currentTime > 10) {
-                var search = info?.findIndex(item => item?.kinopoisk_id === Info?.videocdn?.kinopoisk_id);
+            if (Info?.info?.kp !== undefined && PlayerControls?.currentTime > 10) {
+                var search = info?.findIndex(item => item?.kinopoisk_id === Info?.info?.kp);
                 search = (search !== -1) ? search : info.length;
                 if (Video?.translation?.id !== undefined && Video?.translation?.id !== null) {
-                    info[search] = { kinopoisk_id: Info?.videocdn?.kinopoisk_id, season: Playlist?.season, episode: Playlist?.episode, currentTime: PlayerControls?.currentTime, translationId: Number(Video?.translation?.id), translationName: Video?.translation?.name, quality: Playlist?.quality };
+                    info[search] = { kinopoisk_id: Info?.info?.kp, season: Playlist?.season, episode: Playlist?.episode, currentTime: PlayerControls?.currentTime, translationId: Number(Video?.translation?.id), translationName: Video?.translation?.name, quality: Playlist?.quality };
                     set('Длительность', info);
                 } else {
-                    info[search] = { kinopoisk_id: Info?.videocdn?.kinopoisk_id, season: Playlist?.season, episode: Playlist?.episode, currentTime: PlayerControls?.currentTime, quality: Playlist?.quality };
+                    info[search] = { kinopoisk_id: Info?.info?.kp, season: Playlist?.season, episode: Playlist?.episode, currentTime: PlayerControls?.currentTime, quality: Playlist?.quality };
                     set('Длительность', info);
                 }
             }

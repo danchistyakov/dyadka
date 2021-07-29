@@ -38,17 +38,18 @@ const Episodes = observer(() => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        Info?.kinopoisk?.seasons?.length !== undefined && setLength(Info?.kinopoisk?.seasons?.length < 9 ? Info?.kinopoisk?.seasons?.length : 9)
-    }, [Info?.kinopoisk?.seasons?.length])
+        data?.length !== undefined && setLength(data?.length < 9 ? data?.length : 9)
+    }, [data?.length])
 
+    console.log(Info?.kinopoisk?.seasons?.length)
     const breakpointsSeasons = { 320: { slidesPerView: 3.5 }, 768: { slidesPerView: length } };
     const breakpointsEpisodes = { 320: { slidesPerView: 1.8 }, 768: { slidesPerView: 4.9 } };
 
     useEffect(() => {
         const Season = async () => {
             var info = await get('Длительность');
-            if (info?.length !== undefined && Info?.videocdn?.kinopoisk_id !== undefined) {
-                var search = info.findIndex(item => item?.kinopoisk_id === Info?.videocdn?.kinopoisk_id);
+            if (info?.length !== undefined && Info?.info?.kp !== undefined) {
+                var search = info.findIndex(item => item?.kinopoisk_id === Info?.info?.kp);
                 if (search !== -1) {
                     setSeason(Number(info[search]?.season));
                     Playlist.setSeason(info[search]?.season);
@@ -62,38 +63,41 @@ const Episodes = observer(() => {
                 }
             }
 
-            if (info?.length === undefined && Info?.videocdn?.kinopoisk_id !== undefined) {
+            if (info?.length === undefined && Info?.info?.kp !== undefined) {
                 setSeason(1);
                 Playlist.setSeason(1);
                 Playlist.setEpisode(1);
             }
         }
         Season();
-    }, [Info?.videocdn?.kinopoisk_id])
+    }, [Info?.info?.kp])
 
     const Error = () => {
         setError('error')
     }
 
     useEffect(() => {
-        const Fetch = async () => {
-            const response = await fetch(`https://api.alloha.tv/?token=04941a9a3ca3ac16e2b4327347bbc1&kp=${Info?.info?.kp}`);
-            const data = (await response.json()).data.seasons;
-            const result = Object.keys(data).map((key) => (
-                {
-                    episodes: Object.keys(data[key].episodes).map((res) => (
-                        data[key].episodes[res]
-                    )),
-                    season: Number(key)
-                }
-            ));
-            console.log(result);
-            setData(result)
-        }
+        if (Info?.info?.kp !== undefined) {
+            const Fetch = async () => {
+                const response = await fetch(`https://api.alloha.tv/?token=04941a9a3ca3ac16e2b4327347bbc1&kp=${Info?.info?.kp}`);
+                const data = await response.json();
+                const seasons = data.data.seasons;
+                const result = Object.keys(seasons).map((key) => (
+                    {
+                        episodes: Object.keys(seasons[key].episodes).map((res) => (
+                            seasons[key].episodes[res]
+                        )),
+                        season: Number(key)
+                    }
+                ));
 
-        Fetch();
+                setData(result)
+            }
+
+            Fetch();
+        }
     }, [Info?.info?.kp])
-    console.log(season)
+
     return (
         <SkeletonTheme color="#202020" highlightColor="#444">
             <section className={style.nav_section} key={[length, Playlist?.season]}>

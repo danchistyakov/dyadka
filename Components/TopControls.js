@@ -21,18 +21,18 @@ const TopControls = observer(({ setPirate }) => {
 
     useEffect(() => {
         const BookMarks = async () => {
-            if (Info?.videocdn?.kinopoisk_id !== undefined && await get('Длительность') !== undefined) {
+            if (Info?.info?.kp !== undefined && await get('Длительность') !== undefined) {
                 const info = await get('Длительность');
-                const search = info?.findIndex(item => item?.kinopoisk_id === Info?.videocdn?.kinopoisk_id);
+                const search = info?.findIndex(item => item?.kinopoisk_id === Info?.info?.kp);
                 search !== -1 && info[search]?.season === Playlist?.season && info[search]?.episode === Playlist?.episode && info[search]?.currentTime !== undefined && setContinueTime(true);
             }
         }
         BookMarks();
-    }, [Info?.videocdn?.kinopoisk_id]);
+    }, [Info?.info?.kp]);
 
     const handleContinue = async () => {
         const info = await get('Длительность');
-        const search = info?.findIndex(item => item?.kinopoisk_id === Info?.videocdn?.kinopoisk_id);
+        const search = info?.findIndex(item => item?.kinopoisk_id === Info?.info?.kp);
         const time = info[search]?.currentTime;
         Playlist.setLast(time);
         setContinueTime(false);
@@ -42,10 +42,10 @@ const TopControls = observer(({ setPirate }) => {
         setTranslations(!translations);
         Video.setTranslation(id, name);
         var info = await get('Длительность') !== undefined ? await get('Длительность') : [];
-        if (Info?.videocdn?.kinopoisk_id !== undefined) {
-            var search = info?.findIndex(item => item?.kinopoisk_id === Info?.videocdn?.kinopoisk_id);
+        if (Info?.info?.kp !== undefined) {
+            var search = info?.findIndex(item => item?.kinopoisk_id === Info?.info?.kp);
             search = (search !== -1) ? search : info.length
-            info[search] = { kinopoisk_id: Info?.videocdn?.kinopoisk_id, season: Playlist?.season, episode: Playlist?.episode, currentTime: PlayerControls?.currentTime, translationId: id, translationName: name };
+            info[search] = { kinopoisk_id: Info?.info?.kp, season: Playlist?.season, episode: Playlist?.episode, currentTime: PlayerControls?.currentTime, translationId: id, translationName: name };
             set('Длительность', info);
         }
     }

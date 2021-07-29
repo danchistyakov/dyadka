@@ -22,7 +22,8 @@ import Icons from '../Images/Icons';
 import Putin from '../public/putin.jpg';
 import Image from 'next/image';
 import Video from '../Store/Video';
-
+import ReactPlayer from 'react-player';
+import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detect";
 const FilmInfo = observer((props) => {
 
     const [youtube, setYoutube] = useState(null);
@@ -190,17 +191,25 @@ const FilmInfo = observer((props) => {
                     {/*Layout?.trailer && youtube !== null && (<YouTube videoId={youtube} opts={opts} onReady={onReady} />)*/}
                     {Layout?.poster && (
                         <div className={style.hero_poster} ref={node => setWidth(node?.offsetWidth)}>
-                            {Info?.info?.kp !== undefined && (<picture className={style.hero_picture} key={Info?.info?.kp}>
-                                <source media="(max-width: 767px)" srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=100/media/${Info?.info?.kp}/big_app_cinema_media_${Info?.info?.kp}_big.jpg`} />
-                                <source media="(min-width: 767px)" srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${Info?.info?.kp}/wide_app_cinema_media_${Info?.info?.kp}.jpg`} />
-                                <img className={style.hero_poster_img} src={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${Info?.info?.kp}/wide_app_cinema_media_${Info?.info?.kp}.jpg`} onError={(e) => { e.target.onerror = null; e.target.src = Putin.src }} />
-                                {/*<Img
-                                    src={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${Info?.info?.kp}/wide_app_cinema_media_${Info?.info?.kp}.jpg`}
-                                    className={style.hero_poster_img}
-                                    loader={<Skeleton count={1} duration={2} width={'100%'} height={'50vw'} />}
-                                    unloader={<div className={style.error_hero} />}
-                                />*/}
-                            </picture>)}
+                            <MobileView>
+                                {Info?.info?.kp !== undefined && (<picture className={style.hero_picture} key={Info?.info?.kp}>
+                                    <source media="(max-width: 767px)" srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=100/media/${Info?.info?.kp}/big_app_cinema_media_${Info?.info?.kp}_big.jpg`} />
+                                    <source media="(min-width: 767px)" srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${Info?.info?.kp}/wide_app_cinema_media_${Info?.info?.kp}.jpg`} />
+                                    <img className={style.hero_poster_img} src={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${Info?.info?.kp}/wide_app_cinema_media_${Info?.info?.kp}.jpg`} onError={(e) => { e.target.onerror = null; e.target.src = Putin.src }} />
+                                </picture>)}
+                            </MobileView>
+                            <BrowserView key={Info?.details?.videoURL?.hd}>
+                                <ReactPlayer
+                                    url={Info?.details?.videoURL?.hd}
+                                    muted={true}
+                                    playing={true}
+                                    loop={true}
+                                    controls={true}
+                                    volume={0}
+                                    width={'100vw'}
+                                    height={'140%'}
+                                />
+                            </BrowserView>
                         </div>
                     )}
                 </div>)}

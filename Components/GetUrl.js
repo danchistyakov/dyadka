@@ -11,13 +11,13 @@ export const GetUrl = async () => {
         var url;
         PlayerOptions.setBuffering(true)
         if (Video?.translation?.id !== null && Video?.translation?.id !== undefined) {
-            url = Info?.info.serial ? `/api/geturl?kp=${Info?.info?.kp}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&translation=${Video?.translation?.id}&source=rezka` : `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&id=${Info.info.hdrezka_id}&translation=${Video?.translation?.id}&source=rezka`;
+            url = Info?.info.serial ? `/api/geturl?kp=${Info?.info?.kp}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&translation=${Video?.translation?.id}&source=rezka` : `/api/geturl?kp=${Info?.info?.kp}&id=${Info.info.hdrezka_id}&translation=${Video?.translation?.id}&source=rezka`;
             const response = await fetch(url);
             const result = await response.json();
             Video.setUrl(result?.urls[0].urls[0]);
             Video.setUrls(result.urls);
         } else {
-            const urlresponse = await fetch(Info?.info.serial ? `/api/geturl?kp=${Info?.info?.kp}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&source=rezka` : `/api/geturl?kp=${Info?.videocdn?.kinopoisk_id}&id=${Info.info.hdrezka_id}&source=rezka`);
+            const urlresponse = await fetch(Info?.info.serial ? `/api/geturl?kp=${Info?.info?.kp}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&source=rezka` : `/api/geturl?kp=${Info?.info?.kp}&id=${Info.info.hdrezka_id}&source=rezka`);
             const urls = await urlresponse.json();
             if (Playlist?.quality !== undefined) {
                 urls?.urls.filter((quality) => {

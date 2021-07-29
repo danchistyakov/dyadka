@@ -12,6 +12,7 @@ import { get, set } from 'idb-keyval';
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { GetUrl } from './GetUrl';
 import Video from '../Store/Video';
+import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detect";
 
 const Player = observer(() => {
 
@@ -50,7 +51,7 @@ const Player = observer(() => {
             PlayerOptions.setError(false);
             if (await get('Длительность') !== undefined) {
                 var info = await get('Длительность');
-                var search = info.findIndex(item => item?.kinopoisk_id === Info?.videocdn?.kinopoisk_id);
+                var search = info.findIndex(item => item?.kinopoisk_id === Info?.info?.kp);
                 search !== -1 && setLast(info[search]?.currentTime);
                 info[search]?.quality !== undefined && Playlist.setQuality(info[search]?.quality)
                 //Playlist.setTranslation({ id: info[search]?.translationId, name: info[search]?.translationName })
@@ -58,7 +59,7 @@ const Player = observer(() => {
             PlayerOptions.setBuffering(true)
         }
         Last();
-    }, [Info?.videocdn?.kinopoisk_id]);
+    }, [Info?.info?.kp]);
 
     useEffect(() => {
         const parsingUrl = async () => {
@@ -70,14 +71,14 @@ const Player = observer(() => {
 
         parsingUrl();
 
-    }, [Info?.videocdn?.kinopoisk_id, Video?.translation?.id])
+    }, [Info?.info?.kp, Video?.translation?.id])
 
     useEffect(() => {
         const Quality = async () => {
             PlayerOptions.setBuffering(true);
             if (await get('Длительность') !== undefined) {
                 var info = await get('Длительность');
-                var search = info.findIndex(item => item?.kinopoisk_id === Info?.videocdn?.kinopoisk_id);
+                var search = info.findIndex(item => item?.kinopoisk_id === Info?.info?.kp);
                 search !== -1 && playerRef.current?.seekTo(info[search]?.currentTime);
             }
         }
@@ -136,12 +137,12 @@ const Player = observer(() => {
     const handleProgress = async (data) => {
         PlayerControls.setPlayed(parseFloat(data?.played));
 
-        if (count > 3) {
+        if (count > 3 && video.active) {
             controlsRef.current.style.visibility = 'hidden';
-            //document.body.style.cursor = 'none';
+            document.body.style.cursor = 'none';
         }
 
-        if (controlsRef.current.style.visibility === 'visible') {
+        if (controlsRef.current.style.visibility === 'visible' && video.active) {
             setCount(count + 1);
         }
 
@@ -149,6 +150,12 @@ const Player = observer(() => {
             setState({ ...state, ...data });
         }
     }
+
+    useEffect(() => {
+        if (!video.active) {
+            document.body.style.cursor = 'auto';
+        }
+    }, [video.active])
 
     const handleSeekChange = (e, newValue) => {
         PlayerControls.setPlayed(parseFloat(newValue / 100));
@@ -234,7 +241,7 @@ const Player = observer(() => {
         return () => {
             document.body.removeChild(script);
         }
-    }, [Info?.videocdn?.kinopoisk_id, pirate])
+    }, [Info?.info?.kp, pirate])
 
     useEffect(() => {
         Playlist.watch === true ? setState({ ...state, watch: true }) : setState({ ...state, watch: false });
@@ -284,8 +291,8 @@ const Player = observer(() => {
                     <BottomControls video={video} handleSeekChange={handleSeekChange} prevEpisode={prevEpisode} nextEpisode={nextEpisode} handleVolumeChange={handleVolumeChange} />
                 </div>
             </FullScreen>) :
-                (<div key={Info?.videocdn?.kinopoisk_id}>
-                    <div id="yohoho" className='player' data-kinopoisk={Info?.videocdn?.kinopoisk_id} data-resize="1" data-season={Playlist?.season} data-episode={Playlist?.episode}></div>
+                (<div key={Info?.info?.kp}>
+                    <div id="yohoho" className='player' data-kinopoisk={Info?.info?.kp} data-resize="1" data-season={Playlist?.season} data-episode={Playlist?.episode}></div>
                     <button className='inside_player' onClick={() => setPirate(false)}>Перейти в дядькин плеер</button>
                 </div>)
             }
