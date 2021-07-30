@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Settings from './Settings';
 import PlayerControls from '../Store/PlayerControls';
+import Volume from '../Store/Volume';
 import { observer } from 'mobx-react-lite';
 import { toJS } from 'mobx';
 import { withStyles } from '@material-ui/core/styles';
@@ -16,7 +17,7 @@ import Video from '../Store/Video';
 //import VolumeMuteIcon from '@material-ui/icons/VolumeMute';
 //import CastIcon from '@material-ui/icons/Cast';
 
-const BottomControls = observer(({ video, handleSeekChange, prevEpisode, nextEpisode, handleVolumeChange }) => {
+const BottomControls = observer(({ video, handleSeekChange, prevEpisode, nextEpisode }) => {
 
     const [remaining, setRemaining] = useState(false);
     const [slider, setSlider] = useState(false);
@@ -59,9 +60,15 @@ const BottomControls = observer(({ video, handleSeekChange, prevEpisode, nextEpi
     const currentTime = remaining === false ? format(PlayerControls?.currentTime) : `-${format(PlayerControls?.currentDuration - PlayerControls?.currentTime)}`;
     const duration = format(PlayerControls?.currentDuration);
 
-    const volumeChange = (e, newValue) => {
-        setVolume(newValue)
+    const handleVolumeChange = (e, newValue) => {
+        console.log('VOLUME: ' + (parseFloat(newValue) / 100).toFixed(2));
+        Volume.setVolume(Number((parseFloat(newValue) / 100).toFixed(2)))
+        setVolume(newValue);
     }
+
+    useEffect(() => {
+        setVolume(Volume.volume * 100);
+    }, [Volume.volume])
 
     const ValueLabelComponent = (props) => {
 
@@ -104,8 +111,6 @@ const BottomControls = observer(({ video, handleSeekChange, prevEpisode, nextEpi
         },
     })(Slider);
 
-    //console.log(PlayerControls?.played)
-
     return (
         <div className={style.bottom_part}>
             <PrettoSlider
@@ -131,10 +136,10 @@ const BottomControls = observer(({ video, handleSeekChange, prevEpisode, nextEpi
                 <div className={style.bottom_right}>
                     <div className='volume_controls'>
                         <span className='volume_icon' onMouseEnter={() => setSlider(true)} onMouseLeave={() => setSlider(false)} >
-                            {PlayerControls?.volume !== 0 ?
-                                <Icons icon='VolumeUpIcon' className={style.bottom_icon} onClick={() => { PlayerControls.setVolume(0); PlayerControls.setMute(true) }} onMouseEnter={() => setSlider(true)} onMouseLeave={() => setSlider(false)} />
+                            {!PlayerControls?.mute ?
+                                <Icons icon='VolumeUpIcon' className={style.bottom_icon} onClick={() => { /*PlayerControls.setVolume(0);*/ PlayerControls.setMute(true) }} onMouseEnter={() => setSlider(true)} onMouseLeave={() => setSlider(true)} />
                                 :
-                                <Icons icon='VolumeOffIcon' className={style.bottom_icon} onClick={() => { PlayerControls.setVolume(1); PlayerControls.setMute(false) }} onMouseEnter={() => setSlider(true)} onMouseLeave={() => setSlider(false)} />
+                                <Icons icon='VolumeOffIcon' className={style.bottom_icon} onClick={() => { /*PlayerControls.setVolume(1);*/ PlayerControls.setMute(false) }} onMouseEnter={() => setSlider(true)} onMouseLeave={() => setSlider(false)} />
                             }
                         </span>
                         {slider && (<span className='volume_slider' onMouseEnter={() => setSlider(true)} onMouseLeave={() => setSlider(false)} >
@@ -142,13 +147,13 @@ const BottomControls = observer(({ video, handleSeekChange, prevEpisode, nextEpi
                                 min={0}
                                 max={100}
                                 value={volume}
-                                onChange={(e, newValue) => { handleVolumeChange(e, newValue); volumeChange(e, newValue) }}
+                                onChange={(e, newValue) => { handleVolumeChange(e, newValue) }}
                                 orientation="vertical"
                                 aria-labelledby="vertical-slider"
                             />
                         </span>)}
                     </div>
-                    <Settings handleVolumeChange={handleVolumeChange} />
+                    <Settings />
                     <span>
                         {!video?.active ?
                             <Icons icon='FullscreenIcon' className={style.bottom_icon} onClick={video.enter} />

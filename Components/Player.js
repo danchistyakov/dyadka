@@ -13,6 +13,7 @@ import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { GetUrl } from './GetUrl';
 import Video from '../Store/Video';
 import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detect";
+import Volume from '../Store/Volume';
 
 const Player = observer(() => {
 
@@ -64,7 +65,6 @@ const Player = observer(() => {
     useEffect(() => {
         const parsingUrl = async () => {
             if (Info.info.hdrezka_id !== undefined) {
-                console.log('ID: ' + Video?.translation?.id)
                 GetUrl();
             }
         }
@@ -105,14 +105,23 @@ const Player = observer(() => {
 
         if (e.code === 'ArrowUp') {
             e.preventDefault();
-            volume.toFixed(1) <= 0.9 && setVolume(Number(volume.toFixed(1)) + 0.1) && PlayerControls.setMute(true);
-            volume.toFixed(1) > 0.9 && volume.toFixed(1) < 1 && setVolume(volume.toFixed(1) + (1 - volume.toFixed(1)));
+            PlayerControls.setMute(false)
+            if (Volume.volume <= 0.95) {
+                Volume.setVolume((Number(Volume.volume) + 0.05).toFixed(2));
+            } else {
+                Volume.setVolume(1);
+            }
         }
 
         if (e.code === 'ArrowDown') {
             e.preventDefault();
-            volume.toFixed(1) >= 0.1 && setVolume(volume.toFixed(1) - 0.1);
-            volume.toFixed(1) > 0 && volume.toFixed(1) < 0.1 && setVolume(volume.toFixed(1) - (0.1 - volume.toFixed(1)));
+            console.log(Volume.volume);
+            if (Volume.volume >= 0.05) {
+                Volume.setVolume((Number(Volume.volume - 0.05).toFixed(2)));
+            } else {
+                Volume.setVolume(0);
+                PlayerControls.setMute(true)
+            }
         }
     }
 
@@ -128,10 +137,9 @@ const Player = observer(() => {
         }
     }
 
-    const handleForward = () => {
-        if (~['Android', 'iPhone', 'iPod', 'iPad', 'BlackBerry'].indexOf(navigator.platform)) {
-            playerRef.current.seekTo(playerRef.current.getCurrentTime() + 5);
-        }
+    const handleForward = (e) => {
+        console.log(e)
+        playerRef.current.seekTo(playerRef.current.getCurrentTime() + 5);
     }
 
     const handleProgress = async (data) => {
@@ -161,6 +169,18 @@ const Player = observer(() => {
         PlayerControls.setPlayed(parseFloat(newValue / 100));
         playerRef.current.seekTo(newValue / 100);
     };
+
+    var timer;
+
+    const onClickHandler = (e, action) => {
+        clearTimeout(timer);
+        if (e.detail === 1) {
+            timer = setTimeout(PlayerControls.setPlaying(!PlayerControls?.playing), 200)
+        } else if (e.detail === 2) {
+            action === 'forward' && playerRef.current.seekTo(playerRef.current.getCurrentTime() + 5);
+            action === 'rewind' && playerRef.current.seekTo(playerRef.current.getCurrentTime() - 5);
+        }
+    }
 
     useEffect(() => {
         if (Playlist?.last !== null) {
@@ -247,14 +267,15 @@ const Player = observer(() => {
         Playlist.watch === true ? setState({ ...state, watch: true }) : setState({ ...state, watch: false });
     }, [Playlist?.watch])
 
-    const handleVolumeChange = (e, newVolume) => {
+    /*const handleVolumeChange = (e, newVolume) => {
+        console.log('handleVolumeChange: ' + newVolume);
         setVolume(parseFloat(newVolume / 100));
-    }
+    }*/
 
     return (
         <section>
             {!pirate ? (<FullScreen handle={video} className='player' ref={playerContainer} tabIndex='0' onKeyDown={(e) => { handleKeys(e) }}>
-                <div className='player_screen' tabIndex='0' onMouseMove={handleMouseMove} onKeyDown={(e) => { handleKeys(e) }} onClick={() => PlayerControls.setPlaying(!PlayerControls?.playing)}>
+                <div className='player_screen' tabIndex='0' onMouseMove={handleMouseMove} onKeyDown={(e) => { handleKeys(e) }} onClick={(e) => onClickHandler(e)}>
                     {PlayerOptions.buffering && (<div className='player_loading'>
                         <svg className="icon_loading" viewBox="25 25 50 50">
                             <circle className="icon_loading_front" cx="50" cy="50" r="20" fill="none" strokeWidth="5" strokeMiterlimit="10"></circle>
@@ -268,7 +289,10 @@ const Player = observer(() => {
                             <circle className="icon_loading_back" cx="50" cy="50" r="20" fill="none" strokeWidth="5" strokeMiterlimit="10"></circle>
                         </svg>
                     </div>)}
-                    <div className='left_rewind' onDoubleClick={handleRewind}></div>
+                    <MobileView>
+                        <div className='left_rewind' onClick={e => onClickHandler(e, 'rewind')}></div>
+                    </MobileView>
+                    {console.log(Volume.volume)}
                     <ReactPlayer
                         url={Video?.url}
                         muted={PlayerControls?.mute}
@@ -277,18 +301,20 @@ const Player = observer(() => {
                         height={'100%'}
                         style={{ margin: 'auto' }}
                         ref={playerRef}
-                        volume={volume}
+                        volume={Volume.volume}
                         playbackRate={Playlist?.speed}
                         onProgress={handleProgress}
                         onEnded={autoNext}
                         onBuffer={() => { PlayerOptions.setBuffering(true); PlayerControls.setPlaying(true) }}
                         onBufferEnd={() => PlayerOptions.setBuffering(false)}
                     />
-                    <div className='right_forward' onDoubleClick={handleForward}></div>
+                    <MobileView>
+                        <div className='right_forward' onClick={e => onClickHandler(e, 'forward')}></div>
+                    </MobileView>
                 </div>
                 <div className='controls' ref={controlsRef}>
                     <TopControls setPirate={setPirate} />
-                    <BottomControls video={video} handleSeekChange={handleSeekChange} prevEpisode={prevEpisode} nextEpisode={nextEpisode} handleVolumeChange={handleVolumeChange} />
+                    <BottomControls video={video} handleSeekChange={handleSeekChange} prevEpisode={prevEpisode} nextEpisode={nextEpisode} />
                 </div>
             </FullScreen>) :
                 (<div key={Info?.info?.kp}>

@@ -41,7 +41,6 @@ const Episodes = observer(() => {
         data?.length !== undefined && setLength(data?.length < 9 ? data?.length : 9)
     }, [data?.length])
 
-    console.log(Info?.kinopoisk?.seasons?.length)
     const breakpointsSeasons = { 320: { slidesPerView: 3.5 }, 768: { slidesPerView: length } };
     const breakpointsEpisodes = { 320: { slidesPerView: 1.8 }, 768: { slidesPerView: 4.9 } };
 
