@@ -35,11 +35,10 @@ const Episodes = observer(() => {
     const [season, setSeason] = useState(null);
     const [error, setError] = useState();
     const [length, setLength] = useState(9);
-    const [data, setData] = useState([]);
 
     useEffect(() => {
-        data?.length !== undefined && setLength(data?.length < 9 ? data?.length : 9)
-    }, [data?.length])
+        Info?.playlist?.length !== undefined && setLength(Info?.playlist?.length < 9 ? Info?.playlist?.length : 9)
+    }, [Info?.playlist?.length])
 
     const breakpointsSeasons = { 320: { slidesPerView: 3.5 }, 768: { slidesPerView: length } };
     const breakpointsEpisodes = { 320: { slidesPerView: 1.8 }, 768: { slidesPerView: 4.9 } };
@@ -89,8 +88,7 @@ const Episodes = observer(() => {
                         season: Number(key)
                     }
                 ));
-
-                setData(result)
+                Info.setPlaylist(result);
             }
 
             Fetch();
@@ -113,7 +111,7 @@ const Episodes = observer(() => {
                     >
                         <div className='swiper-button-prev seasons'></div>
                         <div className='swiper-button-next seasons'></div>
-                        {data?.map((res, key) => (
+                        {Info?.playlist?.map((res, key) => (
                             <SwiperSlide className={style.season_block} key={key} onClick={() => { setSeason(res?.season); setError() }}>
                                 <p className={`${style.season}${res?.season === season ? ` ${style.active}` : ''}`}>{res?.season}-й сезон</p>
                             </SwiperSlide> || <Skeleton count={1} duration={2} width={'10vw'} height={'2vw'} style={{ marginRight: '1vw' }} />
@@ -134,7 +132,7 @@ const Episodes = observer(() => {
                         <div className='swiper-button-prev episodes'></div>
                         <div className='swiper-button-next episodes'></div>
 
-                        {data[season - 1]?.episodes.map((res, key) => (
+                        {Info?.playlist[season - 1]?.episodes.map((res, key) => (
                             <SwiperSlide className={style.episode} key={key} onClick={() => { Playlist.setSeason(season); Playlist.setEpisode(res?.episode); GetUrl(); PlayerOptions.setWatch(true); Layout.setTrailer(false); Layout.setPoster(false); window.scrollTo(0, 0); }}>
                                 <LazyLoadImage
                                     src={`https://cdn.statically.io/img/blackmedia.top/f=auto,q=80/media/${Info?.info?.kp}/preview_app_cinema_media_${Info?.info?.kp}_s${season}e${res?.episode}.png`}

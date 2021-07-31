@@ -6,6 +6,7 @@ class Info {
     videocdn = null
     info = null
     kinopoisk = null
+    playlist = []
 
     constructor() {
         makeAutoObservable(this)
@@ -17,6 +18,10 @@ class Info {
 
     videoCDN(data) {
         this.videocdn = data
+    }
+
+    setPlaylist(playlist) {
+        this.playlist = playlist
     }
 
     setInfo(data) {

@@ -54,14 +54,9 @@ const BottomControls = observer(({ video, handleSeekChange, prevEpisode, nextEpi
             return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds}`;
         }
         return `${minutes}:${seconds}`;
-
     }
 
-    const currentTime = remaining === false ? format(PlayerControls?.currentTime) : `-${format(PlayerControls?.currentDuration - PlayerControls?.currentTime)}`;
-    const duration = format(PlayerControls?.currentDuration);
-
     const handleVolumeChange = (e, newValue) => {
-        console.log('VOLUME: ' + (parseFloat(newValue) / 100).toFixed(2));
         Volume.setVolume(Number((parseFloat(newValue) / 100).toFixed(2)))
         setVolume(newValue);
     }
@@ -110,6 +105,9 @@ const BottomControls = observer(({ video, handleSeekChange, prevEpisode, nextEpi
             borderRadius: 4,
         },
     })(Slider);
+    const currentTime = remaining === false ? format(PlayerControls?.currentTime) : `-${format(PlayerControls?.currentDuration - PlayerControls?.currentTime)}`;
+
+    console.log('BOTTOMCONTROLS: ' + currentTime);
 
     return (
         <div className={style.bottom_part}>
@@ -118,7 +116,7 @@ const BottomControls = observer(({ video, handleSeekChange, prevEpisode, nextEpi
                 max={100}
                 value={PlayerControls?.played * 100}
                 ValueLabelComponent={(props) => (
-                    <ValueLabelComponent {...props} value={currentTime} />
+                    <ValueLabelComponent {...props} value={format(PlayerControls?.currentTime)} />
                 )}
                 onChange={handleSeekChange}
             />
@@ -131,7 +129,7 @@ const BottomControls = observer(({ video, handleSeekChange, prevEpisode, nextEpi
                         <Icons icon='PauseIcon' className={style.bottom_icon} onClick={() => PlayerControls.setPlaying(false)} />
                     }
                     <Icons icon='SkipNextIcon' className={style.bottom_icon} onClick={nextEpisode} />
-                    <p className={style.player_duration} onClick={() => setRemaining(!remaining)}>{currentTime} / {duration}</p>
+                    <p className={style.player_duration} onClick={() => setRemaining(!remaining)}>{!remaining ? format(PlayerControls?.currentTime) : `-${format(PlayerControls?.currentDuration - PlayerControls?.currentTime)}`} / {format(PlayerControls?.currentDuration)}</p>
                 </div>
                 <div className={style.bottom_right}>
                     <div className='volume_controls'>

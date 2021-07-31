@@ -17,33 +17,15 @@ import Volume from '../Store/Volume';
 
 const Player = observer(() => {
 
-    const [volume, setVolume] = useState(1);
-    const [muted, setMute] = useState(false);
-    const [remaining, setDisplayRemaining] = useState(false);
     const [count, setCount] = useState(1);
-    const [last, setLast] = useState(null);
-    const [parsing, setParsing] = useState(true);
+    //const [last, setLast] = useState(null);
     const [pirate, setPirate] = useState(false);
-    const [state, setState] = useState({
-        playing: true,
-        continueTime: true,
-        settings: false,
-        translations: false,
-        //buffering: true,
-        newurl: null,
-        preload: null,
-        time: 0,
-        //error: false
-    })
-
-    const { playing, continueTime, settings, translations, newurl, preload, time } = state;
-
     const playerContainer = useRef(null);
     const playerRef = useRef(null);
     const controlsRef = useRef(null);
     const video = useFullScreenHandle();
 
-    PlayerControls.setCurrentTime(playerRef.current ? playerRef.current.getCurrentTime() : '00:00');
+    //PlayerControls.setCurrentTime(playerRef.current ? playerRef.current.getCurrentTime() : '00:00');
     PlayerControls.setCurrentDuration(playerRef.current ? playerRef.current.getDuration() : '00:00');
 
     useEffect(() => {
@@ -53,7 +35,7 @@ const Player = observer(() => {
             if (await get('Длительность') !== undefined) {
                 var info = await get('Длительность');
                 var search = info.findIndex(item => item?.kinopoisk_id === Info?.info?.kp);
-                search !== -1 && setLast(info[search]?.currentTime);
+                //search !== -1 && setLast(info[search]?.currentTime);
                 info[search]?.quality !== undefined && Playlist.setQuality(info[search]?.quality)
                 //Playlist.setTranslation({ id: info[search]?.translationId, name: info[search]?.translationName })
             }
@@ -94,13 +76,11 @@ const Player = observer(() => {
         if (e.code === 'ArrowLeft') {
             e.preventDefault();
             playerRef.current.seekTo(playerRef.current.getCurrentTime() - 5);
-            handleRewind();
         }
 
         if (e.code === 'ArrowRight') {
             e.preventDefault();
             playerRef.current.seekTo(playerRef.current.getCurrentTime() + 5);
-            handleForward();
         }
 
         if (e.code === 'ArrowUp') {
@@ -131,19 +111,10 @@ const Player = observer(() => {
         setCount(0);
     }
 
-    const handleRewind = () => {
-        if (~['Android', 'iPhone', 'iPod', 'iPad', 'BlackBerry'].indexOf(navigator.platform)) {
-            playerRef.current.seekTo(playerRef.current.getCurrentTime() - 5);
-        }
-    }
-
-    const handleForward = (e) => {
-        console.log(e)
-        playerRef.current.seekTo(playerRef.current.getCurrentTime() + 5);
-    }
-
     const handleProgress = async (data) => {
+        console.log('HANDLEPROGRESS: ' + data?.playedSeconds);
         PlayerControls.setPlayed(parseFloat(data?.played));
+        PlayerControls.setCurrentTime(data?.playedSeconds);
 
         if (count > 3 && video.active) {
             controlsRef.current.style.visibility = 'hidden';
@@ -152,10 +123,6 @@ const Player = observer(() => {
 
         if (controlsRef.current.style.visibility === 'visible' && video.active) {
             setCount(count + 1);
-        }
-
-        if (!state.seeking) {
-            setState({ ...state, ...data });
         }
     }
 
@@ -185,70 +152,43 @@ const Player = observer(() => {
     useEffect(() => {
         if (Playlist?.last !== null) {
             playerRef.current.seekTo(Playlist?.last);
-            setState({ ...state, continueTime: false, playing: true });
         }
     }, [Playlist?.last])
 
     const prevEpisode = () => {
-        Video.setUrl(null);
-        const arr = toJS(Playlist?.playlist?.data?.seasons);
-        const search = arr?.filter((res) => {
-            if (res?.number === Playlist?.season) {
-                return res
-            }
-        })
+        if (Playlist?.season !== 1 && Playlist?.episode !== 1) {
+            Video.setUrl(null);
+        } else {
+            playerRef.current.seekTo(0);
+        }
 
         if (Playlist?.episode > 1) {
-            Playlist.setEpisode(Playlist?.episode - 1);
+            Playlist.setEpisode(Number(Playlist?.episode) - 1);
             GetUrl();
+            PlayerControls.setPlaying(true);
         } else {
             if (Playlist?.season > 1) {
-                Playlist.setSeason(Playlist?.season - 1);
-                Playlist.setEpisode(search[0]?.episodes.length);
+                Playlist.setSeason(Number(Playlist?.season) - 1);
+                Playlist.setEpisode(1);
                 GetUrl();
+                PlayerControls.setPlaying(true);
             }
         }
     }
 
     const nextEpisode = () => {
         Video.setUrl(null);
-        const info = toJS(Info?.videocdn);
-        console.log(info);
-
-        const search = info?.episodes?.filter((res) => {
-            if (res?.season_num === Playlist?.season) {
-                return res
-            }
-        })
-
-        if (Playlist?.episode < search.length) {
+        const playlist = toJS(Info?.playlist);
+        if (Playlist?.episode < playlist[Playlist?.season - 1].episodes.length) {
             Playlist.setEpisode(Number(Playlist?.episode) + 1);
             GetUrl();
+            PlayerControls.setPlaying(true);
         } else {
-            if (Playlist?.season < info?.season_count) {
+            if (Playlist?.season < playlist.length) {
                 Playlist.setSeason(Number(Playlist?.season) + 1);
                 Playlist.setEpisode(1);
                 GetUrl();
-            }
-        }
-    }
-
-    const autoNext = async () => {
-        const info = toJS(Info?.videocdn);
-        const search = info?.episodes?.filter((res) => {
-            if (res?.season_num === Playlist?.season) {
-                return res
-            }
-        })
-
-        if (Playlist?.episode < search.length) {
-            Playlist.setEpisode(Number(Playlist?.episode) + 1);
-            GetUrl();
-        } else {
-            if (Playlist?.season < info?.season_count) {
-                Playlist.setSeason(Number(Playlist?.season) + 1);
-                Playlist.setEpisode(1);
-                GetUrl();
+                PlayerControls.setPlaying(true);
             }
         }
     }
@@ -262,15 +202,6 @@ const Player = observer(() => {
             document.body.removeChild(script);
         }
     }, [Info?.info?.kp, pirate])
-
-    useEffect(() => {
-        Playlist.watch === true ? setState({ ...state, watch: true }) : setState({ ...state, watch: false });
-    }, [Playlist?.watch])
-
-    /*const handleVolumeChange = (e, newVolume) => {
-        console.log('handleVolumeChange: ' + newVolume);
-        setVolume(parseFloat(newVolume / 100));
-    }*/
 
     return (
         <section>
@@ -304,7 +235,7 @@ const Player = observer(() => {
                         volume={Volume.volume}
                         playbackRate={Playlist?.speed}
                         onProgress={handleProgress}
-                        onEnded={autoNext}
+                        onEnded={nextEpisode}
                         onBuffer={() => { PlayerOptions.setBuffering(true); PlayerControls.setPlaying(true) }}
                         onBufferEnd={() => PlayerOptions.setBuffering(false)}
                     />
@@ -314,7 +245,7 @@ const Player = observer(() => {
                 </div>
                 <div className='controls' ref={controlsRef}>
                     <TopControls setPirate={setPirate} />
-                    <BottomControls video={video} handleSeekChange={handleSeekChange} prevEpisode={prevEpisode} nextEpisode={nextEpisode} />
+                    <BottomControls key={PlayerControls?.currentTime} video={video} handleSeekChange={handleSeekChange} prevEpisode={prevEpisode} nextEpisode={nextEpisode} />
                 </div>
             </FullScreen>) :
                 (<div key={Info?.info?.kp}>

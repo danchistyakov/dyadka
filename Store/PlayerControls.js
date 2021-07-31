@@ -2,6 +2,11 @@ import { makeAutoObservable } from "mobx";
 
 class PlayerControls {
     playing = true
+    fullscreen = false
+    played = 0
+    currentTime = 0
+    currentDuration = 0
+    mute = false
 
     constructor() {
         makeAutoObservable(this)
@@ -25,10 +30,6 @@ class PlayerControls {
 
     setCurrentDuration(currentDuration) {
         this.currentDuration = currentDuration
-    }
-
-    setVolume(volume) {
-        this.volume = volume
     }
 
     setMute(mute) {
