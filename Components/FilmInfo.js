@@ -89,7 +89,7 @@ const FilmInfo = observer((props) => {
         Youtube();
     }, [Info?.info?.trailer])
 
-    useEffect(() => {
+    /*useEffect(() => {
         const Fetch = async () => {
             window.scrollTo(0, 0);
             if (toJS(Info?.info?.kp) !== undefined) {
@@ -100,7 +100,7 @@ const FilmInfo = observer((props) => {
             }
         }
         Fetch();
-    }, [Info?.info?.kp])
+    }, [Info?.info?.kp])*/
 
     useEffect(() => {
         const Details = async () => {
