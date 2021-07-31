@@ -105,9 +105,6 @@ const BottomControls = observer(({ video, handleSeekChange, prevEpisode, nextEpi
             borderRadius: 4,
         },
     })(Slider);
-    const currentTime = remaining === false ? format(PlayerControls?.currentTime) : `-${format(PlayerControls?.currentDuration - PlayerControls?.currentTime)}`;
-
-    console.log('BOTTOMCONTROLS: ' + currentTime);
 
     return (
         <div className={style.bottom_part}>
