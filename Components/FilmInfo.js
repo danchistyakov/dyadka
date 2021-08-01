@@ -209,7 +209,7 @@ const FilmInfo = observer((props) => {
                                 )}
                             {!poster && (<BrowserView>
                                 <ReactPlayer
-                                    url={Info?.details?.videoURL?.hd}
+                                    url={Info?.details?.videoURL?.hd + '?from=discovery&chunks=1&vsid=426fb41c77bbe07751e422c4b64aeba60f7131107342xWEBx6101x1627810205&t=1627810225108'}
                                     muted={true}
                                     playing={true}
                                     loop={true}

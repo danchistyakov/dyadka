@@ -95,7 +95,6 @@ const Player = observer(() => {
 
         if (e.code === 'ArrowDown') {
             e.preventDefault();
-            console.log(Volume.volume);
             if (Volume.volume >= 0.05) {
                 Volume.setVolume((Number(Volume.volume - 0.05).toFixed(2)));
             } else {
@@ -112,7 +111,6 @@ const Player = observer(() => {
     }
 
     const handleProgress = async (data) => {
-        console.log('HANDLEPROGRESS: ' + data?.playedSeconds);
         PlayerControls.setPlayed(parseFloat(data?.played));
         PlayerControls.setCurrentTime(data?.playedSeconds);
 
@@ -223,7 +221,6 @@ const Player = observer(() => {
                     <MobileView>
                         <div className='left_rewind' onClick={e => onClickHandler(e, 'rewind')}></div>
                     </MobileView>
-                    {console.log(Volume.volume)}
                     <ReactPlayer
                         url={Video?.url}
                         muted={PlayerControls?.mute}
