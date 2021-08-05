@@ -201,6 +201,8 @@ const Player = observer(() => {
         }
     }, [Info?.info?.kp, pirate])
 
+    console.log('PLAYER RERENDERING');
+
     return (
         <section>
             {!pirate ? (<FullScreen handle={video} className='player' ref={playerContainer} tabIndex='0' onKeyDown={(e) => { handleKeys(e) }}>

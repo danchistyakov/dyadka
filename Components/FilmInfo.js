@@ -1,12 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import style from '../styles/Filminfo.module.sass';
 import Skeleton from "react-loading-skeleton";
-/*import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import CloudDownloadIcon from '@material-ui/icons/CloudDownload';*/
-//import { CopyToClipboard } from 'react-copy-to-clipboard';
 import PlayerOptions from '../Store/PlayerOptions';
 import { set, get } from 'idb-keyval';
 import Playlist from '../Store/Playlist';
@@ -17,10 +11,7 @@ import { Img } from 'react-image';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import Player from './Player';
-import Head from 'next/head'
 import Icons from '../Images/Icons';
-import Putin from '../public/putin.jpg';
-import Image from 'next/image';
 import Video from '../Store/Video';
 import ReactPlayer from 'react-player';
 import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detect";
@@ -184,18 +175,15 @@ const FilmInfo = observer((props) => {
 
     return (
         <section className={style.film_hero}>
-            <Head>
-                <title>{`${Info?.info?.title} — смотреть у Дядьки онлайн без регистрации и СМС`}</title>
-            </Head>
             <div className={`${style.screen} ${expand ? style.expand : ''}`}>
                 {(Layout?.trailer || Layout?.poster) && (<div className={style.preview}>
                     {/*Layout?.trailer && youtube !== null && (<YouTube videoId={youtube} opts={opts} onReady={onReady} />)*/}
                     {Layout?.poster && (
-                        <div className={style.hero_poster} ref={node => setWidth(node?.offsetWidth)}>
+                        <div className={style.hero_poster} ref={node => setWidth(node?.offsetWidth)} key={Info?.details}>
                             {poster && Info?.info?.kp ? (<picture className={style.hero_picture}>
-                                <source media="(max-width: 767px)" srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=100/media/${Info?.info?.kp}/big_app_cinema_media_${Info?.info?.kp}_big.jpg`} />
-                                <source media="(min-width: 767px)" srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${Info?.info?.kp}/wide_app_cinema_media_${Info?.info?.kp}.jpg`} />
-                                <img className={style.hero_poster_img} src={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${Info?.info?.kp}/wide_app_cinema_media_${Info?.info?.kp}.jpg`} onError={(e) => { e.target.onerror = null; e.target.src = Putin.src }} />
+                                {/*<source media="(max-width: 767px)" srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=100/media/${Info?.info?.kp}/big_app_cinema_media_${Info?.info?.kp}_big.jpg`} />
+                                <source media="(min-width: 767px)" srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${Info?.info?.kp}/wide_app_cinema_media_${Info?.info?.kp}.jpg`} />*/}
+                                <img className={style.hero_poster_img} src={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${Info?.info?.kp}/wide_app_cinema_media_${Info?.info?.kp}.jpg`} onError={(e) => { e.target.onerror = null; e.target.src = 'https://tangerine.gq/putin1.jpg' }} />
                             </picture>)
                                 :
                                 (
@@ -232,7 +220,7 @@ const FilmInfo = observer((props) => {
                 {Info?.info?.title ? <h1 className={style.film_title}>{Info?.info?.title} смотреть онлайн</h1> :
                     <><Skeleton className={style.film_title_loader} count={1} duration={2} />
                         <Skeleton className={style.film_subtitle_loader} count={1} duration={2} width={'70%'} /></>}
-                <div>{Info?.info?.etitle !== undefined ? <p className={style.film_eng_title}>{Info?.info?.etitle}</p> : <Skeleton className={style.film_eng_title_loader} count={1} duration={2} />}</div>
+                <div><p className={style.film_eng_title}>{Info?.info?.etitle}</p></div>
                 <div>
                     {Info?.info?.year ?
                         <div className={style.film_info}>{(<p>{Info?.info?.year && (<>{Info?.info?.year.slice(0, 4)} • </>)}

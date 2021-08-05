@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { toJS } from 'mobx';
 import style from '../styles/Episodes.module.sass';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-//import ScrollContainer from 'react-indiana-drag-scroll'
 import Playlist from '../Store/Playlist';
 import Info from '../Store/Info';
 import PlayerOptions from '../Store/PlayerOptions';
-import PlayerControls from '../Store/PlayerControls';
 import Layout from '../Store/Layout';
 import { observer } from 'mobx-react-lite';
 import { get } from 'idb-keyval';
@@ -15,7 +12,6 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import "swiper/swiper.min.css";
 import SwiperCore, { Navigation } from "swiper/core";
-import Video from '../Store/Video';
 import { GetUrl } from './GetUrl';
 
 SwiperCore.use([Navigation]);

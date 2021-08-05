@@ -5,11 +5,11 @@ import style from "../../styles/Genre.module.sass";
 import Link from 'next/link';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-const Genre = () => {
-    const [result, setResult] = useState(null);
+const Genre = (data) => {
+    /*const [result, setResult] = useState(null);
     const router = useRouter()
     const category = router.query.category;
-    const number = 1;
+    console.log(data)
     useEffect(() => {
         const Fetch = async () => {
             if (category !== undefined) {
@@ -20,14 +20,14 @@ const Genre = () => {
             }
         }
         Fetch();
-    }, [category])
+    }, [category])*/
 
     return (
         <div>
-            <h1 className={style.genre_title}>{result?.title}</h1>
+            <h1 className={style.genre_title}>{data?.data?.title}</h1>
             {/*(number > result?.pagesCount) && (<h1 className={style.genre_title}>Результатов поиска оказалось немного меньше :(</h1>)*/}
             <div className={style.genre_section}>
-                {result?.items.map((res, key) => (
+                {data?.data?.items.map((res, key) => (
                     <div className={style.genre_item} key={key}>
                         <Link href='/media/[id]' as={`/media/${res?.id}`}>
                             <a>
@@ -43,6 +43,30 @@ const Genre = () => {
             {/*<Navigation number={result?.pagesCount} />*/}
         </div >
     )
+}
+
+export const getStaticProps = async (context) => {
+    const category = context.params.category;
+    // Call an external API endpoint to get posts.
+    // You can use any data fetching library
+    const response = await fetch(`https://new.dyadka.gq/api/categories?category=${category}`);
+    const data = await response.json();
+
+    // By returning { props: { posts } }, the Blog component
+    // will receive `posts` as a prop at build time
+    return {
+        props: {
+            data,
+        },
+    }
+}
+
+export const getStaticPaths = async () => {
+
+    return {
+        paths: [], //indicates that no page needs be created at build time
+        fallback: 'blocking' //indicates the type of fallback
+    }
 }
 
 export default Genre

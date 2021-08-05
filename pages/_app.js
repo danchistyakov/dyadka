@@ -4,8 +4,15 @@ import Footer from '../Components/Footer.js';
 import '../styles/Slider.sass';
 import '../styles/Player.sass';
 import '../styles/Navigation.sass';
+import NProgress from 'nprogress'; //nprogress module
+import 'nprogress/nprogress.css'; //styles of nprogress
+import Router from 'next/router';
 
 const MyApp = ({ Component, pageProps }) => {
+  Router.events.on('routeChangeStart', () => NProgress.start());
+  Router.events.on('routeChangeComplete', () => NProgress.done());
+  Router.events.on('routeChangeError', () => NProgress.done());
+
   return (
     <>
       <link rel="preconnect" href="https://fonts.googleapis.com" />

@@ -21,7 +21,7 @@ const navigationSimilar = {
     prevEl: '.swiper-button-prev.similar',
 }
 
-const Similar = observer((data) => {
+const Similar = observer(() => {
     const [similar, setSimilar] = useState(null);
     const [width, setWidth] = useState(null);
 
