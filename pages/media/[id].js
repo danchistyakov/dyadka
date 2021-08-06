@@ -5,21 +5,29 @@ import Episodes from '../../Components/Episodes';
 import FilmInfo from '../../Components/FilmInfo';
 import Similar from '../../Components/Similar';
 import Info from '../../Store/Info';
+import Video from '../../Store/Video';
+import Layout from '../../Store/Layout';
+import Playlist from '../../Store/Playlist';
 import style from '../../styles/Film.module.sass';
 import ErrorPage from 'next/error';
-import Head from 'next/head'
+import Head from 'next/head';
 
 const Film = (film) => {
-    const id = film.film.hdrezka_id;
 
     useEffect(() => {
         const Fetch = async () => {
-            if (id !== undefined) {
+            Layout.setWatch(false);
+            Info.videoCDN(null);
+            Info.setInfo(null);
+            Info.setDetails(null);
+            Video.setUrl(null);
+            Playlist.setTranslations(null);
+            if (film.film.hdrezka_id !== undefined) {
                 Info.setInfo(film.film);
             }
         }
         Fetch();
-    }, [id])
+    }, [film.film.hdrezka_id])
 
     if (film.film.kp !== undefined) {
         return (
@@ -27,11 +35,11 @@ const Film = (film) => {
                 <Head>
                     <title>{`${film?.film?.title} — смотреть у Дядьки онлайн без регистрации и СМС`}</title>
                 </Head>
-                <FilmInfo film={id} />
+                <FilmInfo hdrezka={film.film.hdrezka_id} kinopoisk={film.film.kp} />
                 <div className={style.film_container} key={film.film.hdrezka_id}>
-                    {film.film.serial && <Episodes />}
-                    <Staff />
-                    <Similar />
+                    {film.film.serial && <Episodes kp={film.film.kp} />}
+                    <Staff kp={film.film.kp} />
+                    <Similar kp={film.film.kp} />
                 </div>
             </SkeletonTheme>
         )
@@ -42,13 +50,9 @@ const Film = (film) => {
 
 export const getStaticProps = async (context) => {
     const id = context.params.id;
-    // Call an external API endpoint to get posts.
-    // You can use any data fetching library
     const response = await fetch(`https://d.appinfo.ml/ref/40/${id}`);
     const film = await response.json();
 
-    // By returning { props: { posts } }, the Blog component
-    // will receive `posts` as a prop at build time
     return {
         props: {
             film,

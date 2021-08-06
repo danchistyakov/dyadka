@@ -15,7 +15,7 @@
     "idb-keyval": "^5.0.6",
     "mobx": "^6.3.2",
     "mobx-react-lite": "^3.2.0",
-    "next": "11.0.1",
+    "next": "^11.0.1",
     "nprogress": "^0.2.0",
     "querystring": "^0.2.1",
     "react": "17.0.2",
@@ -31,6 +31,7 @@
     "swiper": "^6.7.5"
   },
   "devDependencies": {
+    "@welldone-software/why-did-you-render": "^6.2.0",
     "eslint": "7.30.0",
     "eslint-config-next": "11.0.1"
   }

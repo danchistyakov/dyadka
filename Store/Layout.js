@@ -1,6 +1,7 @@
 import { makeAutoObservable } from "mobx";
 
 class Layout {
+    watch = false
     player = false
     pirate = false
     trailer = true
@@ -11,6 +12,10 @@ class Layout {
         makeAutoObservable(this)
     }
 
+    setWatch(watch) {
+        this.watch = watch
+    }
+
     setPlayer(player) {
         this.player = player
     }
@@ -19,13 +24,6 @@ class Layout {
         this.pirate = pirate
     }
 
-    setTrailer(trailer) {
-        this.trailer = trailer
-    }
-
-    setPoster(poster) {
-        this.poster = poster
-    }
     setContainer(container) {
         this.container = container
     }
