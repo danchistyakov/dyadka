@@ -69,19 +69,6 @@ const FilmInfo = observer((data) => {
         Details();
     }, [kp])
 
-    /*useEffect(() => {
-        const Episodes = async () => {
-            const response = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.1/films/${kp}`, {
-                headers: {
-                    'X-API-KEY': 'ceff3505-c77c-450a-8abb-aa29f638f5ee'
-                }
-            })
-            const result = await response.json();
-            //Info.setKinopoisk(result?.data);
-        }
-        Episodes();
-    }, [kp]);*/
-
     const Fav = async () => {
         var arr = await get('Избранное');
         console.log(arr);
@@ -105,28 +92,6 @@ const FilmInfo = observer((data) => {
             set('Избранное', arr);
             setAdd(true);
         }
-        /*if (arr.find(item => item.id === rezka) === undefined) {
-            if (arr === undefined) {
-                arr = [];
-                arr.push({ name: Info?.info?.title, poster: `https://kinopoiskapiunofficial.tech/images/posters/kp_small/${kp}.jpg`, id: rezka });
-                set('Избранное', arr);
-                setAdd(true)
-            } else {
-                if (arr?.find(item => item.id === rezka) === undefined) {
-                    arr.push({ name: Info?.info?.title, poster: `https://kinopoiskapiunofficial.tech/images/posters/kp_small/${kp}.jpg`, id: rezka });
-                    set('Избранное', arr);
-                    setAdd(true)
-                }
-            }
-        } else {
-            arr.reduce((resarr, res, index) => {
-                if (res.id === rezka) {
-                    arr.splice(index, 1)
-                }
-            }, [])
-            set('Избранное', arr);
-            setAdd(false)
-        }*/
     }
 
     const expand = Layout?.watch ? true : false;
@@ -172,11 +137,11 @@ const FilmInfo = observer((data) => {
                         <picture className={style.hero_picture}>
                             <source media="(max-width: 767px)" srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=100/media/${kp}/big_app_cinema_media_${kp}_big.jpg`} />
                             <source media="(min-width: 767px)" srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${kp}/wide_app_cinema_media_${kp}.jpg`} />
+                            <Img
+                                src={[`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${kp}/wide_app_cinema_media_${kp}.jpg`, 'https://tangerine.gq/putin1.jpg']}
+                                className={style.hero_poster_img}
+                            />
                         </picture>
-                        <Img
-                            src={[`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${kp}/wide_app_cinema_media_${kp}.jpg`, 'https://tangerine.gq/putin1.jpg']}
-                            className={style.hero_poster_img}
-                        />
                     </MobileView>
                 </div>)
                     :
