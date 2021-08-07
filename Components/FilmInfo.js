@@ -84,8 +84,28 @@ const FilmInfo = observer((data) => {
 
     const Fav = async () => {
         var arr = await get('Избранное');
-
-        if (arr.find(item => item.id === rezka) === undefined) {
+        console.log(arr);
+        if (arr !== undefined) {
+            if (arr?.find(item => item.id === rezka) === undefined) {
+                arr.push({ name: Info?.info?.title, poster: `https://kinopoiskapiunofficial.tech/images/posters/kp_small/${kp}.jpg`, id: rezka });
+                set('Избранное', arr);
+                setAdd(true);
+            } else {
+                arr.reduce((resarr, res, index) => {
+                    if (res.id === rezka) {
+                        arr.splice(index, 1)
+                    }
+                }, [])
+                set('Избранное', arr);
+                setAdd(false);
+            }
+        } else {
+            arr = [];
+            arr.push({ name: Info?.info?.title, poster: `https://kinopoiskapiunofficial.tech/images/posters/kp_small/${kp}.jpg`, id: rezka });
+            set('Избранное', arr);
+            setAdd(true);
+        }
+        /*if (arr.find(item => item.id === rezka) === undefined) {
             if (arr === undefined) {
                 arr = [];
                 arr.push({ name: Info?.info?.title, poster: `https://kinopoiskapiunofficial.tech/images/posters/kp_small/${kp}.jpg`, id: rezka });
@@ -106,7 +126,7 @@ const FilmInfo = observer((data) => {
             }, [])
             set('Избранное', arr);
             setAdd(false)
-        }
+        }*/
     }
 
     const expand = Layout?.watch ? true : false;
