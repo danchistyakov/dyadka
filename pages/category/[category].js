@@ -6,21 +6,8 @@ import Link from 'next/link';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const Genre = (data) => {
-    /*const [result, setResult] = useState(null);
     const router = useRouter()
     const category = router.query.category;
-    console.log(data)
-    useEffect(() => {
-        const Fetch = async () => {
-            if (category !== undefined) {
-                setResult({ items: [] })
-                const response = await fetch(`/api/categories?category=${category}`);
-                const result = await response.json();
-                setResult(result)
-            }
-        }
-        Fetch();
-    }, [category])*/
 
     return (
         <div>
@@ -28,7 +15,7 @@ const Genre = (data) => {
             {/*(number > result?.pagesCount) && (<h1 className={style.genre_title}>Результатов поиска оказалось немного меньше :(</h1>)*/}
             <div className={style.genre_section}>
                 {data?.data?.items.map((res, key) => (
-                    <div className={style.genre_item} key={key}>
+                    <div className={style.genre_item} key={category + key}>
                         <Link href='/media/[id]' as={`/media/${res?.id}`}>
                             <a>
                                 <LazyLoadImage className={style.genre_poster} alt={res?.title} src={`${res?.poster}`} effect="blur" />
