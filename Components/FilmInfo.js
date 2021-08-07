@@ -23,7 +23,7 @@ const FilmInfo = observer((data) => {
     const [add, setAdd] = useState(false);
     const [width, setWidth] = useState(null);
     const [background, setBackground] = useState('video');
-    const [error, setError] = useState();
+    const [fallback, setFallback] = useState(false);
 
     const handleWatch = () => {
         Layout.setWatch(true);
@@ -69,7 +69,7 @@ const FilmInfo = observer((data) => {
         Details();
     }, [kp])
 
-    useEffect(() => {
+    /*useEffect(() => {
         const Episodes = async () => {
             const response = await fetch(`https://kinopoiskapiunofficial.tech/api/v2.1/films/${kp}`, {
                 headers: {
@@ -77,10 +77,10 @@ const FilmInfo = observer((data) => {
                 }
             })
             const result = await response.json();
-            Info.setKinopoisk(result?.data);
+            //Info.setKinopoisk(result?.data);
         }
         Episodes();
-    }, [kp]);
+    }, [kp]);*/
 
     const Fav = async () => {
         var arr = await get('Избранное');
@@ -111,24 +111,27 @@ const FilmInfo = observer((data) => {
 
     const expand = Layout?.watch ? true : false;
 
-    const Error = () => {
-        setError('error')
-    }
-
     return (
         <section className={style.film_hero}>
             <div className={`${style.screen} ${expand ? style.expand : ''}`}>
                 {!Layout?.watch ? (<div className={style.preview} key={kp}>
                     <BrowserView>
                         {background === 'poster' && (
-                            <div className={style.hero_poster} ref={node => setWidth(node?.offsetWidth)}>
-                                <picture className={style.hero_picture}>
-                                    <source media="(max-width: 767px)" srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=100/media/${kp}/big_app_cinema_media_${kp}_big.jpg`} />
-                                    <source media="(min-width: 767px)" srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${kp}/wide_app_cinema_media_${kp}.jpg`} />
-                                    <Img
-                                        src={[`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${kp}/wide_app_cinema_media_${kp}.jpg`, 'https://tangerine.gq/putin1.jpg']}
-                                        className={style.hero_poster_img}
-                                    />
+                            <div className={style.hero_poster}>
+                                <picture className={style.hero_picture} key={fallback}>
+                                    <source media="(max-width: 767px)" srcSet={`https://cdn.statically.io/img/kinopoiskapiunofficial.tech/f=auto,q=50/images/posters/kp/${kp}.jpg`} />
+                                    {!fallback ?
+                                        <img
+                                            src={`https://cdn.statically.io/img/blackmedia.top/f=auto,q=70/media/${kp}/wide_app_cinema_media_${kp}.jpg`}
+                                            className={style.hero_poster_img}
+                                            onError={() => setFallback(true)}
+                                        />
+                                        :
+                                        <img
+                                            src={'https://tangerine.gq/putin1.jpg'}
+                                            className={style.hero_poster_img}
+                                        />
+                                    }
                                 </picture>
                             </div>
                         )}

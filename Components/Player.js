@@ -15,6 +15,8 @@ import Video from '../Store/Video';
 import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detect";
 import Volume from '../Store/Volume';
 
+var timer;
+
 const Player = observer(() => {
 
     const [count, setCount] = useState(1);
@@ -135,8 +137,6 @@ const Player = observer(() => {
         playerRef.current.seekTo(newValue / 100);
     };
 
-    var timer;
-
     const onClickHandler = (e, action) => {
         clearTimeout(timer);
         if (e.detail === 1) {
@@ -200,8 +200,6 @@ const Player = observer(() => {
             document.body.removeChild(script);
         }
     }, [Info?.info?.kp, pirate])
-
-    console.log('PLAYER RERENDERING');
 
     return (
         <section>

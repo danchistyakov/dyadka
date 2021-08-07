@@ -45,6 +45,7 @@ const Settings = observer(() => {
         Last();
     }, [Info?.info?.kp]);
 
+    console.log(visible)
     return (
         <div>
             {!visible && (

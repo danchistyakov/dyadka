@@ -30,10 +30,10 @@ const Episodes = observer((data) => {
     const [length, setLength] = useState(9);
 
     useEffect(() => {
-        Info?.playlist?.length !== undefined && setLength(Info?.playlist?.length < 9 ? Info?.playlist?.length : 9)
+        setLength(Info?.playlist?.length < 9 ? Info?.playlist?.length : 9)
     }, [Info?.playlist?.length])
 
-    const breakpointsSeasons = { 320: { slidesPerView: 3.5 }, 768: { slidesPerView: length } };
+    const breakpointsSeasons = { 320: { slidesPerView: 3.5 }, 768: { slidesPerView: Info?.details?.totalSeasons < 9 ? Info?.details?.totalSeasons : 9 } };
     const breakpointsEpisodes = { 320: { slidesPerView: 1.8 }, 768: { slidesPerView: 4.9 } };
 
     useEffect(() => {
@@ -87,30 +87,27 @@ const Episodes = observer((data) => {
     }, [kp])
 
     return (
-        <section className={style.nav_section} key={[length, Playlist?.season]}>
-            {Info?.kinopoisk?.seasons !== undefined ?
-                <Swiper
-                    initialSlide={Playlist?.season ? Playlist?.season - 1 : 1}
-                    freeMode={true}
-                    navigation={navigationSeasons}
-                    key={Info?.kinopoisk?.seasons}
-                    breakpoints={breakpointsSeasons}
-                    centeredSlidesBounds={true}
-                    centeredSlides={true}
-                    className={style.seasons}
-                >
-                    <div className='swiper-button-prev seasons'></div>
-                    <div className='swiper-button-next seasons'></div>
-                    {Info?.playlist?.map((res, key) => (
-                        <SwiperSlide className={style.season_block} key={key} onClick={() => { setSeason(res?.season); setError() }}>
-                            <p className={`${style.season}${res?.season === season ? ` ${style.active}` : ''}`}>{res?.season}-й сезон</p>
-                        </SwiperSlide>
-                    ))}
-                </Swiper> : <></>
-            }
+        <section className={style.nav_section}>
+            <Swiper
+                initialSlide={Playlist?.season ? Playlist?.season - 1 : 1}
+                freeMode={true}
+                navigation={navigationSeasons}
+                key={Info?.details?.totalSeasons}
+                breakpoints={breakpointsSeasons}
+                centeredSlidesBounds={true}
+                centeredSlides={true}
+                className={style.seasons}
+            >
+                <div className='swiper-button-prev seasons'></div>
+                <div className='swiper-button-next seasons'></div>
+                {Array.from(Array(Info?.details?.totalSeasons), (_, i) => i + 1).map((res, key) => (
+                    <SwiperSlide className={style.season_block} key={Info?.details?.totalSeasons + key} onClick={() => { setSeason(res); setError() }}>
+                        <p className={`${style.season}${res === season ? ` ${style.active}` : ''}`}>{res}-й сезон</p>
+                    </SwiperSlide>
+                ))}
+            </Swiper>
             <div className={style.episodes_section} key={Playlist?.episode}>
                 <Swiper
-                    key={Info?.kinopoisk}
                     initialSlide={(Playlist?.season === season && Playlist?.episode !== null) ? Playlist?.episode - 1 : 0}
                     freeMode={true}
                     navigation={navigationEpisodes}
