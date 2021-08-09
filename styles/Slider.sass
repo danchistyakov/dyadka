@@ -50,17 +50,8 @@
 .swiper-button-lock
     display: none
 
-@media (max-width: 767px)
-    .swiper-button-next.seasons, .swiper-button-prev.seasons
-        width: 8vw
-        height: 8vw
-        margin-top: -4vw
-
-    .swiper-button-next.seasons:after, .swiper-button-prev.seasons:after
-        font-size: 4vw
-
 ////////////////////////////   
-.swiper-button-next.episodes,.swiper-button-prev.episodes,.swiper-button-prev.similar,.swiper-button-next.similar
+.swiper-button-next,.swiper-button-prev
     position: absolute
     top: 50%
     width: 2vw
@@ -83,7 +74,7 @@
     cursor: auto
     pointer-events: none
 
-.swiper-button-next.episodes:after,.swiper-button-prev.episodes:after,.swiper-button-prev.similar:after,.swiper-button-next.similar:after
+.swiper-button-next:after,.swiper-button-prev:after
     font-family: swiper-icons
     font-size: 1.25vw
     text-transform: none!important
@@ -92,28 +83,48 @@
     font-variant: initial
     line-height: 1
 
-.swiper-button-prev.episodes,.swiper-container-rtl,.swiper-button-prev.similar
+.swiper-button-prev,.swiper-container-rtl
     left: 10px
     right: auto
 
-.swiper-button-prev.episodes:after,.swiper-container-rtl,.swiper-button-prev.similar:after
+.swiper-button-prev:after,.swiper-container-rtl
     content: 'prev'
 
-.swiper-button-next.episodes,.swiper-container-rtl,.swiper-button-next.similar
+.swiper-button-next,.swiper-container-rtl,.swiper-button-next
     right: 10px
     left: auto
 
-.swiper-button-next.episodes:after,.swiper-container-rtl .swiper-button-prev.episodes:after,.swiper-button-next.similar
+.swiper-button-next:after,.swiper-container-rtl
     content: 'next'
 
 .swiper-button-lock
     display: none
 
+.swiper-button-prev.slider,.swiper-button-next.slider
+    width: 3.5vw
+    height: 3.5vw
+
+.swiper-button-prev.slider
+    left: 3vw
+    right: auto
+
+.swiper-button-next.slider
+    right: 3vw
+    left: auto
+
 @media (max-width: 767px)
-    .swiper-button-next.episodes, .swiper-button-prev.episodes,.swiper-button-prev.similar,.swiper-button-next.similar
+    .swiper-button-next, .swiper-button-prev
         width: 10vw
         height: 10vw
         margin-top: -8vw
 
-    .swiper-button-next.episodes:after, .swiper-button-prev.episodes:after,.swiper-button-prev.similar:after,.swiper-button-next.similar:after
+    .swiper-button-next:after, .swiper-button-prev:after
+        font-size: 4vw
+
+    .swiper-button-next.seasons, .swiper-button-prev.seasons
+        width: 8vw
+        height: 8vw
+        margin-top: -4vw
+
+    .swiper-button-next.seasons:after, .swiper-button-prev.seasons:after
         font-size: 4vw

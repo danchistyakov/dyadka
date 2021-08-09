@@ -95,7 +95,7 @@ const FilmInfo = observer((data) => {
     }
 
     const expand = Layout?.watch ? true : false;
-
+    console.log(toJS(Info?.info));
     return (
         <section className={style.film_hero}>
             <div className={`${style.screen} ${expand ? style.expand : ''}`}>
@@ -167,12 +167,12 @@ const FilmInfo = observer((data) => {
                 </div>
                 <div className={style.rating_block}>
                     <div className={style.rating_item}>
-                        {Info?.details?.ratingData?.rating !== undefined ? <p className={style.rating_value}>{Info?.details?.ratingData?.rating}</p> : <Skeleton className={style.rating_value_loader} count={1} duration={2} />}
-                        {Info?.details?.ratingData?.rating !== undefined ? <p className={style.rating_name}>КиноПоиск</p> : <Skeleton className={style.rating_name_loader} count={1} duration={2} />}
+                        {Info?.details?.ratingData?.rating !== undefined && <p className={style.rating_value}>{Info?.details?.ratingData?.rating}</p>}
+                        {Info?.details?.ratingData?.rating !== undefined && <p className={style.rating_name}>КиноПоиск</p>}
                     </div>
                     <div className={style.rating_item}>
-                        {Info?.details?.ratingData?.ratingIMDb !== undefined ? <p className={style.rating_value}>{Info?.details?.ratingData?.ratingIMDb}</p> : <Skeleton className={style.rating_value_loader} count={1} duration={2} />}
-                        {Info?.details?.ratingData?.ratingIMDb !== undefined ? <p className={style.rating_name}>IMDb</p> : <Skeleton className={style.rating_name_loader} count={1} duration={2} />}
+                        {Info?.details?.ratingData?.ratingIMDb !== undefined && <p className={style.rating_value}>{Info?.details?.ratingData?.ratingIMDb}</p>}
+                        {Info?.details?.ratingData?.ratingIMDb !== undefined && <p className={style.rating_name}>IMDb</p>}
                     </div>
                 </div>
                 <div className={style.buttons_block}>

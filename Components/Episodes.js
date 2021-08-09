@@ -7,7 +7,6 @@ import Layout from '../Store/Layout';
 import { observer } from 'mobx-react-lite';
 import { get } from 'idb-keyval';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import "swiper/swiper.min.css";
 import SwiperCore, { Navigation } from "swiper/core";
 import { GetUrl } from './GetUrl';
 

@@ -4,6 +4,7 @@ import Footer from '../Components/Footer.js';
 import '../styles/Slider.sass';
 import '../styles/Player.sass';
 import '../styles/Navigation.sass';
+import "swiper/swiper.min.css";
 import NProgress from 'nprogress'; //nprogress module
 import 'nprogress/nprogress.css'; //styles of nprogress
 import Router from 'next/router';

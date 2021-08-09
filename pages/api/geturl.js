@@ -41,35 +41,40 @@ const GetUrl = async (req, res) => {
                     { id: selector(x).attr('data-translator_id'), name: selector(x).attr('title') }
                 )).toArray();
 
+                const activeElem = selector('.b-translator__item.active');
+                const active = { id: activeElem.attr('data-translator_id'), name: activeElem.attr('title') }
+
                 if (translations.length === 0) {
                     var textNode = selector('body > script').map((i, x) => x.children[0])
                         .filter((i, x) => x && x.data.match(/sof.tv./)).get(0);
                     const id = textNode.data.match(/\d+/g)[1];
-                    return [{ id: id, name: 'Оригинальный' }];
+
+                    return { active: { id: id, name: 'Оригинальный' } };
                 } else {
-                    return translations;
+                    return { list: translations, active };
                 }
             }
 
             const Urls = async () => {
                 if (req.query.season !== undefined && req.query.episode !== undefined) {
                     if (req.query.translation !== undefined) {
-                        const rezkaapi = await axios.post('http://rezkance.com/ajax/get_cdn_series/', querystring.stringify({ 'id': req.query.id, 'translator_id': req.query.translation, 'season': req.query.season, 'episode': req.query.episode, 'action': 'get_episodes' }));
+                        const rezkaapi = await axios.post('http://rezkery.com/ajax/get_cdn_series/', querystring.stringify({ 'id': req.query.id, 'translator_id': req.query.translation, 'season': req.query.season, 'episode': req.query.episode, 'action': 'get_stream' }));
                         return rezkaapi.data
                     } else {
-                        const rezkaapi = await axios.post('http://rezkance.com/ajax/get_cdn_series/', querystring.stringify({ 'id': req.query.id, 'translator_id': (await Translate())[0].id || (await Translate()).id, 'season': req.query.season, 'episode': req.query.episode, 'action': 'get_episodes' }));
+                        const rezkaapi = await axios.post('http://rezkery.com/ajax/get_cdn_series/', querystring.stringify({ 'id': req.query.id, 'translator_id': (await Translate()).active.id, 'season': req.query.season, 'episode': req.query.episode, 'action': 'get_episodes' }));
                         return rezkaapi.data
                     }
                 } else {
                     if (req.query.translation !== undefined) {
-                        const rezkaapi = await axios.post('http://rezkance.com/ajax/get_cdn_series/', querystring.stringify({ 'id': req.query.id, 'translator_id': req.query.translation, 'action': 'get_movie' }));
+                        const rezkaapi = await axios.post('http://rezkery.com/ajax/get_cdn_series/', querystring.stringify({ 'id': req.query.id, 'translator_id': req.query.translation, 'action': 'get_movie' }));
                         return rezkaapi.data
                     } else {
-                        const rezkaapi = await axios.post('http://rezkance.com/ajax/get_cdn_series/', querystring.stringify({ 'id': req.query.id, 'translator_id': (await Translate())[0].id || (await Translate()).id, 'action': 'get_movie' }));
+                        const rezkaapi = await axios.post('http://rezkery.com/ajax/get_cdn_series/', querystring.stringify({ 'id': req.query.id, 'translator_id': (await Translate()).active.id, 'action': 'get_movie' }));
                         return rezkaapi.data
                     }
                 }
             }
+
             const urls = (await Urls()).url.split(',').reverse().reduce(
                 (acc, item) => {
                     const [_, quality, url1, url2] = item.match(/\[(.+?)\](.+?) or (.+)/);
@@ -79,7 +84,7 @@ const GetUrl = async (req, res) => {
                 []
             );
 
-            res.status(200).json({ translations: (await Translate())[0].id, urls: urls });
+            res.status(200).json({ urls: urls });
         } catch (err) {
             res.status(200).json({ err: err });
 

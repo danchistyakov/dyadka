@@ -36,6 +36,7 @@ const Similar = (kp) => {
         Fetch();
     }, [kp.kp])
 
+    const source = 'kp';
     return (
         <section>
             {similar?.length > 0 && (<div className={style.similar_container}>
@@ -55,7 +56,7 @@ const Similar = (kp) => {
 
                     {similar?.map((res, key) => (
                         <SwiperSlide className={style.similar_item} key={key} onClick={() => Layout.setWatch(false)}>
-                            <Link as='/media/[id]' href={`/media/${res?.filmId}`}>
+                            <Link href={{ pathname: `/media/${res?.filmId}`, query: { source } }}>
                                 <a>
                                     <LazyLoadImage
                                         src={`https://cdn.statically.io/img/${res?.posterUrlPreview.slice(8, 35)}/f=auto,q=70/${res?.posterUrlPreview.slice(36)}`}

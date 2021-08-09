@@ -12,7 +12,7 @@ import style from '../../styles/Film.module.sass';
 import ErrorPage from 'next/error';
 import Head from 'next/head';
 
-const Film = (film) => {
+const Film = ({ film }) => {
 
     useEffect(() => {
         const Fetch = async () => {
@@ -22,24 +22,24 @@ const Film = (film) => {
             Info.setDetails(null);
             Video.setUrl(null);
             Playlist.setTranslations(null);
-            if (film.film.hdrezka_id !== undefined) {
-                Info.setInfo(film.film);
+            if (film.hdrezka_id !== undefined) {
+                Info.setInfo(film);
             }
         }
         Fetch();
-    }, [film.film.hdrezka_id])
+    }, [film.hdrezka_id])
 
-    if (film.film.kp !== undefined) {
+    if (film.kp !== undefined) {
         return (
             <SkeletonTheme color="#202020" highlightColor="#444">
                 <Head>
-                    <title>{`${film?.film?.title} — смотреть у Дядьки онлайн без регистрации и СМС`}</title>
+                    <title>{`${film.title} — смотреть у Дядьки онлайн без регистрации и СМС`}</title>
                 </Head>
-                <FilmInfo hdrezka={film.film.hdrezka_id} kinopoisk={film.film.kp} />
-                <div className={style.film_container} key={film.film.hdrezka_id}>
-                    {film.film.serial && <Episodes kp={film.film.kp} />}
-                    <Staff kp={film.film.kp} />
-                    <Similar kp={film.film.kp} />
+                <FilmInfo hdrezka={film.hdrezka_id} kinopoisk={film.kp} />
+                <div className={style.film_container} key={film.hdrezka_id}>
+                    {film.serial && <Episodes kp={film.kp} />}
+                    <Staff kp={film.kp} />
+                    <Similar kp={film.kp} />
                 </div>
             </SkeletonTheme>
         )
@@ -48,23 +48,26 @@ const Film = (film) => {
     }
 }
 
-export const getStaticProps = async (context) => {
+export const getServerSideProps = async (context) => {
     const id = context.params.id;
-    const response = await fetch(`https://d.appinfo.ml/ref/40/${id}`);
-    const film = await response.json();
+    const { source } = context.query;
+    console.log(source)
+    var film;
+
+    if (source === undefined) {
+        const response = await fetch(`https://d.appinfo.ml/ref/40/${id}`);
+        film = await response.json();
+    }
+
+    if (source === 'kp') {
+        const response = await fetch(`https://d.appinfo.ml/ref/15/${id}`);
+        film = await response.json();
+    }
 
     return {
         props: {
             film,
         },
-    }
-}
-
-export const getStaticPaths = async () => {
-
-    return {
-        paths: [], //indicates that no page needs be created at build time
-        fallback: 'blocking' //indicates the type of fallback
     }
 }
 

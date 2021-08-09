@@ -103,6 +103,7 @@ const Header = observer(() => {
                     <Link href={`/search/${input}`} onClick={() => { setDisplay(false); setBorder('') }}><a className={style.search_button}>Найти</a></Link>
                 </div>
 
+                <Link href='/favorites'><a className={style.favorite_button}>Избранное</a></Link>
             </header>
             <nav className={style.nav}>
                 {nav ?
