@@ -41,6 +41,7 @@ const TopControls = observer(({ setPirate }) => {
     const handleTranslation = async (id, name) => {
         setTranslations(!translations);
         Video.setTranslation(id, name);
+        PlayerControls.setPlaying(true);
         var info = await get('Длительность') !== undefined ? await get('Длительность') : [];
         if (Info?.info?.kp !== undefined) {
             var search = info?.findIndex(item => item?.kinopoisk_id === Info?.info?.kp);

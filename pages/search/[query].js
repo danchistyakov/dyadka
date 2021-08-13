@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import style from "../../styles/Search.module.sass";
 import Link from 'next/link';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const Search = (result) => {

@@ -1,43 +1,61 @@
-.search_section
+.input_block
+    width: 60%
+    margin: auto
+    display: flex
+    align-items: center
+    justify-content: space-between
+    border-bottom: 2px solid #ff4f12
+
+.search_icon
+    width: 3vw
+    height: 3vw
+    padding: .5vw
+
+    & svg
+        fill: #919193
+
+.search_input
+    background: transparent
+    caret-color: #ff4f12
+    border: none
+    font-size: 1.5vw
+    width: 60vw
+    margin-left: .6vw
+    height: 3.5vw
+
+.search_results
     display: grid
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr
-    margin: 0 2vw
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr
+    grid-row-gap: 2vw
+    margin: 2vw 7vw
 
-.search_title
-    font-size: 2vw
-    font-weight: 600
-    margin: 1vw
+.result_image
+    border-radius: 1vw
+    width: 12vw
 
-.search_item
-    padding: 0 1vw
-
-.search_image
-    max-width: 100%
-    height: 18vw
-    border-radius: 1.5vw
-
-.item_title
-    width: 100%
-    height: 5vw
-    margin: 1vw 0
-    font-size: 1.3vw
+.result_title
+    margin-top: .6vw
 
 @media (max-width: 767px)
-    .search_title
-        font-size: 6vw
+    .input_block
+        width: 80%
 
-    .search_section
-        grid-template-columns: 1fr 1fr 1fr
+    .search_icon
+        width: 6vw
+        height: 5vw
 
-    .search_item
-        width: calc(94vw / 3)
+    .search_input
+        font-size: 4vw
+        height: 10vw
+        width: 100%
+        margin-left: 2vw
 
-    .search_image
-        height: 43vw
-        width: auto
+    .search_results
+        grid-template-columns: 1fr 1fr
+        grid-column-gap: 6vw
+        grid-row-gap: 4vw
 
-    .pages
-        margin: 2vw 0
-
-    .pages_a
-        padding: 1.5vw 3vw
+    .result_image
+        width: 40vw
+        height: auto
+        border-radius: 3vw

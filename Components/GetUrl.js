@@ -29,14 +29,13 @@ export const GetUrl = async () => {
                 Video.setUrl(urls?.urls[0].urls[0]);
             }
             Video.setUrls(urls.urls);
-            const transresponse = await fetch(`/api/translations?id=${Info.info.hdrezka_id}`);
-            const translations = await transresponse.json();
-            Playlist.setTranslations(translations?.translations);
-            if (Video?.translation?.id === undefined || Video?.translation?.id === null) {
-                Video.setTranslation(Video?.translation?.id, translations?.translations[0]?.name);
-            }
         }
-        //PlayerOptions.setBuffering(false)
+        const transresponse = await fetch(`/api/translations?id=${Info.info.hdrezka_id}`);
+        const translations = await transresponse.json();
+        Playlist.setTranslations(translations?.translations);
+        if (Video?.translation?.id === undefined || Video?.translation?.id === null) {
+            Video.setTranslation(Video?.translation?.id, translations?.translations[0]?.name);
+        }
         PlayerOptions.setError(false);
     } catch (err) {
         PlayerOptions.setError(true)

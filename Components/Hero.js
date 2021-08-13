@@ -33,11 +33,14 @@ const Hero = ({ data }) => {
                     <SwiperSlide className={style.hero_slide} key={key}>
                         <Link href={{ pathname: `/media/${res.kinopoisk_id}`, query: { source } }}>
                             <a>
-                                <img
-                                    //className={style.hero_img}
-                                    className={`${style.hero_img} swiper-lazy`}
-                                    src={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=1920,q=60${res.posters.wide}`}
-                                />
+                                <picture>
+                                    <source media="(max-width: 767px)" srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=1920,q=60${res.posters.big}`} />
+                                    <img
+                                        //className={style.hero_img}
+                                        className={`${style.hero_img} swiper-lazy`}
+                                        src={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=1920,q=60${res.posters.wide}`}
+                                    />
+                                </picture>
                                 <div className={style.slide_info}>
                                     <p className={style.item_title}>{res.title}</p>
                                     <p className={style.item_description}>{res.description}</p>

@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import style from '../styles/Settings.module.sass';
 import Playlist from '../Store/Playlist';
-//import SettingsIcon from '@material-ui/icons/Settings';
-/*import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';*/
 import Icons from '../Images/Icons';
 import { observer } from 'mobx-react-lite';
 import { toJS } from 'mobx';
@@ -23,7 +20,7 @@ const Settings = observer(() => {
     const settingsModal = useRef(null);
 
     useEffect(() => {
-        const onClick = e => settingsModal.current?.contains(e.target) || setVisible(false);
+        const onClick = e => settingsModal.current?.contains(e.target) || (setVisible(false), setSpeed(false), setQualityOptions({ ...qualityOptions, qvisible: false }))
         document.addEventListener("click", onClick);
         return () => document.removeEventListener("click", onClick);
     }, []);
@@ -45,7 +42,6 @@ const Settings = observer(() => {
         Last();
     }, [Info?.info?.kp]);
 
-    console.log(visible)
     return (
         <div>
             {!visible && (
@@ -122,4 +118,4 @@ const Settings = observer(() => {
 }
 )
 
-export default Settings
+export default React.memo(Settings)

@@ -18,7 +18,7 @@ const Genre = (data) => {
                     <div className={style.genre_item} key={category + key}>
                         <Link href='/media/[id]' as={`/media/${res?.id}`}>
                             <a>
-                                <LazyLoadImage className={style.genre_poster} alt={res?.title} src={`${res?.poster}`} effect="blur" />
+                                <LazyLoadImage className={style.genre_poster} alt={res?.title} src={`https://cdn.statically.io/img/static.hdrezka.ac/f=auto,q=100/${res?.poster?.substring(26)}`} />
                                 <div className={style.item_title}>
                                     <p>{res?.title}</p>
                                 </div>

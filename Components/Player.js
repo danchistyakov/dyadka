@@ -139,11 +139,16 @@ const Player = observer(() => {
 
     const onClickHandler = (e, action) => {
         clearTimeout(timer);
+        console.log(e)
         if (e.detail === 1) {
-            timer = setTimeout(PlayerControls.setPlaying(!PlayerControls?.playing), 200)
+            timer = setTimeout(() => PlayerControls.setPlaying(!PlayerControls?.playing), 200)
         } else if (e.detail === 2) {
-            action === 'forward' && playerRef.current.seekTo(playerRef.current.getCurrentTime() + 5);
-            action === 'rewind' && playerRef.current.seekTo(playerRef.current.getCurrentTime() - 5);
+            if (action === 'rewind') {
+                playerRef.current.getCurrentTime() > 5 ? playerRef.current.seekTo(playerRef.current.getCurrentTime() - 5) : playerRef.current.seekTo(0);
+            }
+            if (action === 'forward') {
+                playerRef.current.seekTo(playerRef.current.getCurrentTime() + 5);
+            }
         }
     }
 
@@ -218,9 +223,7 @@ const Player = observer(() => {
                             <circle className="icon_loading_back" cx="50" cy="50" r="20" fill="none" strokeWidth="5" strokeMiterlimit="10"></circle>
                         </svg>
                     </div>)}
-                    <MobileView>
-                        <div className='left_rewind' onClick={e => onClickHandler(e, 'rewind')}></div>
-                    </MobileView>
+                    {isMobile && (<div className='left_rewind' onClick={e => onClickHandler(e, 'rewind')}></div>)}
                     <ReactPlayer
                         url={Video?.url}
                         muted={PlayerControls?.mute}
@@ -236,13 +239,11 @@ const Player = observer(() => {
                         onBuffer={() => { PlayerOptions.setBuffering(true); PlayerControls.setPlaying(true) }}
                         onBufferEnd={() => PlayerOptions.setBuffering(false)}
                     />
-                    <MobileView>
-                        <div className='right_forward' onClick={e => onClickHandler(e, 'forward')}></div>
-                    </MobileView>
+                    {isMobile && (<div className='right_forward' onClick={e => onClickHandler(e, 'forward')}></div>)}
                 </div>
                 <div className='controls' ref={controlsRef}>
                     <TopControls setPirate={setPirate} />
-                    <BottomControls key={PlayerControls?.currentTime} video={video} handleSeekChange={handleSeekChange} prevEpisode={prevEpisode} nextEpisode={nextEpisode} />
+                    <BottomControls video={video} handleSeekChange={handleSeekChange} prevEpisode={prevEpisode} nextEpisode={nextEpisode} />
                 </div>
             </FullScreen>) :
                 (<div key={Info?.info?.kp}>

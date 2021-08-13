@@ -1,18 +1,15 @@
-import React, { useState, useEffect } from 'react';
-//import { BrowserRouter as Router, useHistory, NavLink } from "react-router-dom";
-import Layout from '../Store/Layout';
-import { observer } from 'mobx-react-lite';
+import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import "swiper/swiper.min.css";
 import SwiperCore, { Navigation } from "swiper/core";
 import Skeleton from "react-loading-skeleton";
-import { SkeletonTheme } from "react-loading-skeleton";
 import Link from 'next/link';
 import style from '../styles/Header.module.sass';
+import Icons from '../Images/Icons';
+import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detect";
 
 SwiperCore.use([Navigation]);
 
-//const breakpointsCategories = { 320: { slidesPerView: 5 }, 768: { slidesPerView: 17 } }
 const breakpointsCategories = { 320: { slidesPerView: 'auto' }, 768: { slidesPerView: 'auto' } }
 
 const navigationCategories = {
@@ -20,113 +17,47 @@ const navigationCategories = {
     prevEl: '.swiper-button-prev.episodes',
 }
 
-const Header = observer(() => {
-
-    const [display, setDisplay] = useState(false);
-    const [border, setBorder] = useState('');
-    const [search, setSearch] = useState(['Загрузка...']);
-    const [status, setStatus] = useState('Пустой поисковый запрос');
-    const [input, setInput] = useState(null);
-    //const history = useHistory();
-    const history = {};
-    /*useEffect(() => {
-        const Nav = async () => {
-            const response = await fetch('https://kinopoiskapiunofficial.tech/api/v2.1/films/filters', {
-                headers: {
-                    "X-API-KEY": "ceff3505-c77c-450a-8abb-aa29f638f5ee"
-                }
-            })
-            const result = await response.json();
-            setNav(result.genres)
-        }
-        Nav();
-    }, [])*/
+const Header = () => {
     const nav = [{ title: 'Сейчас смотрят', link: 'watching' }, { title: 'Новинки', link: 'last' }, { title: 'Фильмы', link: 'films' }, { title: 'Сериалы', link: 'series' }, { title: 'Мультфильмы', link: 'cartoons' }, { title: 'Телепередачи', link: 'show' }, { title: 'Аниме', link: 'animation' }];
 
-    /*useEffect(() => {
-        const overflow = display === false ? 'auto' : 'hidden'
-        document.body.style.overflowY = overflow;
-
-    }, [display])*/
-
-    const Fetch = async (input) => {
-        setStatus('Загрузка...');
-        const response = await fetch(`/api/search?q=${input}`);
-        const result = await response.json();
-
-        setSearch(result.search);
-
-        setStatus(false);
-
-        if (input.length < 1) {
-            setSearch([]);
-            setStatus('Пустой запрос');
-        }
-
-        if (result?.searchFilmsCountResult === 0 && result?.keyboard !== "") {
-            setStatus('Ничего не найдено')
-        }
-
-    }
-
     return (
-        <SkeletonTheme color="#202020" highlightColor="#444">
-            <header className={style.header}>
-                <div className={style.links}>
-                    <Link href={'/'}><a className={style.logo}>Дядька в кино</a></Link>
-                    <a className={style.ecosystem} href='https://dnazakaz.gq/' target='_blank' rel="noreferrer">#Назаказ</a>
-                    <a className={style.ecosystem} href='https://namore.gq/' target='_blank' rel="noreferrer">#Наморе</a>
+        <header className={style.header}>
+            <div className={style.links}>
+                <Link href={'/'}><a className={style.logo}>Дядька в кино</a></Link>
+                <div className={style.header_icons}>
+                    <Link href='/search'><a className={style.header_icon}><Icons icon='SearchIcon' /></a></Link>
+                    <Link href='/favorites'><a className={style.header_icon}><Icons icon='BookmarkIcon' /></a></Link>
+                    <Link href='/auth'><a className={style.header_icon}><Icons icon='PersonIcon' /></a></Link>
                 </div>
-                {(display || Layout?.container) && (<div className={style.search_fullscreen} onClick={() => { setDisplay(false); setBorder(''); Layout.setContainer(false); }}></div>)}
-                <div className={style.search_container}>
-                    <div className={`search${border}`}>
-                        <input type="text" className={`search_input${border}`} onKeyDown={(e) => { e.code === 13 ? history.push(`/search/${input}/1`) : (<></>) }} onBlur={() => { setBorder(' opened') }} onChange={e => { setInput(e.target.value); setDisplay(true); setBorder(' opened'); Fetch(e.target.value); }} placeholder="Привет от дядьки! ❤️"></input>
-                        {display && (<div className={style.search_results}>
-                            {status && (<p className={style.loading}>{status}</p>)}
-                            {search?.map((res, key) => (
-                                <div className={style.search_result} key={key}>
-                                    <Link draggable='false' href='/media/[id]' as={`/media/${res?.id}`}>
-                                        <a className={style.search_result} key={key} onClick={() => { setDisplay(!display); setBorder('') }}>
-                                            {res?.poster !== undefined && (<img className={style.result_image} alt={res?.title} src={res?.poster?.replace(40, 220)} />)}
-                                            <div className={style.search_result_info}>
-                                                <p className={style.result_title}>{res?.title}</p>
-                                                {res?.rating !== undefined && (<p className={style.result_rating}>Рейтинг: {res?.rating} ({res?.ratingVoteCount})</p>)}
-                                                {res?.year !== undefined && (<p className={style.result_year}>Год: {res?.year}</p>)}
-                                                {/*res?.countries[0].name !== undefined && (<p>Страна: {res?.countries[0].name}</p>)*/}
-                                            </div>
-                                        </a>
-                                    </Link>
-                                </div>
-                            ))}
-                        </div>)}
-                    </div>
-                    <Link href={`/search/${input}`} onClick={() => { setDisplay(false); setBorder('') }}><a className={style.search_button}>Найти</a></Link>
-                </div>
-
-                <Link href='/favorites'><a className={style.favorite_button}>Избранное</a></Link>
-            </header>
+            </div>
             <nav className={style.nav}>
-                {nav ?
-                    <Swiper
-                        freeMode={true}
-                        navigation={navigationCategories}
-                        breakpoints={breakpointsCategories}
-                        //centeredSlidesBounds={true}
-                        //centeredSlides={true}
-                        className={style.categories}
-                    >
-                        {nav?.map((res, key) => (
-                            <SwiperSlide className={style.categories_item} key={key}>
-                                <Link href='/category/[category]' as={`/category/${res?.link}`} key={key} draggable='false' className={style.nav_element} activeClassName={style.pages_a_active}>{res?.title}</Link>
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
-                    : <Skeleton className={style.categories_loader} count={1} duration={2} width={'100%'} />
-                }
+                <Swiper
+                    freeMode={true}
+                    slidesPerView='auto'
+                    navigation={navigationCategories}
+                    breakpoints={breakpointsCategories}
+                    className={style.categories_slider}
+                >
+                    {nav?.map((res, key) => (
+                        <SwiperSlide className={style.categories_item} key={key}>
+                            <Link href='/category/[category]' as={`/category/${res?.link}`} key={key} draggable='false' className={style.nav_element} activeClassName={style.pages_a_active}>{res?.title}</Link>
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
+
+                <div className={style.categories}>
+                    {nav?.map((res, key) => (
+                        <div className={style.categories_item} key={key}>
+                            <Link href='/category/[category]' as={`/category/${res?.link}`} key={key} draggable='false' className={style.nav_element} activeClassName={style.pages_a_active}>{res?.title}</Link>
+                        </div>
+                    ))}
+                </div>
             </nav>
-        </SkeletonTheme>
+            <Link href='/search'><a className={style.search_icon}><Icons icon='SearchIcon' /></a></Link>
+            <Link href='/favorites'><a className={style.header_button}>Избранное</a></Link>
+            <Link href='/auth'><a className={style.header_button}>Вход | Регистрация</a></Link>
+        </header>
     )
 }
-)
 
 export default Header

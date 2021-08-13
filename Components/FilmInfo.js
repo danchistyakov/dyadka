@@ -100,39 +100,37 @@ const FilmInfo = observer((data) => {
         <section className={style.film_hero}>
             <div className={`${style.screen} ${expand ? style.expand : ''}`}>
                 {!Layout?.watch ? (<div className={style.preview} key={kp}>
-                    <BrowserView>
-                        {background === 'poster' && (
-                            <div className={style.hero_poster}>
-                                <picture className={style.hero_picture} key={fallback}>
-                                    <source media="(max-width: 767px)" srcSet={`https://cdn.statically.io/img/kinopoiskapiunofficial.tech/f=auto,q=50/images/posters/kp/${kp}.jpg`} />
-                                    {!fallback ?
-                                        <img
-                                            src={`https://cdn.statically.io/img/blackmedia.top/f=auto,q=70/media/${kp}/wide_app_cinema_media_${kp}.jpg`}
-                                            className={style.hero_poster_img}
-                                            onError={() => setFallback(true)}
-                                        />
-                                        :
-                                        <img
-                                            src={'https://tangerine.gq/putin1.jpg'}
-                                            className={style.hero_poster_img}
-                                        />
-                                    }
-                                </picture>
-                            </div>
-                        )}
-                        {background === 'video' && Info?.details?.videoURL?.hd !== undefined && (
-                            <ReactPlayer
-                                url={Info?.details?.videoURL?.hd + '?from=discovery&chunks=1&vsid=426fb41c77bbe07751e422c4b64aeba60f7131107342xWEBx6101x1627810205&t=1627810225108'}
-                                muted={true}
-                                playing={true}
-                                loop={true}
-                                volume={0}
-                                width={'100vw'}
-                                height={'140%'}
-                                onError={() => setBackground('poster')}
-                            />
-                        )}
-                    </BrowserView>
+                    {background === 'poster' && isBrowser && (
+                        <div className={style.hero_poster}>
+                            <picture className={style.hero_picture} key={fallback}>
+                                <source media="(max-width: 767px)" srcSet={`https://cdn.statically.io/img/kinopoiskapiunofficial.tech/f=auto,q=50/images/posters/kp/${kp}.jpg`} />
+                                {!fallback ?
+                                    <img
+                                        src={`https://cdn.statically.io/img/blackmedia.top/f=auto,q=50/media/${kp}/wide_app_cinema_media_${kp}.jpg`}
+                                        className={style.hero_poster_img}
+                                        onError={() => setFallback(true)}
+                                    />
+                                    :
+                                    <img
+                                        src={'https://tangerine.gq/putin1.jpg'}
+                                        className={style.hero_poster_img}
+                                    />
+                                }
+                            </picture>
+                        </div>
+                    )}
+                    {background === 'video' && isBrowser && Info?.details?.videoURL?.hd !== undefined && (
+                        <ReactPlayer
+                            url={Info?.details?.videoURL?.hd + '?from=discovery&chunks=1&vsid=426fb41c77bbe07751e422c4b64aeba60f7131107342xWEBx6101x1627810205&t=1627810225108'}
+                            muted={true}
+                            playing={true}
+                            loop={true}
+                            volume={0}
+                            width={'100vw'}
+                            height={'140%'}
+                            onError={() => setBackground('poster')}
+                        />
+                    )}
                     <MobileView>
                         <picture className={style.hero_picture}>
                             <source media="(max-width: 767px)" srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=100/media/${kp}/big_app_cinema_media_${kp}_big.jpg`} />
