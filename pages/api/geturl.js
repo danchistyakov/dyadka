@@ -92,7 +92,7 @@ const GetUrl = async (req, res) => {
                 translator_id: (await Translate()).active.id,
                 season: req.query.season,
                 episode: req.query.episode,
-                action: "get_episodes",
+                action: "get_stream",
               })
             );
             return rezkaapi.data;
