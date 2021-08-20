@@ -15,8 +15,8 @@ export const GetUrl = async () => {
       Video?.translation?.id !== undefined
     ) {
       url = Info?.info.serial
-        ? `https://api.dyadka.gq/parsing?kp=${Info?.info?.kp}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&translation=${Video?.translation?.id}&source=rezka`
-        : `https://api.dyadka.gq/parsing?kp=${Info?.info?.kp}&id=${Info.info.hdrezka_id}&translation=${Video?.translation?.id}&source=rezka`;
+        ? `/api/geturl?kp=${Info?.info?.kp}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&translation=${Video?.translation?.id}&source=rezka`
+        : `/api/geturl?kp=${Info?.info?.kp}&id=${Info.info.hdrezka_id}&translation=${Video?.translation?.id}&source=rezka`;
       const response = await fetch(url);
       const result = await response.json();
       Video.setUrl(result?.urls[0].urls[0]);
@@ -24,8 +24,8 @@ export const GetUrl = async () => {
     } else {
       const urlresponse = await fetch(
         Info?.info.serial
-          ? `https://api.dyadka.gq/parsing?kp=${Info?.info?.kp}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&source=rezka`
-          : `https://api.dyadka.gq/parsing?kp=${Info?.info?.kp}&id=${Info.info.hdrezka_id}&source=rezka`
+          ? `/api/geturl?kp=${Info?.info?.kp}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.hdrezka_id}&source=rezka`
+          : `/api/geturl?kp=${Info?.info?.kp}&id=${Info.info.hdrezka_id}&source=rezka`
       );
       const urls = await urlresponse.json();
       if (Playlist?.quality !== undefined) {
