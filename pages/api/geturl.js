@@ -31,13 +31,6 @@ const GetUrl = async (req, res) => {
   }
 
   if (req.query.source === "rezka") {
-    /*const browser = await chromium.puppeteer.launch({
-            args: chromium.args,
-            defaultViewport: chromium.defaultViewport,
-            executablePath: await chromium.executablePath,
-            headless: chromium.headless,
-            ignoreHTTPSErrors: true,
-        });*/
     try {
       const Translate = async () => {
         const rezkatranslate = (
