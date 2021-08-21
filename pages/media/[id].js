@@ -1,74 +1,71 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
-import Staff from '../../Components/Staff';
-import Episodes from '../../Components/Episodes';
-import FilmInfo from '../../Components/FilmInfo';
-import Similar from '../../Components/Similar';
-import Info from '../../Store/Info';
-import Video from '../../Store/Video';
-import Layout from '../../Store/Layout';
-import Playlist from '../../Store/Playlist';
-import style from '../../styles/Film.module.sass';
-import ErrorPage from 'next/error';
-import Head from 'next/head';
+import Staff from "../../Components/Staff";
+import Episodes from "../../Components/Episodes";
+import FilmInfo from "../../Components/FilmInfo";
+import Similar from "../../Components/Similar";
+import Info from "../../Store/Info";
+import Video from "../../Store/Video";
+import Layout from "../../Store/Layout";
+import Playlist from "../../Store/Playlist";
+import style from "../../styles/Film.module.sass";
+import ErrorPage from "next/error";
+import Head from "next/head";
 
-const Film = ({ film }) => {
+const Film = ({ info }) => {
+  useEffect(() => {
+    const Fetch = async () => {
+      Layout.setWatch(false);
+      Info.videoCDN(null);
+      Info.setInfo(null);
+      Info.setDetails(null);
+      Video.setUrl(null);
+      Playlist.setTranslations(null);
+      Info.setInfo(info);
+    };
+    Fetch();
+  }, [info.hdrezka_id]);
 
-    useEffect(() => {
-        const Fetch = async () => {
-            Layout.setWatch(false);
-            Info.videoCDN(null);
-            Info.setInfo(null);
-            Info.setDetails(null);
-            Video.setUrl(null);
-            Playlist.setTranslations(null);
-            if (film.hdrezka_id !== undefined) {
-                Info.setInfo(film);
-            }
-        }
-        Fetch();
-    }, [film.hdrezka_id])
-
-    if (film.kp !== undefined) {
-        return (
-            <SkeletonTheme color="#202020" highlightColor="#444">
-                <Head>
-                    <title>{`${film.title} — смотреть у Дядьки онлайн без регистрации и СМС`}</title>
-                </Head>
-                <FilmInfo hdrezka={film.hdrezka_id} kinopoisk={film.kp} />
-                <div className={style.film_container} key={film.hdrezka_id}>
-                    {film.serial && <Episodes kp={film.kp} />}
-                    <Staff kp={film.kp} />
-                    <Similar kp={film.kp} />
-                </div>
-            </SkeletonTheme>
-        )
-    } else {
-        return (<ErrorPage statusCode={404} />)
-    }
-}
+  if (info !== undefined) {
+    return (
+      <SkeletonTheme color="#202020" highlightColor="#444">
+        <Head>
+          <title>{`${info.title} — смотреть у Дядьки онлайн без регистрации и СМС`}</title>
+        </Head>
+        <FilmInfo info={info} />
+        <div className={style.film_container} key={info.hdrezka_id}>
+          {info.type === "series" && <Episodes info={info} />}
+          <Staff kp={info.kp_id} />
+          <Similar kp={info.kp_id} />
+        </div>
+      </SkeletonTheme>
+    );
+  } else {
+    return <ErrorPage statusCode={404} />;
+  }
+};
 
 export const getServerSideProps = async (context) => {
-    const id = context.params.id;
-    const { source } = context.query;
-    console.log(source)
-    var film;
+  const id = context.params.id;
+  const { source } = context.query;
+  console.log(source);
+  var info;
 
-    if (source === undefined) {
-        const response = await fetch(`https://d.appinfo.ml/ref/40/${id}`);
-        film = await response.json();
-    }
+  if (source === undefined) {
+    const response = await fetch(`https://api.dyadka.gq/film?id=${id}`);
+    info = await response.json();
+  }
 
-    if (source === 'kp') {
-        const response = await fetch(`https://d.appinfo.ml/ref/15/${id}`);
-        film = await response.json();
-    }
+  if (source === "kp") {
+    const response = await fetch(`https://api.dyadka.gq/film?id=${id}`);
+    info = await response.json();
+  }
 
-    return {
-        props: {
-            film,
-        },
-    }
-}
+  return {
+    props: {
+      info,
+    },
+  };
+};
 
-export default Film
+export default Film;
