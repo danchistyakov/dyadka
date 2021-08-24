@@ -46,10 +46,11 @@ const Episodes = observer(({ info }) => {
   useEffect(() => {
     const Season = async () => {
       var Info = await get("Длительность");
-      if (info.kp_id) {
-        var search = Info.findIndex(
-          (item) => item?.kinopoisk_id === Info.kp_id
+      if (info.kp_id && Info) {
+        var search = Info?.findIndex(
+          (item) => item?.kinopoisk_id === info.kp_id
         );
+
         if (search !== -1) {
           setSeason(Number(Info[search]?.season));
           Playlist.setSeason(Info[search]?.season);
@@ -59,9 +60,7 @@ const Episodes = observer(({ info }) => {
           Playlist.setSeason(1);
           Playlist.setEpisode(1);
         }
-      }
-
-      if (info.kp_id) {
+      } else {
         setSeason(1);
         Playlist.setSeason(1);
         Playlist.setEpisode(1);
@@ -74,7 +73,6 @@ const Episodes = observer(({ info }) => {
     setError("error");
   };
 
-  console.log(season);
   return (
     <section className={style.nav_section}>
       <Swiper
@@ -97,9 +95,11 @@ const Episodes = observer(({ info }) => {
               setError();
             }}
           >
+            {console.log(res.season)}
+
             <p
               className={`${style.season}${
-                res === season ? ` ${style.active}` : ""
+                res.season === season ? ` ${style.active}` : ""
               }`}
             >
               {res.season}-й сезон

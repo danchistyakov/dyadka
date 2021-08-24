@@ -34,7 +34,7 @@ const Film = ({ info }) => {
         </Head>
         <FilmInfo info={info} />
         <div className={style.film_container} key={info.hdrezka_id}>
-          {info.type === "series" && <Episodes info={info} />}
+          {info.serial && <Episodes info={info} />}
           <Staff kp={info.kp_id} />
           <Similar kp={info.kp_id} />
         </div>

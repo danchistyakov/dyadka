@@ -10,23 +10,29 @@ export const GetUrl = async () => {
     Video.setUrl(null);
     var url;
     PlayerOptions.setBuffering(true);
+    PlayerControls.setPlaying(true);
     if (
       Video?.translation?.id !== null &&
       Video?.translation?.id !== undefined
     ) {
-      url =
-        Info?.info.type === "series"
-          ? `https://api.dyadka.gq/parsing?kp=${Info.info.kp_id}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.id}&translation=${Video?.translation?.id}&source=rezka`
-          : `https://api.dyadka.gq/parsing?kp=${Info.info.kp_id}&id=${Info.info.id}&translation=${Video?.translation?.id}&source=rezka`;
+      url = Info?.info.serial
+        ? `https://api.dyadka.gq/geturl?kp=${Info?.info?.kp_id}&season=${
+            Playlist?.season || 1
+          }&episode=${Playlist?.episode}&id=${Info.info.id}&translation=${
+            Video?.translation?.id
+          }&source=rezka`
+        : `https://api.dyadka.gq/geturl?kp=${Info?.info?.kp_id}&id=${Info.info.id}&translation=${Video?.translation?.id}&source=rezka`;
       const response = await fetch(url);
       const result = await response.json();
       Video.setUrl(result?.urls[0].urls[0]);
       Video.setUrls(result.urls);
     } else {
       const urlresponse = await fetch(
-        Info?.info.type === "series"
-          ? `https://api.dyadka.gq/parsing?kp=${Info.info.kp_id}&season=${Playlist?.season}&episode=${Playlist?.episode}&id=${Info.info.id}&source=rezka`
-          : `https://api.dyadka.gq/parsing?kp=${Info.info.kp_id}&id=${Info.info.id}&source=rezka`
+        Info?.info.serial
+          ? `https://api.dyadka.gq/geturl?kp=${Info?.info?.kp_id}&season=${
+              Playlist?.season || 1
+            }&episode=${Playlist?.episode}&id=${Info.info.id}&source=rezka`
+          : `https://api.dyadka.gq/geturl?kp=${Info?.info?.kp_id}&id=${Info.info.id}&source=rezka`
       );
       const urls = await urlresponse.json();
       if (Playlist?.quality !== undefined) {
@@ -53,6 +59,7 @@ export const GetUrl = async () => {
       );
     }
     PlayerOptions.setError(false);
+    PlayerControls.setPlaying(true);
   } catch (err) {
     PlayerOptions.setError(true);
   }
