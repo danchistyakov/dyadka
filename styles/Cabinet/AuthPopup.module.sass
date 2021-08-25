@@ -1,0 +1,75 @@
+.popup_wrapper
+    position: fixed
+    top: 0px
+    left: 0px
+    width: 100vw
+    height: 100vh
+    display: flex
+    align-items: center
+    justify-content: center
+    z-index: 2
+    background: rgba(22, 21, 26, 0.5)
+
+.popup_section
+    width: 40vw
+    height: 20vw
+    background: #16151a
+    border-radius: 2vw
+
+.popup_block
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    align-items: center
+    margin: 3vw 2vw
+
+.auth_title
+    font-size: 2vw
+    text-align: center
+
+.auth_form
+    margin-top: 3vw
+    display: flex
+    flex-direction: column
+    align-items: center
+
+.auth_input
+    background: #212121
+    border: none
+    border-radius: 100px
+    padding: 1vw
+    width: 35vw
+
+.action_button
+    background: #ff4f12
+    cursor: pointer
+    padding: 1vw
+    margin-top: 1vw
+    border: none
+    width: 10vw
+    border-radius: 2vw
+
+.disabled
+    cursor: auto
+    background: #212121
+    color: #59595d
+
+@media (max-width: 767px)
+    .popup_section
+        width: 100vw
+        height: 60vw
+
+    .auth_title
+        font-size: 4vw
+
+    .auth_input
+        padding: 2vw
+        font-size: 3vw
+        width: 70vw
+
+    .action_button
+        padding: 2vw
+        margin-top: 4vw
+        width: 30vw
+        font-size: 3vw
+        border-radius: 5vw

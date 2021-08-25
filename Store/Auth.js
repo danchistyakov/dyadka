@@ -4,10 +4,9 @@ import axios from 'axios';
 import { API_URL } from "../Components/Cabinet/http";
 
 class Auth {
-    loading = false;
+    loading = true;
     user = {};
     isAuth = false;
-    user = '';
     exists = null;
 
     constructor() {
@@ -53,15 +52,17 @@ class Auth {
         }
     }
 
-    async logout(email, password) {
+    async logout() {
+        this.setLoading(true);
         try {
-            const response = await AuthService.logout(email, password);
+            const response = await AuthService.logout();
             localStorage.removeItem('token', response.data.accessToken);
             this.setAuth(false);
             this.setUser({});
         } catch (err) {
             console.log(err.response?.data?.message);
         }
+        this.setLoading(false);
     }
 
     async checkAuth() {
