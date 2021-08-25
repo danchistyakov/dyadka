@@ -19,6 +19,7 @@ import {
   isMobile,
 } from "react-device-detect";
 import Volume from "../Store/Volume";
+import Icons from "../Images/Icons";
 
 var timer;
 
@@ -242,26 +243,7 @@ const Player = observer(() => {
           >
             {PlayerOptions.buffering && (
               <div className="player_loading">
-                <svg className="icon_loading" viewBox="25 25 50 50">
-                  <circle
-                    className="icon_loading_front"
-                    cx="50"
-                    cy="50"
-                    r="20"
-                    fill="none"
-                    strokeWidth="5"
-                    strokeMiterlimit="10"
-                  ></circle>
-                  <circle
-                    className="icon_loading_back"
-                    cx="50"
-                    cy="50"
-                    r="20"
-                    fill="none"
-                    strokeWidth="5"
-                    strokeMiterlimit="10"
-                  ></circle>
-                </svg>
+                <Icons icon="LoadingIcon" />
               </div>
             )}
             {PlayerOptions.error && (
@@ -269,26 +251,7 @@ const Player = observer(() => {
                 <p className="error_text">
                   Пыня упаль, посылаем Пушистика за пакетами!
                 </p>
-                <svg className="icon_loading" viewBox="25 25 50 50">
-                  <circle
-                    className="icon_loading_front"
-                    cx="50"
-                    cy="50"
-                    r="20"
-                    fill="none"
-                    strokeWidth="5"
-                    strokeMiterlimit="10"
-                  ></circle>
-                  <circle
-                    className="icon_loading_back"
-                    cx="50"
-                    cy="50"
-                    r="20"
-                    fill="none"
-                    strokeWidth="5"
-                    strokeMiterlimit="10"
-                  ></circle>
-                </svg>
+                <Icons icon="LoadingIcon" />
               </div>
             )}
             {isMobile && (

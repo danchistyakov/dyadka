@@ -13,21 +13,18 @@ import { observer } from "mobx-react-lite";
 import Player from "./Player";
 import Icons from "../Images/Icons";
 import Video from "../Store/Video";
-import ReactPlayer from "react-player";
-import {
-  BrowserView,
-  MobileView,
-  isBrowser,
-  isMobile,
-} from "react-device-detect";
+import { isBrowser, isMobile } from "react-device-detect";
 import axios from "axios";
 import { API_URL } from "../Components/Cabinet/http";
+import Auth from "../Store/Auth";
+import AuthPopup from "./Cabinet/AuthPopup";
 
 const FilmInfo = observer(({ info, trailer }) => {
   const [favorite, setFavorite] = useState(false);
   const [width, setWidth] = useState(null);
   const [background, setBackground] = useState("video");
   const [fallback, setFallback] = useState(false);
+  const [authError, setAuthError] = useState(false);
 
   const handleWatch = () => {
     Layout.setWatch(true);
@@ -35,20 +32,30 @@ const FilmInfo = observer(({ info, trailer }) => {
   };
 
   useEffect(() => {
-    const Favorite = async () => {
-      const { data } = await axios.post(
-        `${API_URL}/favorite`,
-        {
-          action: "check",
-          email: "4i.danila@gmail.com",
-          id: info.id,
-        },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
-      );
+    const checkAuth = async () => {
+      await Auth.checkAuth();
+    };
+  }, []);
 
-      setFavorite(data.exists);
+  useEffect(() => {
+    const Favorite = async () => {
+      if (Auth.isAuth) {
+        const { data } = await axios.post(
+          `${API_URL}/favorite`,
+          {
+            action: "check",
+            email: "4i.danila@gmail.com",
+            id: info.id,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        setFavorite(data.exists);
+      }
     };
     Favorite();
 
@@ -75,33 +82,33 @@ const FilmInfo = observer(({ info, trailer }) => {
     easyWatch();
   }, [info.id]);
 
-  /*useEffect(() => {
-    const Details = async () => {
-      const response = await fetch(`/api/details?id=${info.kp_id}`);
-      const result = await response.json();
-      Info.setDetails(result.details);
-    };
-    Details();
-  }, [info.kp_id]);*/
-
   const Fav = async () => {
     if (!favorite) {
-      const { data } = await axios.post(
-        `${API_URL}/favorite`,
-        {
-          action: "add",
-          email: "4i.danila@gmail.com",
-          id: info.id,
-          poster: `https://kinopoiskapiunofficial.tech/images/posters/kp_small/${info.kp_id}.jpg`,
-          title: Info?.info?.title,
-        },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
-      );
+      try {
+        const { data } = await axios.post(
+          `${API_URL}/favorite`,
+          {
+            action: "add",
+            email: "4i.danila@gmail.com",
+            id: info.id,
+            poster: `https://kinopoiskapiunofficial.tech/images/posters/kp_small/${info.kp_id}.jpg`,
+            title: Info?.info?.title,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
 
-      if (data.success) {
-        setFavorite(true);
+        if (data.success) {
+          setFavorite(true);
+        }
+      } catch (e) {
+        if (e.response.status === 401) {
+          setAuthError(true);
+        }
+        console.log(e.response.status);
       }
     } else if (favorite) {
       const { data } = await axios.post(
@@ -128,6 +135,7 @@ const FilmInfo = observer(({ info, trailer }) => {
 
   return (
     <section className={style.film_hero}>
+      {authError && <AuthPopup />}
       <div className={`${style.screen} ${expand ? style.expand : ""}`}>
         {!Layout?.watch ? (
           <div className={style.preview} key={info.kp_id}>
@@ -163,7 +171,7 @@ const FilmInfo = observer(({ info, trailer }) => {
                 allowFullScreen
               ></iframe>
             )}
-            <MobileView>
+            {isMobile && (
               <picture className={style.hero_picture}>
                 <source
                   media="(max-width: 767px)"
@@ -181,7 +189,7 @@ const FilmInfo = observer(({ info, trailer }) => {
                   className={style.hero_poster_img}
                 />
               </picture>
-            </MobileView>
+            )}
           </div>
         ) : (
           <div className={style.film_player}>
