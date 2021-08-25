@@ -22,12 +22,8 @@ import {
 } from "react-device-detect";
 import axios from "axios";
 import { API_URL } from "../Components/Cabinet/http";
-//OF: https://strm.yandex.ru/vh-kp-converted/ott-content/14997747280932738777/hls/ysign1=ddc3711040b0655a9ee5f109c6743fbef84e6f5db2a6589b7f25514c258fb86f,abcID=1358,from=ott-kp,pfx,sfx,ts=612c954d/master_sdr_hd_avc_aac.m3u8?gzip=1
-//UN: https://strm.yandex.ru/vh-kp-converted/ott-content/14997747280932738777/hls/ysign1=23d893fa3b77f42574c60a264d4dc3390f95fb24a4ecb8e805ec8e3d7e1e84bc,abcID=1358,from=ott-kp,pfx,sfx,ts=61050615/master_sdr_hd_avc_aac.m3u8?from=discovery&chunks=1&vsid=426fb41c77bbe07751e422c4b64aeba60f7131107342xWEBx6101x1627810205&t=1627810225108
-const FilmInfo = observer((data) => {
-  const rezka = data.hdrezka;
-  const kp = data.kinopoisk;
 
+const FilmInfo = observer(({ info, trailer }) => {
   const [favorite, setFavorite] = useState(false);
   const [width, setWidth] = useState(null);
   const [background, setBackground] = useState("video");
@@ -45,14 +41,14 @@ const FilmInfo = observer((data) => {
         {
           action: "check",
           email: "4i.danila@gmail.com",
-          id: rezka,
+          id: info.id,
         },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       );
 
-      data.exists ? setFavorite(true) : setFavorite(false);
+      setFavorite(data.exists);
     };
     Favorite();
 
@@ -77,16 +73,16 @@ const FilmInfo = observer((data) => {
     };
 
     easyWatch();
-  }, [rezka]);
+  }, [info.id]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const Details = async () => {
-      const response = await fetch(`/api/details?id=${kp}`);
+      const response = await fetch(`/api/details?id=${info.kp_id}`);
       const result = await response.json();
       Info.setDetails(result.details);
     };
     Details();
-  }, [kp]);
+  }, [info.kp_id]);*/
 
   const Fav = async () => {
     if (!favorite) {
@@ -95,8 +91,8 @@ const FilmInfo = observer((data) => {
         {
           action: "add",
           email: "4i.danila@gmail.com",
-          id: rezka,
-          poster: `https://kinopoiskapiunofficial.tech/images/posters/kp_small/${kp}.jpg`,
+          id: info.id,
+          poster: `https://kinopoiskapiunofficial.tech/images/posters/kp_small/${info.kp_id}.jpg`,
           title: Info?.info?.title,
         },
         {
@@ -113,8 +109,8 @@ const FilmInfo = observer((data) => {
         {
           action: "remove",
           email: "4i.danila@gmail.com",
-          id: rezka,
-          poster: `https://kinopoiskapiunofficial.tech/images/posters/kp_small/${kp}.jpg`,
+          id: info.id,
+          poster: `https://kinopoiskapiunofficial.tech/images/posters/kp_small/${info.kp_id}.jpg`,
           title: Info?.info?.title,
         },
         {
@@ -129,22 +125,22 @@ const FilmInfo = observer((data) => {
   };
 
   const expand = Layout?.watch ? true : false;
-  console.log(toJS(Info?.info));
+
   return (
     <section className={style.film_hero}>
       <div className={`${style.screen} ${expand ? style.expand : ""}`}>
         {!Layout?.watch ? (
-          <div className={style.preview} key={kp}>
+          <div className={style.preview} key={info.kp_id}>
             {background === "poster" && isBrowser && (
               <div className={style.hero_poster}>
                 <picture className={style.hero_picture} key={fallback}>
                   <source
                     media="(max-width: 767px)"
-                    srcSet={`https://cdn.statically.io/img/kinopoiskapiunofficial.tech/f=auto,q=50/images/posters/kp/${kp}.jpg`}
+                    srcSet={`https://cdn.statically.io/img/kinopoiskapiunofficial.tech/f=auto,q=50/images/posters/kp/${info.kp_id}.jpg`}
                   />
                   {!fallback ? (
                     <img
-                      src={`https://cdn.statically.io/img/blackmedia.top/f=auto,q=50/media/${kp}/wide_app_cinema_media_${kp}.jpg`}
+                      src={`https://cdn.statically.io/img/blackmedia.top/f=auto,q=50/media/${info.kp_id}/wide_app_cinema_media_${info.kp_id}.jpg`}
                       className={style.hero_poster_img}
                       onError={() => setFallback(true)}
                     />
@@ -157,35 +153,29 @@ const FilmInfo = observer((data) => {
                 </picture>
               </div>
             )}
-            {background === "video" &&
-              isBrowser &&
-              Info?.details?.videoURL?.hd !== undefined && (
-                <ReactPlayer
-                  url={
-                    "https://strm.yandex.ru/vh-kp-converted/ott-content/14997747280932738777/hls/ysign1=ddc3711040b0655a9ee5f109c6743fbef84e6f5db2a6589b7f25514c258fb86f,abcID=1358,from=ott-kp,pfx,sfx,ts=612c954d/master_sdr_hd_avc_aac.m3u8?gzip=1"
-                  }
-                  muted={true}
-                  playing={true}
-                  loop={true}
-                  volume={0}
-                  width={"100vw"}
-                  height={"140%"}
-                  onError={() => setBackground("poster")}
-                />
-              )}
+            {background === "video" && isBrowser && (
+              <iframe
+                width="900"
+                height="506"
+                className={style.trailer}
+                src={`https://www.youtube.com/embed/${trailer}?autoplay=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&loop=1&rel=0&modestbranding=1&showinfo=0&start=5&mute=1&playlist=${trailer}`}
+                frameBorder="0"
+                allowFullScreen
+              ></iframe>
+            )}
             <MobileView>
               <picture className={style.hero_picture}>
                 <source
                   media="(max-width: 767px)"
-                  srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=100/media/${kp}/big_app_cinema_media_${kp}_big.jpg`}
+                  srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=100/media/${info.kp_id}/big_app_cinema_media_${info.kp_id}_big.jpg`}
                 />
                 <source
                   media="(min-width: 767px)"
-                  srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${kp}/wide_app_cinema_media_${kp}.jpg`}
+                  srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${info.kp_id}/wide_app_cinema_media_${info.kp_id}.jpg`}
                 />
                 <Img
                   src={[
-                    `https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${kp}/wide_app_cinema_media_${kp}.jpg`,
+                    `https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${info.kp_id}/wide_app_cinema_media_${info.kp_id}.jpg`,
                     "https://tangerine.gq/putin1.jpg",
                   ]}
                   className={style.hero_poster_img}
@@ -229,52 +219,20 @@ const FilmInfo = observer((data) => {
           <p className={style.film_eng_title}>{Info?.info?.etitle}</p>
         </div>
         <div>
-          {Info?.info?.year ? (
-            <div className={style.film_info}>
-              {
-                <p>
-                  {Info?.info?.year && <>{Info?.info?.year.slice(0, 4)} • </>}
-                  {/*Info?.kp?.data?.premiereWorldCountry !== null && (<>{Info?.kp?.data?.premiereWorldCountry} • </>)*/}
-                  {Info?.info?.genre !== undefined && (
-                    <>{Info?.info?.genre} • </>
-                  )}
-                  {Info?.info?.country !== undefined && (
-                    <>{Info?.info?.country} • </>
-                  )}
-                  {Info?.info?.ageLimits !== undefined && (
-                    <>{Info?.info?.ageLimits}+</>
-                  )}
-                </p>
-              }
-            </div>
-          ) : (
-            <Skeleton
-              className={style.film_info_loader}
-              count={1}
-              duration={2}
-            />
-          )}
+          <div className={style.film_info}>
+            <p>
+              {info.year} • {info.genres} • {info.country} • {info.age}
+            </p>
+          </div>
         </div>
         <div className={style.rating_block}>
           <div className={style.rating_item}>
-            {Info?.details?.ratingData?.rating !== undefined && (
-              <p className={style.rating_value}>
-                {Info?.details?.ratingData?.rating}
-              </p>
-            )}
-            {Info?.details?.ratingData?.rating !== undefined && (
-              <p className={style.rating_name}>КиноПоиск</p>
-            )}
+            <p className={style.rating_value}>{info.ratings.kinopoisk}</p>
+            <p className={style.rating_name}>КиноПоиск</p>
           </div>
           <div className={style.rating_item}>
-            {Info?.details?.ratingData?.ratingIMDb !== undefined && (
-              <p className={style.rating_value}>
-                {Info?.details?.ratingData?.ratingIMDb}
-              </p>
-            )}
-            {Info?.details?.ratingData?.ratingIMDb !== undefined && (
-              <p className={style.rating_name}>IMDb</p>
-            )}
+            <p className={style.rating_value}>{info.ratings.imdb}</p>
+            <p className={style.rating_name}>IMDb</p>
           </div>
         </div>
         <div className={style.buttons_block}>

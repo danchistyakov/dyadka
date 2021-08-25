@@ -95,8 +95,6 @@ const Episodes = observer(({ info }) => {
               setError();
             }}
           >
-            {console.log(res.season)}
-
             <p
               className={`${style.season}${
                 res.season === season ? ` ${style.active}` : ""

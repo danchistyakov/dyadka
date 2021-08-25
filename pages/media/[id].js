@@ -11,8 +11,9 @@ import Playlist from "../../Store/Playlist";
 import style from "../../styles/Film.module.sass";
 import ErrorPage from "next/error";
 import Head from "next/head";
+import axios from "axios";
 
-const Film = ({ info }) => {
+const Film = ({ info, trailer }) => {
   useEffect(() => {
     const Fetch = async () => {
       Layout.setWatch(false);
@@ -32,7 +33,7 @@ const Film = ({ info }) => {
         <Head>
           <title>{`${info.title} — смотреть у Дядьки онлайн без регистрации и СМС`}</title>
         </Head>
-        <FilmInfo info={info} />
+        <FilmInfo info={info} trailer={trailer} />
         <div className={style.film_container} key={info.hdrezka_id}>
           {info.serial && <Episodes info={info} />}
           <Staff kp={info.kp_id} />
@@ -48,7 +49,7 @@ const Film = ({ info }) => {
 export const getServerSideProps = async (context) => {
   const id = context.params.id;
   const { source } = context.query;
-  console.log(source);
+
   var info;
 
   if (source === undefined) {
@@ -61,9 +62,18 @@ export const getServerSideProps = async (context) => {
     info = await response.json();
   }
 
+  const { data } = await axios.get(
+    `https://www.googleapis.com/youtube/v3/search?part=id,snippet&maxResults=1&key=AIzaSyCsT5C4pBFWpzyP4hEOen2ZBhn26AhMCkM&q=${encodeURIComponent(
+      info.title + " трейлер кинопоиск"
+    )}`
+  );
+
+  const trailer = data.items[0].id.videoId;
+
   return {
     props: {
       info,
+      trailer,
     },
   };
 };
