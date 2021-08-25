@@ -110,7 +110,7 @@ const Header = () => {
       <Link href="/favorites">
         <a className={style.header_button}>Избранное</a>
       </Link>
-      <CabinetMenu />
+      {isBrowser && <CabinetMenu />}
     </header>
   );
 };
