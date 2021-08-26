@@ -21,8 +21,12 @@ const Film = ({ info, trailer }) => {
       Info.setInfo(null);
       Info.setDetails(null);
       Video.setUrl(null);
-      Playlist.setTranslations(null);
       Info.setInfo(info);
+      Playlist.setTranslations(info.translations.list);
+      Video.setTranslation(
+        info.translations.default.id,
+        info.translations.default.name
+      );
     };
     Fetch();
   }, [info.hdrezka_id]);

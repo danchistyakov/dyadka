@@ -46,18 +46,7 @@ export const GetUrl = async () => {
       }
       Video.setUrls(urls.urls);
     }
-    const transresponse = await fetch(`/api/translations?id=${Info.info.id}`);
-    const translations = await transresponse.json();
-    Playlist.setTranslations(translations?.translations);
-    if (
-      Video?.translation?.id === undefined ||
-      Video?.translation?.id === null
-    ) {
-      Video.setTranslation(
-        Video?.translation?.id,
-        translations?.translations[0]?.name
-      );
-    }
+
     PlayerOptions.setError(false);
     PlayerControls.setPlaying(true);
   } catch (err) {

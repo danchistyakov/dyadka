@@ -34,13 +34,12 @@ const Episodes = observer(({ info }) => {
   const breakpointsSeasons = {
     320: { slidesPerView: 3.5 },
     768: {
-      slidesPerView:
-        Info?.details?.totalSeasons < 9 ? Info?.details?.totalSeasons : 9,
+      slidesPerView: info.seasons.length < 9 ? info.seasons.length : 9,
     },
   };
   const breakpointsEpisodes = {
     320: { slidesPerView: 1.8 },
-    768: { slidesPerView: 4.9 },
+    768: { slidesPerView: 5 },
   };
 
   useEffect(() => {
