@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import style from "../../styles/Cabinet/AuthPopup.module.sass";
 import Auth from "../../Store/Auth";
 import { observer } from "mobx-react-lite";
+import Icons from "../../Images/Icons";
 
-const AuthPopup = observer(() => {
+const AuthPopup = observer(({ setAuthError }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [screen, setScreen] = useState(1);
@@ -22,8 +23,13 @@ const AuthPopup = observer(() => {
     }
   };
   return (
-    <div className={style.popup_wrapper}>
-      <div className={style.popup_section}>
+    <div className={style.popup_wrapper} onClick={() => setAuthError(false)}>
+      <div className={style.popup_section} onClick={(e) => e.stopPropagation()}>
+        <Icons
+          className={style.close_icon}
+          icon="CloseIcon"
+          onClick={() => setAuthError(false)}
+        />
         <div className={style.popup_block}>
           <h1 className={style.auth_title}>
             {screen === 1

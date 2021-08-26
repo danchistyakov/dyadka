@@ -29,7 +29,7 @@ const Film = ({ info, trailer }) => {
       );
     };
     Fetch();
-  }, [info.hdrezka_id]);
+  }, [info.id]);
 
   if (info !== undefined) {
     return (

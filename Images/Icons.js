@@ -279,7 +279,7 @@ const Icons = (type) => {
 
   if (icon === "LoadingIcon") {
     return (
-      <svg className="icon_loading" viewBox="25 25 50 50">
+      <svg {...type} className="icon_loading" viewBox="25 25 50 50">
         <circle
           className="icon_loading_front"
           cx="50"
@@ -298,6 +298,21 @@ const Icons = (type) => {
           strokeWidth="5"
           strokeMiterlimit="10"
         ></circle>
+      </svg>
+    );
+  }
+
+  if (icon === "CloseIcon") {
+    return (
+      <svg
+        {...type}
+        fill="#fff"
+        focusable="false"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        title="fontSize large"
+      >
+        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
       </svg>
     );
   }

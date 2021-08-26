@@ -59,7 +59,7 @@ const FilmInfo = observer(({ info, trailer }) => {
     };
     Favorite();
 
-    const easyWatch = async () => {
+    /*const easyWatch = async () => {
       var arr = await get("Длительность");
       var search = arr?.findIndex((item) => item?.kinopoisk_id === kp);
       try {
@@ -79,7 +79,7 @@ const FilmInfo = observer(({ info, trailer }) => {
       }
     };
 
-    easyWatch();
+    easyWatch();*/
   }, [info.id]);
 
   const Fav = async () => {
@@ -135,7 +135,7 @@ const FilmInfo = observer(({ info, trailer }) => {
 
   return (
     <section className={style.film_hero}>
-      {authError && <AuthPopup />}
+      {authError && <AuthPopup setAuthError={setAuthError} />}
       <div className={`${style.screen} ${expand ? style.expand : ""}`}>
         {!Layout?.watch ? (
           <div className={style.preview} key={info.kp_id}>
