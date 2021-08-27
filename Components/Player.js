@@ -38,25 +38,6 @@ const Player = observer(() => {
   );
 
   useEffect(() => {
-    const Last = async () => {
-      Video.setUrl(null);
-      PlayerOptions.setError(false);
-      if ((await get("Длительность")) !== undefined) {
-        var info = await get("Длительность");
-        var search = info.findIndex(
-          (item) => item?.kinopoisk_id === Info?.info?.kp
-        );
-        //search !== -1 && setLast(info[search]?.currentTime);
-        info[search]?.quality !== undefined &&
-          Playlist.setQuality(info[search]?.quality);
-        //Playlist.setTranslation({ id: info[search]?.translationId, name: info[search]?.translationName })
-      }
-      PlayerOptions.setBuffering(true);
-    };
-    Last();
-  }, [Info?.info?.kp]);
-
-  useEffect(() => {
     const parsingUrl = async () => {
       await GetUrl();
     };
@@ -172,7 +153,7 @@ const Player = observer(() => {
     }
   }, [Playlist?.last]);
 
-  const prevEpisode = () => {
+  const prevEpisode = async () => {
     if (Playlist?.season !== 1 && Playlist?.episode !== 1) {
       Video.setUrl(null);
     } else {
@@ -181,30 +162,30 @@ const Player = observer(() => {
 
     if (Playlist?.episode > 1) {
       Playlist.setEpisode(Number(Playlist?.episode) - 1);
-      GetUrl();
+      await GetUrl();
       PlayerControls.setPlaying(true);
     } else {
       if (Playlist?.season > 1) {
         Playlist.setSeason(Number(Playlist?.season) - 1);
         Playlist.setEpisode(1);
-        GetUrl();
+        await GetUrl();
         PlayerControls.setPlaying(true);
       }
     }
   };
 
-  const nextEpisode = () => {
+  const nextEpisode = async () => {
     Video.setUrl(null);
-    const playlist = toJS(Info?.playlist);
+    const playlist = toJS(Info?.info.seasons);
     if (Playlist?.episode < playlist[Playlist?.season - 1].episodes.length) {
       Playlist.setEpisode(Number(Playlist?.episode) + 1);
-      GetUrl();
+      await GetUrl();
       PlayerControls.setPlaying(true);
     } else {
       if (Playlist?.season < playlist.length) {
         Playlist.setSeason(Number(Playlist?.season) + 1);
         Playlist.setEpisode(1);
-        GetUrl();
+        await GetUrl();
         PlayerControls.setPlaying(true);
       }
     }
