@@ -28,13 +28,28 @@
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr
     grid-row-gap: 2vw
     margin: 2vw 7vw
+    //width: 100%
 
-.result_image
+.search_results_loader
+    background-color: #202020
+    background-image: linear-gradient( 90deg,#202020,#444,#202020 )
+    background-size: 200px 100%
+    background-repeat: no-repeat
+    border-radius: 4px
+    -webkit-animation: animation-loader 2s ease-in-out infinite
+    animation: animation-loader 2s ease-in-out infinite
+
+.result_image,.result_image_loader
     border-radius: 1vw
     width: 12vw
+    height: 18vw
 
-.result_title
+.result_title,.result_title_loader
     margin-top: .6vw
+
+.result_title_loader
+    width: 12vw
+    height: 1.1vw
 
 @media (max-width: 767px)
     .input_block
@@ -50,12 +65,24 @@
         width: 100%
         margin-left: 2vw
 
-    .search_results
+    .search_results,.search_results_loader
         grid-template-columns: 1fr 1fr
         grid-column-gap: 6vw
         grid-row-gap: 4vw
 
-    .result_image
+    .result_image,.result_image_loader
         width: 40vw
-        height: auto
+        height: 60vw
         border-radius: 3vw
+
+    .result_title_loader
+        margin-top: 2vw
+        width: 40vw
+        height: 4vw
+
+@keyframes animation-loader
+    0%
+        background-position: -200px 0
+
+    100%
+        background-position: calc(200px + 100%) 0
