@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper.min.css";
 import SwiperCore, { Navigation } from "swiper/core";
@@ -13,6 +13,7 @@ import {
   isMobile,
 } from "react-device-detect";
 import CabinetMenu from "./Cabinet/CabinetMenu";
+import Menu from "./Menu";
 
 SwiperCore.use([Navigation]);
 
@@ -37,9 +38,25 @@ const Header = () => {
     { title: "Аниме", link: "animation" },
   ];
 
+  const [opened, setOpen] = useState(false);
+
   return (
     <header className={style.header}>
       <div className={style.links}>
+        {!opened ? (
+          <Icons
+            icon="MenuIcon"
+            onClick={() => setOpen(true)}
+            className={style.menu_icon}
+          />
+        ) : (
+          <Icons
+            icon="CloseIcon"
+            onClick={() => setOpen(false)}
+            className={style.close_icon}
+          />
+        )}
+        {opened && <Menu setOpen={setOpen} />}
         <Link href={"/"}>
           <a className={style.logo}>Дядька в кино</a>
         </Link>
@@ -62,43 +79,22 @@ const Header = () => {
         </div>
       </div>
       <nav className={style.nav}>
-        <Swiper
-          freeMode={true}
-          slidesPerView="auto"
-          navigation={navigationCategories}
-          breakpoints={breakpointsCategories}
-          className={style.categories_slider}
-        >
-          {nav?.map((res, key) => (
-            <SwiperSlide className={style.categories_item} key={key}>
-              <Link
-                href="/category/[category]"
-                as={`/category/${res?.link}`}
-                key={key}
-                draggable="false"
-                className={style.nav_element}
-                activeClassName={style.pages_a_active}
-              >
-                {res?.title}
-              </Link>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-
         <div className={style.categories}>
           {nav?.map((res, key) => (
-            <div className={style.categories_item} key={key}>
-              <Link
-                href="/category/[category]"
-                as={`/category/${res?.link}`}
-                key={key}
-                draggable="false"
-                className={style.nav_element}
-                activeClassName={style.pages_a_active}
-              >
-                {res?.title}
-              </Link>
-            </div>
+            <Link
+              href="/category/[category]"
+              as={`/category/${res?.link}`}
+              key={key}
+              draggable="false"
+              className={style.nav_element}
+              activeClassName={style.pages_a_active}
+            >
+              <a>
+                <div className={style.categories_item} key={key}>
+                  {res?.title}
+                </div>
+              </a>
+            </Link>
           ))}
         </div>
       </nav>

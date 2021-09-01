@@ -19,6 +19,7 @@ const Search = ({ results }) => {
   useEffect(async () => {
     if (query) {
       setLoading(true);
+      console.log(query);
       router.push(
         {
           pathname: "/search",
@@ -27,8 +28,15 @@ const Search = ({ results }) => {
         undefined,
         { shallow: true }
       );
-      const response = await axios.get(`/api/search?q=${query}`);
-      setResult(response.data.search);
+      const response = await fetch("https://api.dyadka.gq/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({ q: query }),
+      });
+      const data = await response.json();
+      setResult(data.search);
       setLoading(false);
     } else {
       //setResult([]);
@@ -63,7 +71,7 @@ const Search = ({ results }) => {
                 <Link
                   draggable="false"
                   href="/media/[id]"
-                  as={`/media/${res?.id}`}
+                  as={`/media/${res?.id}-${res?.slug}`}
                 >
                   <a className={style.search_result}>
                     <LazyLoadImage
@@ -108,14 +116,18 @@ export const getServerSideProps = async (context) => {
 
   if (!q) {
     const response = await fetch(
-      "https://new.dyadka.gq/api/categories?category=watching"
+      "https://api.dyadka.gq/categories?category=watching"
     );
-    data = (await response.json()).items;
+    data = (await response.json()).results;
     query = "";
   } else {
-    const response = await fetch(
-      `https://new.dyadka.gq/api/search?q=${encodeURIComponent(q)}`
-    );
+    const response = await fetch("https://api.dyadka.gq/search", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify({ q }),
+    });
     data = (await response.json()).search;
     query = q;
   }

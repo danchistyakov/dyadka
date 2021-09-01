@@ -50,21 +50,30 @@ const Film = ({ info, trailer }) => {
   }
 };
 
-export const getServerSideProps = async (context) => {
-  const id = context.params.id;
-  const { source } = context.query;
-
+export const getStaticProps = async (context) => {
+  const url = context.params.id;
+  const source = null;
+  const id = url.slice(0, url.indexOf("-"));
+  console.log(id);
+  const slug = url.slice(url.indexOf("-") + 1);
+  console.log(slug);
   var info;
 
-  if (source === undefined) {
-    const response = await fetch(`https://api.dyadka.gq/film?id=${id}`);
+  if (source === null) {
+    const response = await fetch(`https://api.dyadka.gq/film`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify({ id, slug }),
+    });
     info = await response.json();
   }
 
-  if (source === "kp") {
-    const response = await fetch(`https://api.dyadka.gq/film?id=${id}`);
+  /*if (source === "kp") {
+    const response = await fetch(`https://api.dyadka.gq/film`);
     info = await response.json();
-  }
+  }*/
 
   const { data } = await axios.get(
     `https://www.googleapis.com/youtube/v3/search?part=id,snippet&maxResults=1&key=AIzaSyCsT5C4pBFWpzyP4hEOen2ZBhn26AhMCkM&q=${encodeURIComponent(
@@ -82,4 +91,10 @@ export const getServerSideProps = async (context) => {
   };
 };
 
+export const getStaticPaths = async () => {
+  return {
+    paths: [], //indicates that no page needs be created at build time
+    fallback: "blocking", //indicates the type of fallback
+  };
+};
 export default Film;

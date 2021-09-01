@@ -92,7 +92,7 @@ const Settings = observer(() => {
                     <span className={style.option_name}>Качество:</span>
                     <span className={style.preview_clickable}>
                       <span className={style.preview_value}>
-                        {Playlist?.quality}
+                        {Playlist?.quality || "..."}
                       </span>
                       <span className={style.settings_chevron}>
                         <Icons icon="ChevronRightIcon" />

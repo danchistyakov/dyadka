@@ -39,11 +39,11 @@ const Player = observer(() => {
 
   useEffect(() => {
     const parsingUrl = async () => {
+      console.log(Video.translation.id)
       await GetUrl();
     };
-
     parsingUrl();
-  }, [Info?.info?.kp, Video?.translation?.id]);
+  }, [Info?.info?.id, Video?.translation?.id]);
 
   useEffect(() => {
     const Quality = async () => {

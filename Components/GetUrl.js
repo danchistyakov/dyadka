@@ -3,53 +3,45 @@ import PlayerOptions from "../Store/PlayerOptions";
 import Info from "../Store/Info";
 import PlayerControls from "../Store/PlayerControls";
 import Video from "../Store/Video";
-import { toJS } from "mobx";
 
 export const GetUrl = async () => {
   try {
     Video.setUrl(null);
-    var url;
     PlayerOptions.setBuffering(true);
     PlayerControls.setPlaying(true);
-    if (
-      Video?.translation?.id !== null &&
-      Video?.translation?.id !== undefined
-    ) {
-      url = Info?.info.serial
-        ? `https://api.dyadka.gq/geturl?kp=${Info?.info?.kp_id}&season=${
-            Playlist?.season || 1
-          }&episode=${Playlist?.episode}&id=${Info.info.id}&translation=${
-            Video?.translation?.id
-          }&source=rezka`
-        : `https://api.dyadka.gq/geturl?kp=${Info?.info?.kp_id}&id=${Info.info.id}&translation=${Video?.translation?.id}&source=rezka`;
-      const response = await fetch(url);
-      const result = await response.json();
-      Video.setUrl(result?.urls[0].urls[0]);
-      Video.setUrls(result.urls);
+    const response = await fetch("https://api.dyadka.gq/geturl", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: Info.info.serial
+        ? JSON.stringify({
+            id: Info.info.id,
+            translation: Video.translation.id,
+            season: Playlist.season,
+            episode: Playlist.episode,
+          })
+        : JSON.stringify({
+            id: Info.info.id,
+            translation: Video.translation.id,
+          }),
+    });
+    const result = await response.json();
+    Video.setUrls(result.media);
+    Playlist.setQuality(result.media[0].quality);
+    if (Playlist.quality) {
+      result.media.filter((item) => {
+        if (item.quality === Playlist.quality) {
+          Video.setUrl(item.urls[0]);
+        }
+      });
     } else {
-      const urlresponse = await fetch(
-        Info?.info.serial
-          ? `https://api.dyadka.gq/geturl?kp=${Info?.info?.kp_id}&season=${
-              Playlist?.season || 1
-            }&episode=${Playlist?.episode}&id=${Info.info.id}&source=rezka`
-          : `https://api.dyadka.gq/geturl?kp=${Info?.info?.kp_id}&id=${Info.info.id}&source=rezka`
-      );
-      const urls = await urlresponse.json();
-      if (Playlist?.quality !== undefined) {
-        urls?.urls.filter((quality) => {
-          if (quality?.quality === Playlist?.quality) {
-            Video.setUrl(quality?.urls[0]);
-          }
-        });
-      } else {
-        Video.setUrl(urls?.urls[0].urls[0]);
-      }
-      Video.setUrls(urls.urls);
+      Video.setUrl(result.media[0].urls[0]);
     }
-
     PlayerOptions.setError(false);
     PlayerControls.setPlaying(true);
   } catch (err) {
+    console.log(err);
     PlayerOptions.setError(true);
   }
 };
