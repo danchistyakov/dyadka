@@ -1,31 +1,9 @@
 import React, { useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/swiper.min.css";
-import SwiperCore, { Navigation } from "swiper/core";
-import Skeleton from "react-loading-skeleton";
 import Link from "next/link";
 import style from "../styles/Header.module.sass";
 import Icons from "../Images/Icons";
-import {
-  BrowserView,
-  MobileView,
-  isBrowser,
-  isMobile,
-} from "react-device-detect";
 import CabinetMenu from "./Cabinet/CabinetMenu";
 import Menu from "./Menu";
-
-SwiperCore.use([Navigation]);
-
-const breakpointsCategories = {
-  320: { slidesPerView: "auto" },
-  768: { slidesPerView: "auto" },
-};
-
-const navigationCategories = {
-  nextEl: ".swiper-button-next.episodes",
-  prevEl: ".swiper-button-prev.episodes",
-};
 
 const Header = () => {
   const nav = [
@@ -106,7 +84,7 @@ const Header = () => {
       <Link href="/favorites">
         <a className={style.header_button}>Избранное</a>
       </Link>
-      {isBrowser && <CabinetMenu />}
+      <CabinetMenu />
     </header>
   );
 };

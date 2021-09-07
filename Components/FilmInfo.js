@@ -31,11 +31,11 @@ const FilmInfo = observer(({ info, trailer }) => {
     window.scrollTo(0, 0);
   };
 
-  useEffect(() => {
+  /*useEffect(() => {
     const checkAuth = async () => {
       await Auth.checkAuth();
     };
-  }, []);
+  }, []);*/
 
   useEffect(() => {
     const Favorite = async () => {
@@ -58,29 +58,7 @@ const FilmInfo = observer(({ info, trailer }) => {
       }
     };
     Favorite();
-
-    /*const easyWatch = async () => {
-      var arr = await get("Длительность");
-      var search = arr?.findIndex((item) => item?.kinopoisk_id === kp);
-      try {
-        if (
-          arr[search]?.translationId !== undefined &&
-          arr[search]?.translationName !== undefined
-        ) {
-          Video.setTranslation(
-            arr[search]?.translationId,
-            arr[search]?.translationName
-          );
-        } else {
-          Video.setTranslation(null, null);
-        }
-      } catch (err) {
-        Video.setTranslation(null, null);
-      }
-    };
-
-    easyWatch();*/
-  }, [info.id]);
+  }, [info.id, Auth.isAuth]);
 
   const Fav = async () => {
     if (!favorite) {
@@ -93,6 +71,7 @@ const FilmInfo = observer(({ info, trailer }) => {
             id: info.id,
             poster: `https://kinopoiskapiunofficial.tech/images/posters/kp_small/${info.kp_id}.jpg`,
             title: Info?.info?.title,
+            url: Info.info.slug,
           },
           {
             headers: {
@@ -108,7 +87,7 @@ const FilmInfo = observer(({ info, trailer }) => {
         if (e.response.status === 401) {
           setAuthError(true);
         }
-        console.log(e.response.status);
+        console.log(e);
       }
     } else if (favorite) {
       const { data } = await axios.post(

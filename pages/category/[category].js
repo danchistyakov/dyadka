@@ -5,7 +5,7 @@ import style from "../../styles/Genre.module.sass";
 import Link from "next/link";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
-const Genre = (data) => {
+const Genre = ({ data }) => {
   const router = useRouter();
   const category = router.query.category;
 
@@ -14,13 +14,9 @@ const Genre = (data) => {
       <h1 className={style.genre_title}>{data?.data?.title}</h1>
       {/*(number > result?.pagesCount) && (<h1 className={style.genre_title}>Результатов поиска оказалось немного меньше :(</h1>)*/}
       <div className={style.genre_section}>
-        {data?.data?.items.map((res, key) => (
+        {data.results.map((res, key) => (
           <div className={style.genre_item} key={category + key}>
-            <Link
-              draggable="false"
-              href="/media/[id]"
-              as={`/media/${res?.id}-${res?.slug}`}
-            >
+            <Link draggable="false" href="/[type]/[genre]/[id]" as={res?.slug}>
               <a>
                 <LazyLoadImage
                   className={style.genre_poster}
@@ -69,9 +65,10 @@ export const getStaticPaths = async () => {
 export const getServerSideProps = async (context) => {
   const category = context.params.category;
   const response = await fetch(
-    `https://new.dyadka.gq/api/categories?category=${category}`
+    `https://api.dyadka.gq/categories?category=${category}`
   );
   const data = await response.json();
+  console.log(data);
   return {
     props: {
       data,

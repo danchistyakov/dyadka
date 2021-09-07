@@ -39,8 +39,9 @@ const Player = observer(() => {
 
   useEffect(() => {
     const parsingUrl = async () => {
-      console.log(Video.translation.id)
-      await GetUrl();
+      if (!Video.url) {
+        await GetUrl();
+      }
     };
     parsingUrl();
   }, [Info?.info?.id, Video?.translation?.id]);

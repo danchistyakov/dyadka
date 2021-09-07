@@ -3,7 +3,7 @@ import { makeAutoObservable } from "mobx";
 class Video {
   url = null;
   urls = [];
-  translation = { id: "loading", name: "loading" };
+  translation = { id: "loading", name: "loading", params: "loading" };
 
   constructor() {
     makeAutoObservable(this);
@@ -17,8 +17,8 @@ class Video {
     this.urls = urls;
   }
 
-  setTranslation(id, name) {
-    this.translation = { id: id, name: name };
+  setTranslation(id, name, params) {
+    this.translation = { id, name, params };
   }
 }
 

@@ -79,15 +79,13 @@ const TopControls = observer(({ setPirate }) => {
   return (
     <div className={style.top_controls}>
       <div className={style.top_left}>
-        {Info?.info?.serial && (
+        {Info?.info?.series && (
           <p className={style.episode_info}>
             {Info?.info?.title}. Сезон {Playlist?.season}. Серия{" "}
             {Playlist?.episode}
           </p>
         )}
-        {!Info?.info?.serial && (
-          <p className={style.episode_info}>{Info?.info?.title}</p>
-        )}
+
         {continueTime !== false && (
           <button onClick={handleContinue} className={style.button_continue}>
             Продолжить
@@ -122,7 +120,11 @@ const TopControls = observer(({ setPirate }) => {
             {Playlist?.translations?.map((res, key) => (
               <span
                 className={style.translation_item}
-                onClick={() => handleTranslation(res?.id, res?.name)}
+                onClick={() =>
+                  Info.info.series
+                    ? handleTranslation(res?.id, res?.name)
+                    : handleTranslation(res?.id, res?.name, res?.params)
+                }
                 key={key}
               >
                 {res?.name}

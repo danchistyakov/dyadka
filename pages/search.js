@@ -70,8 +70,8 @@ const Search = ({ results }) => {
               <div className={style.search_result} key={debouncedQuery + key}>
                 <Link
                   draggable="false"
-                  href="/media/[id]"
-                  as={`/media/${res?.id}-${res?.slug}`}
+                  href="/[type]/[genre]/[id]"
+                  as={res?.slug}
                 >
                   <a className={style.search_result}>
                     <LazyLoadImage

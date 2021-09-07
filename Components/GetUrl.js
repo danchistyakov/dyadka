@@ -9,21 +9,25 @@ export const GetUrl = async () => {
     Video.setUrl(null);
     PlayerOptions.setBuffering(true);
     PlayerControls.setPlaying(true);
+
     const response = await fetch("https://api.dyadka.gq/geturl", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
       },
-      body: Info.info.serial
+      body: Info.info.series
         ? JSON.stringify({
-            id: Info.info.id,
+            source: Info.source,
             translation: Video.translation.id,
             season: Playlist.season,
             episode: Playlist.episode,
+            token: Info.info.token,
           })
         : JSON.stringify({
-            id: Info.info.id,
+            source: Info.source,
+            hash: Video.translation.params,
             translation: Video.translation.id,
+            token: Info.info.token,
           }),
     });
     const result = await response.json();
