@@ -16,7 +16,9 @@ import axios from "axios";
 const Film = ({ info, trailer }) => {
   useEffect(() => {
     const Fetch = async () => {
-      Layout.setWatch(false);
+      Layout.watch === "favs"
+        ? setTimeout(() => Layout.setWatch(true), 2000)
+        : Layout.setWatch(false);
       Info.videoCDN(null);
       Info.setInfo(null);
       Info.setDetails(null);
@@ -52,8 +54,8 @@ const Film = ({ info, trailer }) => {
         <FilmInfo info={info} trailer={trailer} />
         <div className={style.film_container} key={info.hdrezka_id}>
           {info.series && <Episodes info={info} />}
-          <Staff kp={info.kp_id} />
-          <Similar kp={info.kp_id} />
+          {<Staff kp={info.kp_id} />}
+          {<Similar kp={info.kp_id} />}
         </div>
       </SkeletonTheme>
     );
@@ -76,11 +78,6 @@ export const getStaticProps = async (context) => {
     body: JSON.stringify({ data: slug }),
   });
   info = await response.json();
-  console.log(info);
-  /*if (source === "kp") {
-    const response = await fetch(`https://api.dyadka.gq/film`);
-    info = await response.json();
-  }*/
 
   const { data } = await axios.get(
     `https://www.googleapis.com/youtube/v3/search?part=id,snippet&maxResults=1&key=AIzaSyCsT5C4pBFWpzyP4hEOen2ZBhn26AhMCkM&q=${encodeURIComponent(

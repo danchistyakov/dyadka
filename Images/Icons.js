@@ -131,6 +131,14 @@ const Icons = (type) => {
     );
   }
 
+  if (icon === "ExternalPlayerIcon") {
+    return (
+      <svg {...type} fill="#fff" focusable="false" viewBox="0 0 24 24">
+        <path d="M5 17h14v2H5zm7-12L5.33 15h13.34z"></path>
+      </svg>
+    );
+  }
+
   if (icon === "VolumeUpIcon") {
     return (
       <svg {...type} fill="#fff" focusable="false" viewBox="0 0 24 24">

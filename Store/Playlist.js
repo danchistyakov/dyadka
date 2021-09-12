@@ -29,8 +29,8 @@ class Playlist {
     this.id = id;
   }
 
-  setQuality(quality) {
-    this.quality = quality;
+  setQuality(name, id) {
+    this.quality = { name, id };
   }
 
   autoNext(playlist) {

@@ -30,17 +30,18 @@ export const GetUrl = async () => {
             token: Info.info.token,
           }),
     });
-    const result = await response.json();
-    Video.setUrls(result.media);
-    Playlist.setQuality(result.media[0].quality);
-    if (Playlist.quality) {
-      result.media.filter((item) => {
-        if (item.quality === Playlist.quality) {
+    const { media } = await response.json();
+    Video.setUrls(media);
+    if (Playlist.quality.name) {
+      media.filter((item) => {
+        if (item.quality === Playlist.quality.name) {
           Video.setUrl(item.urls[0]);
+          Playlist.setQuality(item.quality, null);
         }
       });
     } else {
-      Video.setUrl(result.media[0].urls[0]);
+      Playlist.setQuality(media[0].quality, null);
+      Video.setUrl(media[0].urls[0]);
     }
     PlayerOptions.setError(false);
     PlayerControls.setPlaying(true);

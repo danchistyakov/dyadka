@@ -5,37 +5,30 @@ import Icons from "../Images/Icons";
 import { observer } from "mobx-react-lite";
 import { toJS } from "mobx";
 import Video from "../Store/Video";
+import PlayerOptions from "../Store/PlayerOptions";
 import Info from "../Store/Info";
-import { get, set } from "idb-keyval";
 
 const Settings = observer(() => {
-  const [qualityOptions, setQualityOptions] = useState({
-    quality: "1080p Ultra",
-    qvisible: false,
-  });
-  const [svisible, setSVisible] = useState(false);
-  const { quality, qvisible } = qualityOptions;
+  const [qvisible, setqVisible] = useState(false);
+  const [svisible, setsVisible] = useState(false);
   const [speed, setSpeed] = useState(false);
-  const [visible, setVisible] = useState(false);
   const settingsModal = useRef(null);
 
   useEffect(() => {
     const onClick = (e) =>
       settingsModal.current?.contains(e.target) ||
-      (setVisible(false),
-      setSpeed(false),
-      setQualityOptions({ ...qualityOptions, qvisible: false }));
+      (setsVisible(false), setSpeed(false), setqVisible(false));
     document.addEventListener("click", onClick);
     return () => document.removeEventListener("click", onClick);
   }, []);
 
-  const handleQuality = (item) => {
-    Video.setUrl(item.urls[0]);
-    setQualityOptions({ quality: item?.quality, qvisible: false });
-    Playlist.setQuality(item?.quality);
+  const handleQuality = (item, key) => {
+    PlayerOptions.setBuffering(true);
+    setqVisible(false);
+    Playlist.setQuality(item?.quality, key);
   };
 
-  useEffect(() => {
+  /*useEffect(() => {
     const Last = async () => {
       if ((await get("Длительность")) !== undefined) {
         var info = await get("Длительность");
@@ -43,40 +36,40 @@ const Settings = observer(() => {
           (item) => item?.kinopoisk_id === Info?.info?.kp
         );
         info[search]?.quality !== undefined &&
-          setQualityOptions({
+          setqVisible({
             ...qualityOptions,
             quality: info[search]?.quality,
           });
       }
     };
     Last();
-  }, [Info?.info?.kp]);
+  }, [Info?.info?.kp]);*/
 
   return (
     <div>
-      {!visible && (
+      {!svisible && (
         <Icons
           icon="SettingsIcon"
           className={style.settings_icon}
           onClick={(e) => {
             e.stopPropagation();
-            setVisible(true);
+            setsVisible(true);
           }}
         />
       )}
-      {visible && (
+      {svisible && (
         <span className={style.settings_icon_active}>
           <Icons
             icon="SettingsIcon"
             className={style.settings_icon}
             onClick={(e) => {
               e.stopPropagation();
-              setVisible(false);
+              setsVisible(false);
             }}
           />
         </span>
       )}
-      {visible && (
+      {svisible && (
         <div className={style.popup} ref={settingsModal}>
           <div className={style.settings_list}>
             {!speed && !qvisible && (
@@ -84,7 +77,7 @@ const Settings = observer(() => {
                 className={style.settings_item}
                 onClick={(e) => {
                   e.stopPropagation();
-                  setQualityOptions({ ...qualityOptions, qvisible: true });
+                  setqVisible(true);
                 }}
               >
                 {!qvisible && (
@@ -92,7 +85,7 @@ const Settings = observer(() => {
                     <span className={style.option_name}>Качество:</span>
                     <span className={style.preview_clickable}>
                       <span className={style.preview_value}>
-                        {Playlist?.quality || "..."}
+                        {Playlist?.quality?.name || "..."}
                       </span>
                       <span className={style.settings_chevron}>
                         <Icons icon="ChevronRightIcon" />
@@ -131,7 +124,7 @@ const Settings = observer(() => {
                   className={style.options_title}
                   onClick={(e) => {
                     e.stopPropagation();
-                    setQualityOptions({ ...qualityOptions, qvisible: false });
+                    setqVisible(false);
                   }}
                 >
                   <span className={style.left_chevron}>
@@ -144,7 +137,7 @@ const Settings = observer(() => {
                     <span
                       key={key}
                       className={style.settings_choice}
-                      onClick={() => handleQuality(item)}
+                      onClick={() => handleQuality(item, key)}
                     >
                       {item?.quality}
                     </span>

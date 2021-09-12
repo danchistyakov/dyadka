@@ -7,13 +7,21 @@ import Menu from "./Menu";
 
 const Header = () => {
   const nav = [
-    { title: "Сейчас смотрят", link: "watching" },
-    { title: "Новинки", link: "last" },
-    { title: "Фильмы", link: "films" },
-    { title: "Сериалы", link: "series" },
-    { title: "Мультфильмы", link: "cartoons" },
-    { title: "Телепередачи", link: "show" },
-    { title: "Аниме", link: "animation" },
+    {
+      title: "Сейчас смотрят",
+      link: "/category/watching",
+      as: "/category/[category]",
+    },
+    { title: "Новинки", link: "/category/last", as: "/category/[category]" },
+    { title: "Фильмы", link: "/films", as: "/[type]" },
+    { title: "Сериалы", link: "/series", as: "/[type]" },
+    { title: "Мультфильмы", link: "/cartoons", as: "/[type]" },
+    {
+      title: "Телепередачи",
+      link: "/show",
+      as: "/[type]",
+    },
+    { title: "Аниме", link: "/animation", as: "/[type]" },
   ];
 
   const [opened, setOpen] = useState(false);
@@ -60,8 +68,8 @@ const Header = () => {
         <div className={style.categories}>
           {nav?.map((res, key) => (
             <Link
-              href="/category/[category]"
-              as={`/category/${res?.link}`}
+              href={res.as}
+              as={res.link}
               key={key}
               draggable="false"
               className={style.nav_element}

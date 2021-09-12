@@ -48,17 +48,29 @@ const Player = observer(() => {
 
   useEffect(() => {
     const Quality = async () => {
-      PlayerOptions.setBuffering(true);
-      if ((await get("Длительность")) !== undefined) {
-        var info = await get("Длительность");
-        var search = info.findIndex(
-          (item) => item?.kinopoisk_id === Info?.info?.kp
-        );
-        search !== -1 && playerRef.current?.seekTo(info[search]?.currentTime);
+      if (Playlist.quality.id !== null && Playlist.quality.id !== undefined) {
+        const id = Number(Playlist.quality.id);
+        //const info = await get("Длительность");
+        const videos = toJS(Video?.urls);
+        const time = PlayerControls?.currentTime;
+        /*if (info) {
+          const search = info.findIndex(
+            (item) => item?.kinopoisk_id === Info?.info?.kp
+          );
+          if (search !== -1) {
+            time = info[search]?.currentTime;
+          }
+        }*/
+        Video.setUrl(videos[id].urls[0]);
+        PlayerOptions.setBuffering(true);
+        if (time) {
+          setTimeout(() => playerRef.current?.seekTo(time), 1000);
+        }
+        PlayerOptions.setBuffering(false);
       }
     };
     Quality();
-  }, [Playlist?.quality]);
+  }, [Playlist.quality?.id]);
 
   const handleKeys = (e) => {
     if (e.code === "Space") {
@@ -130,7 +142,6 @@ const Player = observer(() => {
 
   const onClickHandler = (e, action) => {
     clearTimeout(timer);
-    console.log(e);
     if (e.detail === 1) {
       timer = setTimeout(
         () => PlayerControls.setPlaying(!PlayerControls?.playing),
@@ -200,7 +211,7 @@ const Player = observer(() => {
     return () => {
       document.body.removeChild(script);
     };
-  }, [Info.info.kp_id, pirate]);
+  }, [Info.info?.kp_id, pirate]);
 
   return (
     <section>
@@ -268,12 +279,13 @@ const Player = observer(() => {
             )}
           </div>
           <div className="controls" ref={controlsRef}>
-            <TopControls setPirate={setPirate} />
+            <TopControls />
             <BottomControls
               video={video}
               handleSeekChange={handleSeekChange}
               prevEpisode={prevEpisode}
               nextEpisode={nextEpisode}
+              setPirate={setPirate}
             />
           </div>
         </FullScreen>

@@ -8,7 +8,7 @@ import style from "../styles/TopControls.module.sass";
 import Icons from "../Images/Icons";
 import Video from "../Store/Video";
 
-const TopControls = observer(({ setPirate }) => {
+const TopControls = observer(() => {
   const [translations, setTranslations] = useState(null);
   const [continueTime, setContinueTime] = useState(false);
   const translateModal = useRef(null);
@@ -75,7 +75,6 @@ const TopControls = observer(({ setPirate }) => {
     }
   };
 
-  console.log(Video?.translation?.name);
   return (
     <div className={style.top_controls}>
       <div className={style.top_left}>
@@ -132,15 +131,6 @@ const TopControls = observer(({ setPirate }) => {
             ))}
           </div>
         )}
-        <button
-          className={style.button_pirate}
-          onClick={() => {
-            setPirate(true);
-          }}
-        >
-          {" "}
-          Внешний плеер
-        </button>
       </div>
     </div>
   );
