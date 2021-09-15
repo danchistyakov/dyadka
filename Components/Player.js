@@ -20,6 +20,7 @@ import {
 } from "react-device-detect";
 import Volume from "../Store/Volume";
 import Icons from "../Images/Icons";
+import useThrottle from "../Hooks/useThrottle";
 
 var timer;
 
@@ -39,12 +40,12 @@ const Player = observer(() => {
 
   useEffect(() => {
     const parsingUrl = async () => {
-      if (!Video.url) {
+      if (Video.url === null) {
         await GetUrl();
       }
     };
     parsingUrl();
-  }, [Info?.info?.id, Video?.translation?.id]);
+  }, [Info?.info?.id]);
 
   useEffect(() => {
     const Quality = async () => {
@@ -118,7 +119,7 @@ const Player = observer(() => {
   const handleProgress = async (data) => {
     PlayerControls.setPlayed(parseFloat(data?.played));
     PlayerControls.setCurrentTime(data?.playedSeconds);
-
+    //useThrottle(data?.playedSeconds, 5000);
     if (count > 3 && video.active) {
       controlsRef.current.style.visibility = "hidden";
       document.body.style.cursor = "none";

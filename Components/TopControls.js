@@ -7,6 +7,7 @@ import PlayerControls from "../Store/PlayerControls";
 import style from "../styles/TopControls.module.sass";
 import Icons from "../Images/Icons";
 import Video from "../Store/Video";
+import { GetUrl } from "./GetUrl";
 
 const TopControls = observer(() => {
   const [translations, setTranslations] = useState(null);
@@ -50,10 +51,12 @@ const TopControls = observer(() => {
     setContinueTime(false);
   };
 
-  const handleTranslation = async (id, name) => {
+  const handleTranslation = async (id, name, params) => {
     setTranslations(!translations);
-    Video.setTranslation(id, name);
-    PlayerControls.setPlaying(true);
+    const options = params ? params : null;
+    console.log(id, name, options);
+    Video.setTranslation(id, name, options);
+    await GetUrl();
     var info =
       (await get("Длительность")) !== undefined
         ? await get("Длительность")

@@ -16,9 +16,6 @@ import axios from "axios";
 const Film = ({ info, trailer }) => {
   useEffect(() => {
     const Fetch = async () => {
-      Layout.watch === "favs"
-        ? setTimeout(() => Layout.setWatch(true), 2000)
-        : Layout.setWatch(false);
       Info.videoCDN(null);
       Info.setInfo(null);
       Info.setDetails(null);
@@ -41,6 +38,9 @@ const Film = ({ info, trailer }) => {
         info.translations.default.id,
         info.translations.default.name
       );
+      Layout.watch === "favs"
+        ? setTimeout(() => Layout.setWatch(true), 2000)
+        : Layout.setWatch(false);
     };
     Fetch();
   }, [info.id]);

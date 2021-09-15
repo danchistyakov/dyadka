@@ -8,8 +8,6 @@ export const GetUrl = async () => {
   try {
     Video.setUrl(null);
     PlayerOptions.setBuffering(true);
-    PlayerControls.setPlaying(true);
-
     const response = await fetch("https://api.dyadka.gq/geturl", {
       method: "POST",
       headers: {
@@ -32,15 +30,22 @@ export const GetUrl = async () => {
     });
     const { media } = await response.json();
     Video.setUrls(media);
+
     if (Playlist.quality.name) {
-      media.filter((item) => {
-        if (item.quality === Playlist.quality.name) {
-          Video.setUrl(item.urls[0]);
-          Playlist.setQuality(item.quality, null);
-        }
-      });
+      const filtered = media.find(
+        (item) => item.quality === Playlist.quality.name
+      );
+
+      if (filtered) {
+        Video.setUrl(filtered.urls[0]);
+        Playlist.setQuality(filtered.quality, null);
+      } else {
+        Video.setUrl(media[0].urls[0]);
+        Playlist.setQuality(media[0].quality, null);
+      }
     } else {
       Playlist.setQuality(media[0].quality, null);
+      console.log(media[0].urls[0]);
       Video.setUrl(media[0].urls[0]);
     }
     PlayerOptions.setError(false);
