@@ -20,7 +20,7 @@ import {
 } from "react-device-detect";
 import Volume from "../Store/Volume";
 import Icons from "../Images/Icons";
-import useThrottle from "../Hooks/useThrottle";
+//import useThrottle from "../Hooks/useThrottle";
 
 var timer;
 
