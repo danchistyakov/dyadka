@@ -16,35 +16,35 @@ const Search = ({ results }) => {
 
   const debouncedQuery = useDebounce(query, 500);
 
-  useEffect(async () => {
-    if (query) {
-      setLoading(true);
-      console.log(query);
-      router.push(
-        {
-          pathname: "/search",
-          query: { q: query },
-        },
-        undefined,
-        { shallow: true }
-      );
-      const response = await fetch("https://api.dyadka.gq/search", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json;charset=utf-8",
-        },
-        body: JSON.stringify({ q: query }),
-      });
-      const data = await response.json();
-      setResult(data.search);
-      setLoading(false);
-    } else {
-      //setResult([]);
-    }
+  useEffect(() => {
+    const Search = async () => {
+      if (query) {
+        setLoading(true);
+        router.push(
+          {
+            pathname: "/search",
+            query: { q: query },
+          },
+          undefined,
+          { shallow: true }
+        );
+        const response = await fetch("https://api.dyadka.gq/search", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+          },
+          body: JSON.stringify({ q: query }),
+        });
+        const data = await response.json();
+        setResult(data.search);
+        setLoading(false);
+      }
 
-    if (result?.searchFilmsCountResult === 0 && result?.keyboard !== "") {
-      setResult([]);
-    }
+      if (result?.searchFilmsCountResult === 0 && result?.keyboard !== "") {
+        setResult([]);
+      }
+    };
+    Search();
   }, [debouncedQuery]);
 
   return (
