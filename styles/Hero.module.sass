@@ -24,6 +24,11 @@
     font-size: 1.2vw
     margin-top: 1vw
     width: 60%
+    overflow: hidden
+    text-overflow: ellipsis
+    display: -webkit-box
+    -webkit-line-clamp: 4
+    -webkit-box-orient: vertical
 
 .style.swiper_button
     position: absolute
@@ -55,12 +60,11 @@
         font-size: 4vw
         width: 100%
         margin: 2vw 0
-        -webkit-box-orient: vertical
+        overflow: hidden
+        text-overflow: ellipsis
         display: -webkit-box
         -webkit-line-clamp: 3
-        overflow: hidden
-        position: relative
-        text-overflow: ellipsis
+        -webkit-box-orient: vertical
 
     .hero_img
         height: 100vw
