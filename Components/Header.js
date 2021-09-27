@@ -44,7 +44,7 @@ const Header = () => {
         )}
         {opened && <Menu setOpen={setOpen} />}
         <Link href={"/"}>
-          <a className={style.logo}>Кино</a>
+          <a className={style.logo}>Кинолюкс</a>
         </Link>
         <div className={style.header_icons}>
           <Link href="/search">
