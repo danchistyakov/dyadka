@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import style from "../styles/Favorite.module.sass";
+import style from "../styles/Cabinet/Favorite.module.sass";
 import Link from "next/link";
 import { get } from "idb-keyval";
 import Image from "next/image";
@@ -26,7 +26,7 @@ const Favorites = () => {
       </p>
       <div className={style.favorite}>
         {favorite?.map((res, key) => (
-          <Link href="/media/[id]" as={`/media/${res?.id}`} key={key}>
+          <Link href="/[type]/[genre]/[id]" as={res?.url} key={key}>
             <a>
               <div className={style.favorite_item}>
                 {res?.blank && <p>{res?.blank}</p>}

@@ -3,22 +3,23 @@ import { observer } from "mobx-react-lite";
 import Auth from "../../Store/Auth";
 import Link from "next/link";
 import style from "../../styles/Cabinet/CabinetMenu.module.sass";
-import { useRouter } from "next/router";
+import AuthPopup from "./AuthPopup";
 
 const CabinetMenu = observer(() => {
-  const router = useRouter();
-
+  const [authpopup, setAuthPopup] = useState(false);
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(false);
   const profileModal = useRef(null);
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      console.log(localStorage.getItem("token"));
-      Auth.checkAuth();
-    }
+    const Check = async () => {
+      if (localStorage.getItem("token")) {
+        await Auth.checkAuth();
+      }
 
-    setLoading(false);
+      setLoading(false);
+    };
+    Check();
   }, []);
 
   useEffect(() => {
@@ -36,9 +37,8 @@ const CabinetMenu = observer(() => {
     { link: "/my/settings", title: "Настройки" },
   ];
 
-  const Logout = () => {
-    Auth.logout();
-    router.push("/auth");
+  const Logout = async () => {
+    await Auth.logout();
   };
 
   if (loading) {
@@ -47,11 +47,14 @@ const CabinetMenu = observer(() => {
     return (
       <div>
         {!Auth.isAuth ? (
-          <Link href="/auth">
-            <a className={style.header_button}>Вход | Регистрация</a>
-          </Link>
+          <div
+            className={style.header_button}
+            onClick={() => setAuthPopup(true)}
+          >
+            Вход | Регистрация
+          </div>
         ) : (
-          <a
+          <div
             className={style.header_button}
             ref={profileModal}
             onClick={(e) => {
@@ -59,16 +62,14 @@ const CabinetMenu = observer(() => {
               setVisible(!visible);
             }}
           >
-            Привет!
-          </a>
+            Привет, {Auth.user?.firstname}!
+          </div>
         )}
         {visible && (
           <div className={style.popup}>
             {links.map((res, key) => (
-              <Link href={res.link}>
-                <a className={style.popup_item} key={key}>
-                  {res.title}
-                </a>
+              <Link href={res.link} key={key}>
+                <a className={style.popup_item}>{res.title}</a>
               </Link>
             ))}
             <p className={style.popup_item} onClick={Logout}>
@@ -76,6 +77,7 @@ const CabinetMenu = observer(() => {
             </p>
           </div>
         )}
+        {authpopup && <AuthPopup setAuthPopup={setAuthPopup} />}
       </div>
     );
   }

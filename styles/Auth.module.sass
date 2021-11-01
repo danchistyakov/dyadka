@@ -1,10 +1,13 @@
 .auth_section
-    height: 15vw
+    display: flex
+    flex-direction: column
+    align-items: center
 
 .auth_title
     font-size: 2vw
     text-align: center
     padding: 1vw .5vw .5vw .5vw
+    margin-bottom: 2vw
 
 .auth_form
     display: flex
@@ -13,11 +16,14 @@
 
 .auth_input
     background: #212121
-    border: none
+    border: 1px solid #212121
     border-radius: 100px
-    margin: 2vw
+    margin: 0 0 2vw 0
     padding: 1vw
     width: 40vw
+
+    &.error
+        border: 1px solid #ff0c0c
 
 .action_button
     background: #ff4f12

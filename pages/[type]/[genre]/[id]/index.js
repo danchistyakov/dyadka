@@ -34,10 +34,6 @@ const Film = ({ info, trailer }) => {
       }
       Info.setInfo(info);
       Playlist.setTranslations(info.translations.list);
-      Video.setTranslation(
-        info.translations.default.id,
-        info.translations.default.name
-      );
       Layout.watch === "favs"
         ? setTimeout(() => Layout.setWatch(true), 2000)
         : Layout.setWatch(false);
@@ -64,7 +60,7 @@ const Film = ({ info, trailer }) => {
   }
 };
 
-export const getStaticProps = async (context) => {
+export const getServerSideProps = async (context) => {
   const { type, genre, id } = context.params;
   const url = `/${type}/${genre}/${id}`;
   const slug = Buffer.from(url).toString("base64");
@@ -95,10 +91,4 @@ export const getStaticProps = async (context) => {
   };
 };
 
-export const getStaticPaths = async () => {
-  return {
-    paths: [], //indicates that no page needs be created at build time
-    fallback: "blocking", //indicates the type of fallback
-  };
-};
 export default Film;

@@ -6,7 +6,6 @@ import { observer } from "mobx-react-lite";
 import { toJS } from "mobx";
 import Video from "../Store/Video";
 import PlayerOptions from "../Store/PlayerOptions";
-import Info from "../Store/Info";
 
 const Settings = observer(() => {
   const [qvisible, setqVisible] = useState(false);
@@ -27,23 +26,6 @@ const Settings = observer(() => {
     setqVisible(false);
     Playlist.setQuality(item?.quality, key);
   };
-
-  /*useEffect(() => {
-    const Last = async () => {
-      if ((await get("Длительность")) !== undefined) {
-        var info = await get("Длительность");
-        var search = info.findIndex(
-          (item) => item?.kinopoisk_id === Info?.info?.kp
-        );
-        info[search]?.quality !== undefined &&
-          setqVisible({
-            ...qualityOptions,
-            quality: info[search]?.quality,
-          });
-      }
-    };
-    Last();
-  }, [Info?.info?.kp]);*/
 
   return (
     <div>

@@ -4,6 +4,7 @@ import style from "../styles/Header.module.sass";
 import Icons from "../Images/Icons";
 import CabinetMenu from "./Cabinet/CabinetMenu";
 import Menu from "./Menu";
+import AuthPopup from "./Cabinet/AuthPopup";
 
 const Header = () => {
   const nav = [
@@ -25,9 +26,11 @@ const Header = () => {
   ];
 
   const [opened, setOpen] = useState(false);
+  const [authPopup, setAuthPopup] = useState(false);
 
   return (
     <header className={style.header}>
+      {authPopup && <AuthPopup setAuthPopup={setAuthPopup} />}
       <div className={style.links}>
         {!opened ? (
           <Icons
@@ -57,11 +60,12 @@ const Header = () => {
               <Icons icon="BookmarkIcon" />
             </a>
           </Link>
-          <Link href="/auth">
-            <a className={style.header_icon}>
-              <Icons icon="PersonIcon" />
-            </a>
-          </Link>
+          <span
+            className={style.header_icon}
+            onClick={() => setAuthPopup(true)}
+          >
+            <Icons icon="PersonIcon" />
+          </span>
         </div>
       </div>
       <nav className={style.nav}>
@@ -76,9 +80,7 @@ const Header = () => {
               activeClassName={style.pages_a_active}
             >
               <a>
-                <div className={style.categories_item} key={key}>
-                  {res?.title}
-                </div>
+                <div className={style.categories_item}>{res?.title}</div>
               </a>
             </Link>
           ))}

@@ -1,67 +1,107 @@
 import React, { useState, useEffect, useRef } from "react";
 import TopControls from "./TopControls";
 import BottomControls from "./BottomControls";
+import axios from "axios";
 import { toJS } from "mobx";
 import Playlist from "../Store/Playlist";
+import Auth from "../Store/Auth";
 import Info from "../Store/Info";
 import PlayerControls from "../Store/PlayerControls";
 import PlayerOptions from "../Store/PlayerOptions";
 import { observer } from "mobx-react-lite";
 import ReactPlayer from "react-player";
-import { get, set } from "idb-keyval";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import { GetUrl } from "./GetUrl";
 import Video from "../Store/Video";
-import {
-  BrowserView,
-  MobileView,
-  isBrowser,
-  isMobile,
-} from "react-device-detect";
+import { isMobile } from "react-device-detect";
 import Volume from "../Store/Volume";
 import Icons from "../Images/Icons";
-//import useThrottle from "../Hooks/useThrottle";
+import { throttle } from "throttle-debounce";
 
 var timer;
 
 const Player = observer(() => {
   const [count, setCount] = useState(1);
-  //const [last, setLast] = useState(null);
   const [pirate, setPirate] = useState(false);
   const playerContainer = useRef(null);
   const playerRef = useRef(null);
   const controlsRef = useRef(null);
   const video = useFullScreenHandle();
+  const send = throttle(5000, () => sendTime(PlayerControls?.currentTime));
 
-  //PlayerControls.setCurrentTime(playerRef.current ? playerRef.current.getCurrentTime() : '00:00');
   PlayerControls.setCurrentDuration(
     playerRef.current ? playerRef.current.getDuration() : "00:00"
   );
 
   useEffect(() => {
-    const parsingUrl = async () => {
-      if (Video.url === null) {
-        await GetUrl();
+    const videoInit = async () => {
+      if (Auth.isAuth && Info.info.id) {
+        const { data } = await axios.post(
+          "http://localhost:5000/timestamp",
+          {
+            action: "get",
+            email: Auth.user.email,
+            id: Info.info.id,
+          },
+          {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
+          }
+        );
+
+        if (data.success) {
+          const transName = toJS(Playlist.translations).find(
+            (x) => x.id === data.info.translation
+          ).name;
+          console.log(transName);
+          Video.setTranslation(data.info.translation, transName, null);
+          if (Info.info.translations.default.id !== data.info.translation) {
+            await GetUrl();
+          }
+          Playlist.setQuality(
+            Video.urls[data.info.quality].quality,
+            data.info.quality
+          );
+          playerRef.current.seekTo(data.info.time);
+        } else {
+          Video.setTranslation(
+            info.translations.default.id,
+            info.translations.default.name
+          );
+        }
       }
     };
-    parsingUrl();
+    videoInit();
   }, [Info?.info?.id]);
+
+  const sendTime = async (time) => {
+    const { data } = axios.post(
+      "http://localhost:5000/timestamp",
+      {
+        action: "add",
+        email: Auth.user.email,
+        id: Info.info.id,
+        season: Playlist.season,
+        episode: Playlist.episode,
+        time,
+        translation: Number(Video.translation.id),
+        quality: Playlist.quality.id || 0,
+      },
+      {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      }
+    );
+  };
 
   useEffect(() => {
     const Quality = async () => {
-      if (Playlist.quality.id !== null && Playlist.quality.id !== undefined) {
+      if (Playlist.quality?.id !== null && Playlist.quality?.id !== undefined) {
         const id = Number(Playlist.quality.id);
-        //const info = await get("Длительность");
         const videos = toJS(Video?.urls);
         const time = PlayerControls?.currentTime;
-        /*if (info) {
-          const search = info.findIndex(
-            (item) => item?.kinopoisk_id === Info?.info?.kp
-          );
-          if (search !== -1) {
-            time = info[search]?.currentTime;
-          }
-        }*/
         Video.setUrl(videos[id].urls[0]);
         PlayerOptions.setBuffering(true);
         if (time) {
@@ -119,7 +159,9 @@ const Player = observer(() => {
   const handleProgress = async (data) => {
     PlayerControls.setPlayed(parseFloat(data?.played));
     PlayerControls.setCurrentTime(data?.playedSeconds);
-    //useThrottle(data?.playedSeconds, 5000);
+    if (Auth.isAuth) {
+      send();
+    }
     if (count > 3 && video.active) {
       controlsRef.current.style.visibility = "hidden";
       document.body.style.cursor = "none";
@@ -160,12 +202,6 @@ const Player = observer(() => {
     }
   };
 
-  useEffect(() => {
-    if (Playlist?.last !== null) {
-      playerRef.current.seekTo(Playlist?.last);
-    }
-  }, [Playlist?.last]);
-
   const prevEpisode = async () => {
     if (Playlist?.season !== 1 && Playlist?.episode !== 1) {
       Video.setUrl(null);
@@ -205,13 +241,15 @@ const Player = observer(() => {
   };
 
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "//yohoho.cc/yo.js";
-    script.async = true;
-    document.body.appendChild(script);
-    return () => {
-      document.body.removeChild(script);
-    };
+    if (pirate) {
+      const script = document.createElement("script");
+      script.src = "//yohoho.cc/yo.js";
+      script.async = true;
+      document.body.appendChild(script);
+      return () => {
+        document.body.removeChild(script);
+      };
+    }
   }, [Info.info?.kp_id, pirate]);
 
   return (

@@ -54,27 +54,9 @@ const TopControls = observer(() => {
   const handleTranslation = async (id, name, params) => {
     setTranslations(!translations);
     const options = params ? params : null;
-    console.log(id, name, options);
-    Video.setTranslation(id, name, options);
-    await GetUrl();
-    var info =
-      (await get("Длительность")) !== undefined
-        ? await get("Длительность")
-        : [];
-    if (Info?.info?.kp !== undefined) {
-      var search = info?.findIndex(
-        (item) => item?.kinopoisk_id === Info?.info?.kp
-      );
-      search = search !== -1 ? search : info.length;
-      info[search] = {
-        kinopoisk_id: Info?.info?.kp,
-        season: Playlist?.season,
-        episode: Playlist?.episode,
-        currentTime: PlayerControls?.currentTime,
-        translationId: id,
-        translationName: name,
-      };
-      set("Длительность", info);
+    if (Video.translation.id !== id) {
+      Video.setTranslation(id, name, options);
+      await GetUrl();
     }
   };
 
@@ -103,7 +85,7 @@ const TopControls = observer(() => {
               setTranslations(!translations);
           }}
         >
-          {Video?.translation?.name}{" "}
+          {Video?.translation?.name}
           {Playlist?.translations?.length > 1 &&
             (translations ? (
               <Icons
@@ -127,7 +109,7 @@ const TopControls = observer(() => {
                     ? handleTranslation(res?.id, res?.name)
                     : handleTranslation(res?.id, res?.name, res?.params)
                 }
-                key={key}
+                key={res?.id}
               >
                 {res?.name}
               </span>

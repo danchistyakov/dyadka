@@ -4,6 +4,7 @@ import Icons from "../Images/Icons";
 import Link from "next/link";
 import { observer } from "mobx-react-lite";
 import Auth from "../Store/Auth";
+import { useRouter } from "next/router";
 
 const Menu = observer(({ setOpen }) => {
   const nav = [
@@ -25,15 +26,22 @@ const Menu = observer(({ setOpen }) => {
 
   const [myOpened, setMyOpen] = useState(false);
 
+  const Logout = async () => {
+    setOpen(false);
+    await Auth.logout();
+  };
+
   return (
     <nav className={style.mobile_menu}>
       <div className={style.menu_items}>
         {nav.map((res, key) => (
-          <Link href="/category/[category]" as={`/category/${res.link}`}>
+          <Link
+            href="/category/[category]"
+            as={`/category/${res.link}`}
+            key={key}
+          >
             <a onClick={() => setOpen(false)}>
-              <div className={style.menu_item} key={key}>
-                {res.title}
-              </div>
+              <div className={style.menu_item}>{res.title}</div>
             </a>
           </Link>
         ))}
@@ -69,6 +77,9 @@ const Menu = observer(({ setOpen }) => {
                 </a>
               </Link>
             ))}
+            <a className={style.menu_subitem} onClick={Logout}>
+              Выйти
+            </a>
           </div>
         )}
       </div>

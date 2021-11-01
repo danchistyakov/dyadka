@@ -1,18 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import style from "../styles/Filminfo.module.sass";
-import Skeleton from "react-loading-skeleton";
-import PlayerOptions from "../Store/PlayerOptions";
-import { set, get } from "idb-keyval";
-import Playlist from "../Store/Playlist";
-import Info from "../Store/Info";
 import Layout from "../Store/Layout";
 //import YouTube from 'react-youtube';
 import { Img } from "react-image";
-import { toJS } from "mobx";
 import { observer } from "mobx-react-lite";
 import Player from "./Player";
 import Icons from "../Images/Icons";
-import Video from "../Store/Video";
 import { isBrowser, isMobile } from "react-device-detect";
 import axios from "axios";
 import { API_URL } from "../Components/Cabinet/http";
@@ -24,24 +17,28 @@ const FilmInfo = observer(({ info, trailer }) => {
   const [width, setWidth] = useState(null);
   const [background, setBackground] = useState("video");
   const [fallback, setFallback] = useState(false);
-  const [authError, setAuthError] = useState(false);
+  const [authError, setAuthPopup] = useState(false);
 
   const handleWatch = () => {
     Layout.setWatch(true);
     window.scrollTo(0, 0);
   };
 
-  /*useEffect(() => {
+  useEffect(() => {
     const checkAuth = async () => {
-      await Auth.checkAuth();
+      if (localStorage.getItem("token")) {
+        await Auth.checkAuth();
+      }
     };
-  }, []);*/
+
+    checkAuth();
+  }, [info.id]);
 
   useEffect(() => {
     const Favorite = async () => {
       if (Auth.isAuth) {
         const { data } = await axios.post(
-          `${API_URL}/favorite`,
+          `${API_URL}/favorites`,
           {
             action: "check",
             email: "4i.danila@gmail.com",
@@ -49,7 +46,7 @@ const FilmInfo = observer(({ info, trailer }) => {
           },
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Authorization: localStorage.getItem("token"),
             },
           }
         );
@@ -61,46 +58,45 @@ const FilmInfo = observer(({ info, trailer }) => {
   }, [info.id, Auth.isAuth]);
 
   const Fav = async () => {
-    if (!favorite) {
-      try {
-        const { data } = await axios.post(
-          `${API_URL}/favorite`,
-          {
-            action: "add",
-            email: "4i.danila@gmail.com",
-            id: info.id,
-            poster: `https://kinopoiskapiunofficial.tech/images/posters/kp_small/${info.kp_id}.jpg`,
-            title: Info?.info?.title,
-            url: Info.info.slug,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+    if (!Auth.isAuth) {
+      return setAuthPopup(true);
+    }
 
-        if (data.success) {
-          setFavorite(true);
+    if (!favorite) {
+      const { data } = await axios.post(
+        `${API_URL}/favorites`,
+        {
+          action: "add",
+          email: "4i.danila@gmail.com",
+          id: info.id,
+          poster: `https://kinopoiskapiunofficial.tech/images/posters/kp_small/${info.kp_id}.jpg`,
+          title: info.title,
+          slug: info.slug,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
         }
-      } catch (e) {
-        if (e.response.status === 401) {
-          setAuthError(true);
-        }
-        console.log(e);
+      );
+
+      if (data.success) {
+        setFavorite(true);
       }
     } else if (favorite) {
       const { data } = await axios.post(
-        `${API_URL}/favorite`,
+        `${API_URL}/favorites`,
         {
           action: "remove",
           email: "4i.danila@gmail.com",
           id: info.id,
           poster: `https://kinopoiskapiunofficial.tech/images/posters/kp_small/${info.kp_id}.jpg`,
-          title: Info?.info?.title,
+          title: info.title,
         },
         {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
         }
       );
 
@@ -114,7 +110,7 @@ const FilmInfo = observer(({ info, trailer }) => {
 
   return (
     <section className={style.film_hero}>
-      {authError && <AuthPopup setAuthError={setAuthError} />}
+      {authError && <AuthPopup setAuthPopup={setAuthPopup} />}
       <div className={`${style.screen} ${expand ? style.expand : ""}`}>
         {!Layout?.watch ? (
           <div className={style.preview} key={info.kp_id}>
@@ -183,27 +179,9 @@ const FilmInfo = observer(({ info, trailer }) => {
             &nbsp;смотреть
           </button>
         )}
-        {Info?.info?.title ? (
-          <h1 className={style.film_title}>
-            {Info?.info?.title} смотреть онлайн
-          </h1>
-        ) : (
-          <>
-            <Skeleton
-              className={style.film_title_loader}
-              count={1}
-              duration={2}
-            />
-            <Skeleton
-              className={style.film_subtitle_loader}
-              count={1}
-              duration={2}
-              width={"70%"}
-            />
-          </>
-        )}
+        <h1 className={style.film_title}>{info.title} смотреть онлайн</h1>
         <div>
-          <p className={style.film_eng_title}>{Info?.info?.etitle}</p>
+          <p className={style.film_eng_title}>{info.origtitle}</p>
         </div>
         <div>
           <div className={style.film_info}>

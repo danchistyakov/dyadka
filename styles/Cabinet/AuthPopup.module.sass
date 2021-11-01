@@ -12,9 +12,12 @@
 
 .popup_section
     width: 40vw
-    height: 20vw
+    min-height: 20vw
     background: #16151a
     border-radius: 2vw
+    display: flex
+    align-items: center
+    justify-content: center
 
 .popup_block
     display: flex
@@ -28,14 +31,21 @@
     width: 2vw
     top: 1vw
     right: 1vw
+    z-index: 1
     cursor: pointer
 
 .auth_title
     font-size: 2vw
+    margin-bottom: 1vw
+    text-align: center
+
+.auth_message
+    color: #13aa52
+    margin: .5vw 0
     text-align: center
 
 .auth_form
-    margin-top: 3vw
+    margin-top: 1vw
     display: flex
     flex-direction: column
     align-items: center
@@ -45,7 +55,13 @@
     border: none
     border-radius: 100px
     padding: 1vw
+    margin-bottom: 1vw
     width: 35vw
+
+.auth_error
+    margin-bottom: 1vw
+    color: #ff0c0c
+    text-align: center
 
 .action_button
     background: #ff4f12
@@ -53,7 +69,7 @@
     padding: 1vw
     margin-top: 1vw
     border: none
-    width: 10vw
+    min-width: 20vw
     border-radius: 2vw
 
 .disabled
@@ -64,22 +80,30 @@
 @media (max-width: 767px)
     .popup_section
         width: 100vw
-        height: 60vw
+        min-height: 60vw
+        border-radius: 4vw
+
+    .popup_block
+        margin: 5vw 2vw
 
     .close_icon
-        width: 5vw
+        width: 6vw
+        top: 3vw
+        right: 4vw
 
     .auth_title
-        font-size: 4vw
+        font-size: 6vw
+        margin: 2vw 0
 
     .auth_input
-        padding: 2vw
-        font-size: 3vw
-        width: 70vw
+        margin: 2vw 0
+        padding: 3vw
+        font-size: 3.5vw
+        width: 80vw
 
     .action_button
-        padding: 2vw
+        padding: 3vw
         margin-top: 4vw
-        width: 30vw
-        font-size: 3vw
+        min-width: 30vw
+        font-size: 4vw
         border-radius: 5vw

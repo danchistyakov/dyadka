@@ -28,7 +28,7 @@ const Search = ({ results }) => {
           undefined,
           { shallow: true }
         );
-        const response = await fetch("https://api.dyadka.gq/search", {
+        const response = await fetch(`${process.env.API_URL}/search`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json;charset=utf-8",
@@ -114,12 +114,12 @@ export const getServerSideProps = async (context) => {
 
   if (!q) {
     const response = await fetch(
-      "https://api.dyadka.gq/categories?category=watching"
+      `${process.env.API_URL}/categories?category=watching`
     );
     data = (await response.json()).results;
     query = "";
   } else {
-    const response = await fetch("https://api.dyadka.gq/search", {
+    const response = await fetch(`${process.env.API_URL}/search`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",

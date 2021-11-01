@@ -17,8 +17,8 @@ export const GetUrl = async () => {
         ? JSON.stringify({
             source: Info.source,
             translation: Video.translation.id,
-            season: Playlist.season,
-            episode: Playlist.episode,
+            season: Playlist.season || 1,
+            episode: Playlist.episode || 1,
             token: Info.info.token,
           })
         : JSON.stringify({
@@ -45,13 +45,11 @@ export const GetUrl = async () => {
       }
     } else {
       Playlist.setQuality(media[0].quality, null);
-      console.log(media[0].urls[0]);
       Video.setUrl(media[0].urls[0]);
     }
     PlayerOptions.setError(false);
     PlayerControls.setPlaying(true);
   } catch (err) {
-    console.log(err);
     PlayerOptions.setError(true);
   }
 };
