@@ -28,7 +28,7 @@ const Search = ({ results }) => {
           undefined,
           { shallow: true }
         );
-        const response = await fetch(`${process.env.API_URL}/search`, {
+        const response = await fetch(`https://api.dyadka.gq/search`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json;charset=utf-8",

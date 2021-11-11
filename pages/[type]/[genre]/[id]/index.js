@@ -75,13 +75,13 @@ export const getServerSideProps = async (context) => {
   });
   info = await response.json();
 
-  const { data } = await axios.get(
+  /*const { data } = await axios.get(
     `https://www.googleapis.com/youtube/v3/search?part=id,snippet&maxResults=1&key=AIzaSyCsT5C4pBFWpzyP4hEOen2ZBhn26AhMCkM&q=${encodeURIComponent(
       info.title + " трейлер кинопоиск"
     )}`
-  );
+  );*/
 
-  const trailer = data.items[0].id.videoId;
+  const trailer = 'data.items[0].id.videoId';
 
   return {
     props: {
