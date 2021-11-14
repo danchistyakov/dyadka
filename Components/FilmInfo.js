@@ -15,7 +15,7 @@ import AuthPopup from "./Cabinet/AuthPopup";
 const FilmInfo = observer(({ info, trailer }) => {
   const [favorite, setFavorite] = useState(false);
   const [width, setWidth] = useState(null);
-  const [background, setBackground] = useState("video");
+  const [background, setBackground] = useState("poster");
   const [fallback, setFallback] = useState(false);
   const [authError, setAuthPopup] = useState(false);
 
@@ -114,7 +114,7 @@ const FilmInfo = observer(({ info, trailer }) => {
       <div className={`${style.screen} ${expand ? style.expand : ""}`}>
         {!Layout?.watch ? (
           <div className={style.preview} key={info.kp_id}>
-            {background === "poster" && isBrowser && (
+            {!trailer && isBrowser && (
               <div className={style.hero_poster}>
                 <picture className={style.hero_picture} key={fallback}>
                   <source
@@ -136,7 +136,7 @@ const FilmInfo = observer(({ info, trailer }) => {
                 </picture>
               </div>
             )}
-            {background === "video" && isBrowser && (
+            {trailer && isBrowser && (
               <iframe
                 width="900"
                 height="506"

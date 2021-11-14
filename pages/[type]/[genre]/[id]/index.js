@@ -66,14 +66,10 @@ export const getServerSideProps = async (context) => {
   const slug = Buffer.from(url).toString("base64");
   var info;
 
-  const response = await fetch(`https://api.dyadka.gq/film`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json;charset=utf-8",
-    },
-    body: JSON.stringify({ data: slug }),
+  const response = await axios.post(`https://api.dyadka.gq/film`, {
+    data: slug,
   });
-  info = await response.json();
+  info = response.data;
 
   /*const { data } = await axios.get(
     `https://www.googleapis.com/youtube/v3/search?part=id,snippet&maxResults=1&key=AIzaSyCsT5C4pBFWpzyP4hEOen2ZBhn26AhMCkM&q=${encodeURIComponent(
@@ -81,7 +77,9 @@ export const getServerSideProps = async (context) => {
     )}`
   );*/
 
-  const trailer = 'data.items[0].id.videoId';
+  const trailer = null;
+
+  //const trailer = "data.items[0].id.videoId";
 
   return {
     props: {
