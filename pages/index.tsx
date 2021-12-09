@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { FC, useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import Hero from "../Components/Hero";
@@ -7,7 +7,7 @@ import AuthPopup from "../Components/Cabinet/AuthPopup";
 
 const Home = ({ data, activateData }) => {
   console.log(activateData);
-  const [authPopup, setAuthPopup] = useState(false);
+  const [authPopup, setAuthPopup] = useState<boolean>(false);
 
   useEffect(() => {
     if (activateData?.email && activateData?.verificationStatus === "expired") {

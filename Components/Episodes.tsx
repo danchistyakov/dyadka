@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { FC, useState, useEffect } from "react";
 import style from "../styles/Episodes.module.sass";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import Playlist from "../Store/Playlist";
@@ -8,7 +8,8 @@ import { observer } from "mobx-react-lite";
 import { get } from "idb-keyval";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation } from "swiper/core";
-import { GetUrl } from "./GetUrl";
+import { GetUrl } from "./Player/Hooks/GetUrl";
+import { IMediaData } from "../Interfaces/IMediaData";
 
 SwiperCore.use([Navigation]);
 
@@ -22,8 +23,11 @@ const navigationEpisodes = {
   prevEl: ".swiper-button-prev.episodes",
 };
 
-const Episodes = observer(({ info }) => {
-  const [season, setSeason] = useState(null);
+interface EpisodesProps {
+  data: IMediaData;
+}
+const Episodes: FC<EpisodesProps> = observer(({ data }) => {
+  const [season, setSeason] = useState<number>(1);
   const [error, setError] = useState();
   const [length, setLength] = useState(9);
 
@@ -34,7 +38,7 @@ const Episodes = observer(({ info }) => {
   const breakpointsSeasons = {
     320: { slidesPerView: 3.5 },
     768: {
-      slidesPerView: info.seasons.length < 9 ? info.seasons.length : 9,
+      slidesPerView: data.seasons.length < 9 ? data.seasons.length : 9,
     },
   };
   const breakpointsEpisodes = {
@@ -45,9 +49,9 @@ const Episodes = observer(({ info }) => {
   useEffect(() => {
     const Season = async () => {
       var Info = await get("Длительность");
-      if (info.kp_id && Info) {
+      if (data.kp_id && Info) {
         var search = Info?.findIndex(
-          (item) => item?.kinopoisk_id === info.kp_id
+          (item) => item?.kinopoisk_id === data.kp_id
         );
 
         if (search !== -1) {
@@ -66,10 +70,10 @@ const Episodes = observer(({ info }) => {
       }
     };
     Season();
-  }, [info.kp_id]);
+  }, [data.kp_id]);
 
   const Error = () => {
-    setError("error");
+    //setError("error");
   };
 
   return (
@@ -85,13 +89,13 @@ const Episodes = observer(({ info }) => {
       >
         <div className="swiper-button-prev seasons"></div>
         <div className="swiper-button-next seasons"></div>
-        {info.seasons.map((res, key) => (
+        {data.seasons.map((res, key) => (
           <SwiperSlide
             className={style.season_block}
             key={season + key}
             onClick={() => {
               setSeason(res.season);
-              setError();
+              //setError();
             }}
           >
             <p
@@ -121,7 +125,7 @@ const Episodes = observer(({ info }) => {
           <div className="swiper-button-prev episodes"></div>
           <div className="swiper-button-next episodes"></div>
 
-          {info?.seasons[season - 1]?.episodes.map((episode, key) => (
+          {data?.seasons[season - 1]?.episodes.map((episode, key) => (
             <SwiperSlide
               className={style.episode}
               key={key}
@@ -134,13 +138,13 @@ const Episodes = observer(({ info }) => {
               }}
             >
               <LazyLoadImage
-                src={`https://cdn.statically.io/img/blackmedia.top/f=auto,q=80/media/${info.kp_id}/preview_app_cinema_media_${info.kp_id}_s${season}e${episode}.png`}
+                src={`https://cdn.statically.io/img/blackmedia.top/f=auto,q=80/media/${data.kp_id}/preview_app_cinema_media_${data.kp_id}_s${season}e${episode}.png`}
                 className={style.cover_section}
                 effect="blur"
                 alt=""
                 onError={Error}
                 wrapperClassName={error}
-                placeholderSrc={`https://cdn.statically.io/img/kinopoiskapiunofficial.tech/blackmedia.top/f=auto,q=100/images/posters/kp_small/${info.kp_id}.jpg`}
+                placeholderSrc={`https://cdn.statically.io/img/kinopoiskapiunofficial.tech/blackmedia.top/f=auto,q=100/images/posters/kp_small/${data.kp_id}.jpg`}
               />
               <p className={style.episode_number}>{episode}-я серия</p>
             </SwiperSlide>

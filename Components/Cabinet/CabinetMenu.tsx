@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
+import { FC, useEffect, useState, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import Auth from "../../Store/Auth";
 import Link from "next/link";
-import style from "../../styles/Cabinet/CabinetMenu.module.sass";
+import style from "../../styles/Cabinet/CabinetMenu.module.scss";
 import AuthPopup from "./AuthPopup";
 
-const CabinetMenu = observer(() => {
+const CabinetMenu: FC = observer(() => {
   const [authpopup, setAuthPopup] = useState(false);
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(false);

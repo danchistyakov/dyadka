@@ -1,10 +1,14 @@
-import React, { useState } from "react";
-import style from "../../styles/Cabinet/AuthPopup.module.sass";
+import { FC, useState, Dispatch, SetStateAction } from "react";
+import styles from "../../styles/Cabinet/AuthPopup.module.scss";
 import Auth from "../../Store/Auth";
 import { observer } from "mobx-react-lite";
 import Icons from "../../Images/Icons";
 
-const AuthPopup = observer(({ setAuthPopup }) => {
+interface AuthPopupProps {
+  setAuthPopup: Dispatch<SetStateAction<boolean>>;
+}
+
+const AuthPopup: FC<AuthPopupProps> = observer(({ setAuthPopup }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstname, setFirstname] = useState("");
@@ -39,20 +43,25 @@ const AuthPopup = observer(({ setAuthPopup }) => {
   };
 
   return (
-    <div className={style.popup_wrapper} onClick={Close}>
-      <div className={style.popup_section} onClick={(e) => e.stopPropagation()}>
-        <Icons className={style.close_icon} icon="CloseIcon" onClick={Close} />
-        <div className={style.popup_block}>
-          <h1 className={style.auth_title}>
+    <div className={styles.popup_wrapper} onClick={Close}>
+      <div
+        className={styles.popup_section}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <Icons className={styles.close_icon} icon="CloseIcon" onClick={Close} />
+        <div className={styles.popup_block}>
+          <h1 className={styles.auth_title}>
             {!showpass ? "Авторизация" : "Введите пароль"}
           </h1>
-          {Auth.message && <p className={style.auth_message}>{Auth.message}</p>}
-          <div className={style.auth_form}>
+          {Auth.message && (
+            <p className={styles.auth_message}>{Auth.message}</p>
+          )}
+          <div className={styles.auth_form}>
             <input
               autoComplete="email"
               value={email}
-              className={`${style.auth_input}${
-                Auth.error?.indexOf("mail") > -1 ? ` ${style.error}` : ""
+              className={`${styles.auth_input}${
+                Auth.error?.indexOf("mail") > -1 ? ` ${styles.error}` : ""
               }`}
               onChange={(e) => setEmail(e.target.value)}
               type="email"
@@ -63,8 +72,8 @@ const AuthPopup = observer(({ setAuthPopup }) => {
               <input
                 autoComplete="name"
                 value={firstname}
-                className={`${style.auth_input}${
-                  Auth.error?.indexOf("мя") > -1 ? ` ${style.error}` : ""
+                className={`${styles.auth_input}${
+                  Auth.error?.indexOf("мя") > -1 ? ` ${styles.error}` : ""
                 }`}
                 onChange={(e) => setFirstname(e.target.value)}
                 type="name"
@@ -78,19 +87,19 @@ const AuthPopup = observer(({ setAuthPopup }) => {
               }
               style={{ display: showpass ? "block" : "none" }}
               value={password}
-              className={`${style.auth_input}${
-                Auth.error?.indexOf("арол") > -1 ? ` ${style.error}` : ""
+              className={`${styles.auth_input}${
+                Auth.error?.indexOf("арол") > -1 ? ` ${styles.error}` : ""
               }`}
               onChange={(e) => setPassword(e.target.value)}
               type="password"
               name="password"
               placeholder="Пароль, не менее 6 символов"
             ></input>
-            <p className={style.auth_error}>{Auth.error}</p>
+            <p className={styles.auth_error}>{Auth.error}</p>
             {!showpass ? (
               <button
-                className={`${style.action_button}${
-                  email.length === 0 ? ` ${style.disabled}` : ""
+                className={`${styles.action_button}${
+                  email.length === 0 ? ` ${styles.disabled}` : ""
                 }`}
                 onClick={Action}
                 disabled={email.length === 0 ? true : false}
@@ -101,7 +110,7 @@ const AuthPopup = observer(({ setAuthPopup }) => {
             ) : (
               <button
                 type="submit"
-                className={style.action_button}
+                className={styles.action_button}
                 onClick={Action}
               >
                 {Auth.registered ? "Войти" : "Зарегистрироваться"}

@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
-import TopControls from "../TopControls";
-import BottomControls from "../BottomControls";
+import React, { FC, useState, useEffect, useRef } from "react";
+import TopControls from "./Components/TopControls";
+import BottomControls from "./Components/BottomControls";
 import axios from "axios";
 import { toJS } from "mobx";
 import Playlist from "../../Store/Playlist";
@@ -11,94 +11,73 @@ import PlayerOptions from "../../Store/PlayerOptions";
 import { observer } from "mobx-react-lite";
 import ReactPlayer from "react-player";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
-import { GetUrl } from "../GetUrl";
+import GetUrl from "./Hooks/GetUrl";
 import Video from "../../Store/Video";
 import { isMobile } from "react-device-detect";
 import Volume from "../../Store/Volume";
 import Icons from "../../Images/Icons";
 import { throttle } from "throttle-debounce";
+import { IMediaData, ITranslation } from "../../Interfaces/IMediaData";
+import PiratePlayer from "./Components/PiratePlayer";
+import continuePlaying from "./Hooks/continuePlaying";
+import sendTime from "./Hooks/sendTime";
+import { prevEpisode, nextEpisode } from "./Hooks/handleEpisodes";
 
 var timer;
 
-const Player = observer(() => {
+interface IPlayer {
+  data: IMediaData;
+}
+const Player: FC<IPlayer> = observer(({ data }) => {
   const [count, setCount] = useState(1);
+  const [season, setSeason] = useState<number>(1);
+  const [episode, setEpisode] = useState<number>(1);
   const [pirate, setPirate] = useState(false);
+  const [isPlaying, setPlaying] = useState(true);
+  const [buffering, setBuffering] = useState(true);
+  const [translation, setTranslation] = useState<ITranslation>({
+    id: data.translations.default.id,
+    name: data.translations.default.name,
+    params: null,
+  });
+  const [volume, setVolume] = useState<number>(100);
+  const [isMuted, setMuted] = useState(false);
+  const url = GetUrl(
+    data,
+    translation,
+    season,
+    episode,
+    setBuffering,
+    setPlaying
+  );
+
   const playerContainer = useRef(null);
   const playerRef = useRef(null);
   const controlsRef = useRef(null);
-  const video = useFullScreenHandle();
-  const send = throttle(5000, () => sendTime(PlayerControls?.currentTime));
+  const fullScreenHandle = useFullScreenHandle();
+  const send = throttle(5000, () =>
+    sendTime(
+      Auth.user.email,
+      Info.info.id,
+      Playlist.season,
+      Playlist.episode,
+      Video.translation.id,
+      Playlist.quality.id,
+      PlayerControls?.currentTime
+    )
+  );
 
   PlayerControls.setCurrentDuration(
     playerRef.current ? playerRef.current.getDuration() : "00:00"
   );
 
   useEffect(() => {
-    const videoInit = async () => {
-      if (Auth.isAuth && Info.info.id) {
-        const { data } = await axios.post(
-          "http://localhost:5000/timestamp",
-          {
-            action: "get",
-            email: Auth.user.email,
-            id: Info.info.id,
-          },
-          {
-            headers: {
-              Authorization: localStorage.getItem("token"),
-            },
-          }
-        );
-
-        if (data.success) {
-          const transName = toJS(Playlist.translations).find(
-            (x) => x.id === data.info.translation
-          ).name;
-          console.log(transName);
-          Video.setTranslation(data.info.translation, transName, null);
-          if (Info.info.translations.default.id !== data.info.translation) {
-            await GetUrl();
-          }
-          Playlist.setQuality(
-            Video.urls[data.info.quality].quality,
-            data.info.quality
-          );
-          playerRef.current.seekTo(data.info.time);
-        } else {
-          Video.setTranslation(
-            info.translations.default.id,
-            info.translations.default.name
-          );
-        }
-      }
-    };
-    videoInit();
-  }, [Info?.info?.id]);
-
-  const sendTime = async (time) => {
-    const { data } = axios.post(
-      "http://localhost:5000/timestamp",
-      {
-        action: "add",
-        email: Auth.user.email,
-        id: Info.info.id,
-        season: Playlist.season,
-        episode: Playlist.episode,
-        time,
-        translation: Number(Video.translation.id),
-        quality: Playlist.quality.id || 0,
-      },
-      {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      }
-    );
-  };
+    continuePlaying(Auth.isAuth, Auth.user.email, Info.info.id);
+  }, [Auth.isAuth, Auth.user.email, Info.info.id]);
 
   useEffect(() => {
     const Quality = async () => {
-      if (Playlist.quality?.id !== null && Playlist.quality?.id !== undefined) {
+      if (Playlist.quality?.id) {
         const id = Number(Playlist.quality.id);
         const videos = toJS(Video?.urls);
         const time = PlayerControls?.currentTime;
@@ -162,34 +141,34 @@ const Player = observer(() => {
     if (Auth.isAuth) {
       send();
     }
-    if (count > 3 && video.active) {
+    if (count > 3 && fullScreenHandle.active) {
       controlsRef.current.style.visibility = "hidden";
       document.body.style.cursor = "none";
     }
 
-    if (controlsRef.current.style.visibility === "visible" && video.active) {
+    if (
+      controlsRef.current.style.visibility === "visible" &&
+      fullScreenHandle.active
+    ) {
       setCount(count + 1);
     }
   };
 
   useEffect(() => {
-    if (!video.active) {
+    if (!fullScreenHandle.active) {
       document.body.style.cursor = "auto";
     }
-  }, [video.active]);
+  }, [fullScreenHandle.active]);
 
-  const handleSeekChange = (e, newValue) => {
-    PlayerControls.setPlayed(parseFloat(newValue / 100));
+  const handleSeekChange = (e, newValue: number) => {
+    PlayerControls.setPlayed(newValue / 100);
     playerRef.current.seekTo(newValue / 100);
   };
 
   const onClickHandler = (e, action) => {
     clearTimeout(timer);
     if (e.detail === 1) {
-      timer = setTimeout(
-        () => PlayerControls.setPlaying(!PlayerControls?.playing),
-        200
-      );
+      timer = setTimeout(() => setPlaying((prev) => !prev), 200);
     } else if (e.detail === 2) {
       if (action === "rewind") {
         playerRef.current.getCurrentTime() > 5
@@ -202,78 +181,28 @@ const Player = observer(() => {
     }
   };
 
-  const prevEpisode = async () => {
-    if (Playlist?.season !== 1 && Playlist?.episode !== 1) {
-      Video.setUrl(null);
-    } else {
-      playerRef.current.seekTo(0);
-    }
-
-    if (Playlist?.episode > 1) {
-      Playlist.setEpisode(Number(Playlist?.episode) - 1);
-      await GetUrl();
-      PlayerControls.setPlaying(true);
-    } else {
-      if (Playlist?.season > 1) {
-        Playlist.setSeason(Number(Playlist?.season) - 1);
-        Playlist.setEpisode(1);
-        await GetUrl();
-        PlayerControls.setPlaying(true);
-      }
-    }
-  };
-
-  const nextEpisode = async () => {
-    Video.setUrl(null);
-    const playlist = toJS(Info?.info.seasons);
-    if (Playlist?.episode < playlist[Playlist?.season - 1].episodes.length) {
-      Playlist.setEpisode(Number(Playlist?.episode) + 1);
-      await GetUrl();
-      PlayerControls.setPlaying(true);
-    } else {
-      if (Playlist?.season < playlist.length) {
-        Playlist.setSeason(Number(Playlist?.season) + 1);
-        Playlist.setEpisode(1);
-        await GetUrl();
-        PlayerControls.setPlaying(true);
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (pirate) {
-      const script = document.createElement("script");
-      script.src = "//yohoho.cc/yo.js";
-      script.async = true;
-      document.body.appendChild(script);
-      return () => {
-        document.body.removeChild(script);
-      };
-    }
-  }, [Info.info?.kp_id, pirate]);
-
   return (
     <section>
       {!pirate ? (
         <FullScreen
-          handle={video}
+          handle={fullScreenHandle}
           className="player"
-          ref={playerContainer}
-          tabIndex="0"
-          onKeyDown={(e) => {
+          //ref={playerContainer}
+          //tabIndex={0}
+          /*onKeyDown={(e) => {
             handleKeys(e);
-          }}
+          }}*/
         >
           <div
             className="player_screen"
-            tabIndex="0"
+            tabIndex={0}
             onMouseMove={handleMouseMove}
             onKeyDown={(e) => {
               handleKeys(e);
             }}
-            onClick={(e) => onClickHandler(e)}
+            onClick={(e) => onClickHandler(e, null)}
           >
-            {PlayerOptions.buffering && (
+            {buffering && (
               <div className="player_loading">
                 <Icons icon="LoadingIcon" />
               </div>
@@ -293,22 +222,29 @@ const Player = observer(() => {
               ></div>
             )}
             <ReactPlayer
-              url={Video?.url}
-              muted={PlayerControls?.mute}
-              playing={PlayerControls?.playing}
+              url={url}
+              muted={isMuted}
+              playing={isPlaying}
               width={"100%"}
               height={"100%"}
               style={{ margin: "auto" }}
               ref={playerRef}
-              volume={Volume.volume}
+              volume={volume}
               playbackRate={Playlist?.speed}
               onProgress={handleProgress}
-              onEnded={nextEpisode}
-              onBuffer={() => {
-                PlayerOptions.setBuffering(true);
-                PlayerControls.setPlaying(true);
-              }}
-              onBufferEnd={() => PlayerOptions.setBuffering(false)}
+              onEnded={() =>
+                nextEpisode(
+                  season,
+                  episode,
+                  data.seasons[season].length,
+                  data.seasons.length,
+                  setSeason,
+                  setEpisode,
+                  setPlaying
+                )
+              }
+              onBuffer={() => setBuffering(true)}
+              onBufferEnd={() => setBuffering(false)}
             />
             {isMobile && (
               <div
@@ -318,30 +254,33 @@ const Player = observer(() => {
             )}
           </div>
           <div className="controls" ref={controlsRef}>
-            <TopControls />
+            <TopControls
+              season={season}
+              episode={episode}
+              data={data}
+              translation={translation}
+              setTranslation={setTranslation}
+            />
             <BottomControls
-              video={video}
+              isPlaying={isPlaying}
+              fullScreenHandle={fullScreenHandle}
               handleSeekChange={handleSeekChange}
-              prevEpisode={prevEpisode}
-              nextEpisode={nextEpisode}
+              //prevEpisode={prevEpisode}
+              //nextEpisode={nextEpisode}
+              setMuted={setMuted}
               setPirate={setPirate}
+              setVolume={setVolume}
+              volume={volume}
             />
           </div>
         </FullScreen>
       ) : (
-        <div key={Info?.info?.kp}>
-          <div
-            id="yohoho"
-            className="player"
-            data-kinopoisk={Info.info.kp_id}
-            data-resize="1"
-            data-season={Playlist?.season}
-            data-episode={Playlist?.episode}
-          ></div>
-          <button className="inside_player" onClick={() => setPirate(false)}>
-            Перейти в дядькин плеер
-          </button>
-        </div>
+        <PiratePlayer
+          kpId={Info.info.kp_id}
+          season={season}
+          episode={episode}
+          setPirate={setPirate}
+        />
       )}
     </section>
   );
