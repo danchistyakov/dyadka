@@ -15,6 +15,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import styles from "../../../styles/BottomControls.module.scss";
 import Icons from "../../../Images/Icons";
 import formatTime from "../Hooks/formatTime";
+import { useRouter } from "next/router";
 
 interface BottomControlsProps {
   isPlaying: boolean;
@@ -42,6 +43,8 @@ const BottomControls: FC<BottomControlsProps> = observer(
   }) => {
     const [remaining, setRemaining] = useState(false);
     const [slider, setSlider] = useState(false);
+    const { query } = useRouter();
+    const { season, episode } = query;
 
     const handleVolumeChange = (e) => {
       setVolume(e.target.value / 100);

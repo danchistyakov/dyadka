@@ -256,8 +256,6 @@ const Player: FC<IPlayer> = ({ data }) => {
           </div>
           <div className="controls" ref={controlsRef}>
             <TopControls
-              season={season}
-              episode={episode}
               data={data}
               translation={translation}
               setTranslation={setTranslation}

@@ -13,22 +13,24 @@ import { get, set } from "idb-keyval";
 import style from "../../../styles/TopControls.module.sass";
 import Icons from "../../../Images/Icons";
 import { IMediaData, ITranslation } from "../../../Interfaces/IMediaData";
+import { useRouter } from "next/router";
 
 interface TopControlsProps {
-  season: number;
-  episode: number;
   data: IMediaData;
   translation: ITranslation;
   setTranslation: Dispatch<SetStateAction<ITranslation>>;
 }
 
 const TopControls: FC<TopControlsProps> = observer(
-  ({ season, episode, data, translation, setTranslation }) => {
+  ({ data, translation, setTranslation }) => {
     const [continueTime, setContinueTime] = useState(false);
     const [isListVisible, setListVisibility] = useState(false);
     const { translations } = data;
 
     const translateModal = useRef(null);
+
+    const { query } = useRouter();
+    const { season, episode } = query;
 
     useEffect(() => {
       const onClick = (e) =>

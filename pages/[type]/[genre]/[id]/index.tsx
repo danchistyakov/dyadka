@@ -14,6 +14,7 @@ import Head from "next/head";
 import axios from "axios";
 import Player from "../../../../Components/Player";
 import { IMediaData } from "../../../../Interfaces/IMediaData";
+import { observer } from "mobx-react-lite";
 
 interface FilmProps {
   data: IMediaData;
@@ -21,14 +22,14 @@ interface FilmProps {
 }
 
 const Film: FC<FilmProps> = ({ data, trailer }) => {
-  const [isWatching, setIsWatching] = useState<boolean>(false);
-
   useEffect(() => {
     const Fetch = async () => {
       Info.videoCDN(null);
       Info.setInfo(null);
       Info.setDetails(null);
       Info.setToken(data.token);
+      Playlist.setSeason(1);
+      Playlist.setEpisode(1);
       const buffer = Buffer.from(data.slug).toString("base64");
       Info.setSource(buffer);
 
@@ -59,11 +60,7 @@ const Film: FC<FilmProps> = ({ data, trailer }) => {
           </title>
         </Head>
         {!Layout.watch ? (
-          <FilmInfo
-            data={data}
-            setIsWatching={setIsWatching}
-            trailer={trailer}
-          />
+          <FilmInfo data={data} trailer={trailer} />
         ) : (
           <div className={style.film_player}>
             <Player data={data} />
@@ -108,4 +105,4 @@ export const getServerSideProps = async (context) => {
   };
 };
 
-export default Film;
+export default observer(Film);

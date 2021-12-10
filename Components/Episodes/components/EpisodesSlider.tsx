@@ -19,10 +19,7 @@ const navigationEpisodes = {
 const EpisodesSlider: FC<EpisodesProps> = observer(
   ({ breakpointsEpisodes, data, season, changeEpisode }) => {
     const { pathname, query } = useRouter();
-    console.log({
-      pathname,
-      query: { season, episode: 1 },
-    });
+
     return (
       <section>
         <div className={style.episodes_section} key={season}>
@@ -45,8 +42,6 @@ const EpisodesSlider: FC<EpisodesProps> = observer(
                 onClick={() => changeEpisode(item.number)}
               >
                 <Link
-                  //href="/[type]/[genre]/[id]"
-                  //as={`?season=${season}&episode=${item.number}`}
                   href={{
                     pathname,
                     query: { ...query, season, episode: item.number },
