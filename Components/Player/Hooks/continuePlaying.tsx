@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect } from "react";
 
 const continuePlaying = async (isAuth: boolean, email: string, id: number) => {
-  if (isAuth && id) {
+  /*if (isAuth && id) {
     const { data } = await axios.post(
       "http://localhost:5000/timestamp",
       {
@@ -37,7 +37,7 @@ const continuePlaying = async (isAuth: boolean, email: string, id: number) => {
         data.translations.default.name
       );
     }
-  }
+  }*/
 };
 
 export default continuePlaying;

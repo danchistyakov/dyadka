@@ -58,7 +58,7 @@ const Film: FC<FilmProps> = ({ data, trailer }) => {
             {data.title} — смотреть у Дядьки онлайн без регистрации и СМС
           </title>
         </Head>
-        {!isWatching ? (
+        {!Layout.watch ? (
           <FilmInfo
             data={data}
             setIsWatching={setIsWatching}
@@ -70,7 +70,7 @@ const Film: FC<FilmProps> = ({ data, trailer }) => {
           </div>
         )}
         <div className={style.film_container}>
-          {data.series && <Episodes data={data} />}
+          {data.series && <Episodes data={data.seasons} />}
           <Staff kp={data.kp_id} />
           <Similar kp={data.kp_id} />
         </div>

@@ -16,6 +16,13 @@ const GetUrl = (
   const [result, setResult] = useState(null);
   const source = Buffer.from(info.slug).toString("base64");
   const { token } = info;
+  const Body = (hash: string) => {
+    if (info.series) {
+      return { source, translation: translation.id, season, episode, token };
+    } else {
+      return { source, hash, translation: translation.id, token };
+    }
+  };
   useEffect(() => {
     const str = translation.params?.toString() || "";
     const hash = Buffer.from(str).toString("base64");
@@ -23,20 +30,7 @@ const GetUrl = (
       try {
         setResult(null);
         setBuffering(true);
-        const body = info.series
-          ? {
-              source,
-              translation: translation.id,
-              season,
-              episode,
-              token,
-            }
-          : {
-              source,
-              hash,
-              translation: translation.id,
-              token,
-            };
+        const body = Body(hash);
         const { data } = await axios.post("https://api.dyadka.gq/geturl", {
           ...body,
         });

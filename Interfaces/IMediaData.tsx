@@ -3,9 +3,14 @@ interface IMedia {
   urls: string[];
 }
 
-interface ISeason {
+export interface IEpisode {
+  number: number;
+  poster: string;
+}
+
+export interface ISeason {
   season: 1;
-  episodes: number[];
+  episodes: IEpisode[];
   length: number;
 }
 

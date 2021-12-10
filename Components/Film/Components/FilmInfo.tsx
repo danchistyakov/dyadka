@@ -87,10 +87,7 @@ const FilmInfo: FC<FilmInfoProps> = observer(
                         onError={() => setFallback(true)}
                       />
                     ) : (
-                      <img
-                        src={"https://tangerine.gq/putin1.jpg"}
-                        className={style.hero_poster_img}
-                      />
+                      <img src="/putin.jpg" className={style.hero_poster_img} />
                     )}
                   </picture>
                 </div>

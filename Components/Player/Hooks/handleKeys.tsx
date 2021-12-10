@@ -1,7 +1,7 @@
 import React from "react";
 
 const handleKeys = (e) => {
-  e.preventDefault();
+  /*e.preventDefault();
   if (e.code === "Space") {
     PlayerControls.setPlaying(!PlayerControls?.playing);
   }
@@ -30,7 +30,7 @@ const handleKeys = (e) => {
       Volume.setVolume(0);
       PlayerControls.setMute(true);
     }
-  }
+  }*/
 };
 
 export default handleKeys;

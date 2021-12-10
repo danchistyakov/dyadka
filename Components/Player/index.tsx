@@ -28,7 +28,7 @@ var timer;
 interface IPlayer {
   data: IMediaData;
 }
-const Player: FC<IPlayer> = observer(({ data }) => {
+const Player: FC<IPlayer> = ({ data }) => {
   const [count, setCount] = useState(1);
   const [season, setSeason] = useState<number>(1);
   const [episode, setEpisode] = useState<number>(1);
@@ -42,11 +42,12 @@ const Player: FC<IPlayer> = observer(({ data }) => {
   });
   const [volume, setVolume] = useState<number>(100);
   const [isMuted, setMuted] = useState(false);
+
   const url = GetUrl(
     data,
     translation,
-    season,
-    episode,
+    Playlist.season,
+    Playlist.episode,
     setBuffering,
     setPlaying
   );
@@ -284,6 +285,6 @@ const Player: FC<IPlayer> = observer(({ data }) => {
       )}
     </section>
   );
-});
+};
 
-export default Player;
+export default observer(Player);
