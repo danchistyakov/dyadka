@@ -132,7 +132,12 @@ const FilmInfo: FC<FilmInfoProps> = observer(({ data, trailer }) => {
           <Link
             href={{
               pathname,
-              query: { ...query, season: 1, episode: 1 },
+              query: {
+                ...query,
+                season: 1,
+                episode: 1,
+                translationId: data.translations.list[0].id,
+              },
             }}
             passHref
             shallow
