@@ -12,8 +12,8 @@ import style from "../../../../styles/Film.module.sass";
 import ErrorPage from "next/error";
 import Head from "next/head";
 import axios from "axios";
-import Player from "../../../../Components/Player";
-import { IMediaData } from "../../../../Interfaces/IMediaData";
+import Player from "../../../../Components/Players";
+import { IMediaData } from "../../../../interfaces/IMediaData";
 import { observer } from "mobx-react-lite";
 
 interface FilmProps {
@@ -67,7 +67,7 @@ const Film: FC<FilmProps> = ({ data, trailer }) => {
           </div>
         )}
         <div className={style.film_container}>
-          {data.series && <Episodes data={data.seasons} />}
+          {data.isSeries && <Episodes data={data.seasons} />}
           <Staff kp={data.kp_id} />
           <Similar kp={data.kp_id} />
         </div>

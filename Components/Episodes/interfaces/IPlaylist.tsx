@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { SwiperOptions } from "swiper";
-import { IEpisode, ISeason } from "../../../Interfaces/IMediaData";
+import { IEpisode, ISeason } from "../../../interfaces/IMediaData";
 
 interface Breakpoints {
   [width: number]: SwiperOptions;

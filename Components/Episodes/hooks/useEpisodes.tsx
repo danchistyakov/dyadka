@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { ISeason } from "../../../Interfaces/IMediaData";
+import { ISeason } from "../../../interfaces/IMediaData";
 import Layout from "../../../Store/Layout";
 import Playlist from "../../../Store/Playlist";
-import GetUrl from "../../Player/Hooks/GetUrl";
+import GetUrl from "../../Players/hooks/GetUrl";
 import { EpisodesProps } from "../interfaces/IPlaylist";
 
 const useEpisodes = (data: ISeason[], season: number): EpisodesProps => {

@@ -20,6 +20,11 @@ export interface ITranslation {
   params: { is_camrip: string; is_ads: string; is_director: string } | null;
 }
 
+export interface ITranslations {
+  list: ITranslation[];
+  default: ITranslation;
+}
+
 export interface IMediaData {
   age: string;
   country: string;
@@ -32,14 +37,11 @@ export interface IMediaData {
     kinopoisk: string;
     imdb: string;
   };
-  series: boolean;
+  isSeries: boolean;
   slug: string;
   title: string;
   token: string;
-  translations: {
-    list: ITranslation[];
-    default: ITranslation;
-  };
+  translations: ITranslations;
   seasons: ISeason[];
   year: string;
 }

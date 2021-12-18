@@ -1,61 +1,51 @@
 import React, { FC, useState, useEffect, useRef } from "react";
-import TopControls from "./Components/TopControls";
-import BottomControls from "./Components/BottomControls";
-import axios from "axios";
 import { toJS } from "mobx";
-import Playlist from "../../Store/Playlist";
-import Auth from "../../Store/Auth";
-import Info from "../../Store/Info";
-import PlayerControls from "../../Store/PlayerControls";
-import PlayerOptions from "../../Store/PlayerOptions";
+import Playlist from "../../../Store/Playlist";
+import Auth from "../../../Store/Auth";
+import Info from "../../../Store/Info";
+import PlayerControls from "../../../Store/PlayerControls";
+import PlayerOptions from "../../../Store/PlayerOptions";
 import { observer } from "mobx-react-lite";
 import ReactPlayer from "react-player";
-import { FullScreen, useFullScreenHandle } from "react-full-screen";
-import GetUrl from "./Hooks/GetUrl";
-import Video from "../../Store/Video";
+import { FullScreen } from "react-full-screen";
+import GetUrl from "../hooks/GetUrl";
+import Video from "../../../Store/Video";
 import { isMobile } from "react-device-detect";
-import Volume from "../../Store/Volume";
-import Icons from "../../Images/Icons";
+import Volume from "../../../Store/Volume";
+import Icons from "../../../Images/Icons";
 import { throttle } from "throttle-debounce";
-import { IMediaData, ITranslation } from "../../Interfaces/IMediaData";
-import PiratePlayer from "./Components/PiratePlayer";
-import continuePlaying from "./Hooks/continuePlaying";
-import sendTime from "./Hooks/sendTime";
-import { prevEpisode, nextEpisode } from "./Hooks/handleEpisodes";
+import PiratePlayer from "./PiratePlayer";
+import sendTime from "../hooks/sendTime";
+import Controls from "../Controls";
+import { PlayerProps } from "../interfaces/IPlayer";
+import { useRouter } from "next/router";
 
 var timer;
 
-interface IPlayer {
-  data: IMediaData;
-}
-const Player: FC<IPlayer> = ({ data }) => {
+const Player: FC<PlayerProps> = ({
+  data,
+  fullScreenHandle,
+  isBuffering,
+  isMuted,
+  isPirate,
+  isPlaying,
+  handleBuffering,
+  handleMute,
+  handlePirate,
+  handlePlaying,
+  handleVolume,
+  prevEpisode,
+  nextEpisode,
+  url,
+  volume,
+}) => {
+  const { query } = useRouter();
+  const { season, episode } = query;
+
   const [count, setCount] = useState(1);
-  const [season, setSeason] = useState<number>(1);
-  const [episode, setEpisode] = useState<number>(1);
-  const [pirate, setPirate] = useState(false);
-  const [isPlaying, setPlaying] = useState(true);
-  const [buffering, setBuffering] = useState(true);
-  const [translation, setTranslation] = useState<ITranslation>({
-    id: data.translations.default.id,
-    name: data.translations.default.name,
-    params: null,
-  });
-  const [volume, setVolume] = useState<number>(100);
-  const [isMuted, setMuted] = useState(false);
-
-  const url = GetUrl(
-    data,
-    translation,
-    Playlist.season,
-    Playlist.episode,
-    setBuffering,
-    setPlaying
-  );
-
   const playerContainer = useRef(null);
   const playerRef = useRef(null);
   const controlsRef = useRef(null);
-  const fullScreenHandle = useFullScreenHandle();
   const send = throttle(5000, () =>
     sendTime(
       Auth.user.email,
@@ -72,9 +62,9 @@ const Player: FC<IPlayer> = ({ data }) => {
     playerRef.current ? playerRef.current.getDuration() : "00:00"
   );
 
-  useEffect(() => {
+  /*useEffect(() => {
     continuePlaying(Auth.isAuth, Auth.user.email, Info.info.id);
-  }, [Auth.isAuth, Auth.user.email, Info.info.id]);
+  }, [Auth.isAuth, Auth.user.email, Info.info.id]);*/
 
   useEffect(() => {
     const Quality = async () => {
@@ -155,12 +145,6 @@ const Player: FC<IPlayer> = ({ data }) => {
     }
   };
 
-  useEffect(() => {
-    if (!fullScreenHandle.active) {
-      document.body.style.cursor = "auto";
-    }
-  }, [fullScreenHandle.active]);
-
   const handleSeekChange = (e, newValue: number) => {
     PlayerControls.setPlayed(newValue / 100);
     playerRef.current.seekTo(newValue / 100);
@@ -169,7 +153,7 @@ const Player: FC<IPlayer> = ({ data }) => {
   const onClickHandler = (e, action) => {
     clearTimeout(timer);
     if (e.detail === 1) {
-      timer = setTimeout(() => setPlaying((prev) => !prev), 200);
+      timer = setTimeout(() => handlePlaying(!isPlaying), 200);
     } else if (e.detail === 2) {
       if (action === "rewind") {
         playerRef.current.getCurrentTime() > 5
@@ -184,7 +168,7 @@ const Player: FC<IPlayer> = ({ data }) => {
 
   return (
     <section>
-      {!pirate ? (
+      {!isPirate ? (
         <FullScreen
           handle={fullScreenHandle}
           className="player"
@@ -203,7 +187,7 @@ const Player: FC<IPlayer> = ({ data }) => {
             }}
             onClick={(e) => onClickHandler(e, null)}
           >
-            {buffering && (
+            {isBuffering && (
               <div className="player_loading">
                 <Icons icon="LoadingIcon" />
               </div>
@@ -230,22 +214,12 @@ const Player: FC<IPlayer> = ({ data }) => {
               height={"100%"}
               style={{ margin: "auto" }}
               ref={playerRef}
-              volume={volume}
+              volume={volume / 100}
               playbackRate={Playlist?.speed}
               onProgress={handleProgress}
-              onEnded={() =>
-                nextEpisode(
-                  season,
-                  episode,
-                  data.seasons[season].length,
-                  data.seasons.length,
-                  setSeason,
-                  setEpisode,
-                  setPlaying
-                )
-              }
-              onBuffer={() => setBuffering(true)}
-              onBufferEnd={() => setBuffering(false)}
+              onEnded={() => nextEpisode(Number(season), Number(episode))}
+              onBuffer={() => handleBuffering(true)}
+              onBufferEnd={() => handleBuffering(false)}
             />
             {isMobile && (
               <div
@@ -255,7 +229,21 @@ const Player: FC<IPlayer> = ({ data }) => {
             )}
           </div>
           <div className="controls" ref={controlsRef}>
-            <TopControls
+            <Controls
+              data={data}
+              fullScreenHandle={fullScreenHandle}
+              isMuted={isMuted}
+              isPlaying={isPlaying}
+              handleMute={handleMute}
+              handlePirate={handlePirate}
+              handlePlaying={handlePlaying}
+              handleSeekChange={handleSeekChange}
+              handleVolume={handleVolume}
+              prevEpisode={prevEpisode}
+              nextEpisode={nextEpisode}
+              volume={volume}
+            />
+            {/*<TopControls
               data={data}
               translation={translation}
               setTranslation={setTranslation}
@@ -270,15 +258,15 @@ const Player: FC<IPlayer> = ({ data }) => {
               setPirate={setPirate}
               setVolume={setVolume}
               volume={volume}
-            />
+           />*/}
           </div>
         </FullScreen>
       ) : (
         <PiratePlayer
           kpId={Info.info.kp_id}
-          season={season}
-          episode={episode}
-          setPirate={setPirate}
+          season={Number(season)}
+          episode={Number(episode)}
+          handlePirate={handlePirate}
         />
       )}
     </section>

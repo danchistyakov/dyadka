@@ -4,7 +4,7 @@ import Layout from "../../../Store/Layout";
 //import YouTube from 'react-youtube';
 import { Img } from "react-image";
 import { observer } from "mobx-react-lite";
-import Player from "../../Player";
+import Player from "../../Players";
 import Icons from "../../../Images/Icons";
 import { isBrowser, isMobile } from "react-device-detect";
 import axios from "axios";

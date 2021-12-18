@@ -4,14 +4,14 @@ interface PiratePlayerProps {
   kpId: number;
   season: number;
   episode: number;
-  setPirate: Dispatch<SetStateAction<boolean>>;
+  handlePirate: (value: boolean) => void;
 }
 
 const PiratePlayer: FC<PiratePlayerProps> = ({
   kpId,
   season,
   episode,
-  setPirate,
+  handlePirate,
 }) => {
   useEffect(() => {
     const script = document.createElement("script");
@@ -33,7 +33,7 @@ const PiratePlayer: FC<PiratePlayerProps> = ({
         data-season={season}
         data-episode={episode}
       ></div>
-      <button className="inside_player" onClick={() => setPirate(false)}>
+      <button className="inside_player" onClick={() => handlePirate(false)}>
         Перейти в дядькин плеер
       </button>
     </div>
