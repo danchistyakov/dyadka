@@ -77,7 +77,7 @@ const Search = ({ results }) => {
                     <LazyLoadImage
                       className={style.result_image}
                       alt={res?.title}
-                      src={`https://cdn.statically.io/img/static.hdrezka.sx/f=auto,q=60/${res?.poster?.substring(
+                      src={`https://cdn.statically.io/img/static.hdrezka.ac/f=auto,q=60/${res?.poster?.substring(
                         25
                       )}`}
                     />
