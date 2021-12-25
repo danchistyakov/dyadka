@@ -243,22 +243,6 @@ const Player: FC<PlayerProps> = ({
               nextEpisode={nextEpisode}
               volume={volume}
             />
-            {/*<TopControls
-              data={data}
-              translation={translation}
-              setTranslation={setTranslation}
-            />
-            <BottomControls
-              isPlaying={isPlaying}
-              fullScreenHandle={fullScreenHandle}
-              handleSeekChange={handleSeekChange}
-              //prevEpisode={prevEpisode}
-              //nextEpisode={nextEpisode}
-              setMuted={setMuted}
-              setPirate={setPirate}
-              setVolume={setVolume}
-              volume={volume}
-           />*/}
           </div>
         </FullScreen>
       ) : (

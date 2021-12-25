@@ -27,7 +27,8 @@ const GetUrl = async (
       return { source, hash, translation, token };
     }
   };
-  const str = translationData.params?.toString() || "";
+  const str = JSON.stringify(translationData.params) || "";
+  console.log(str);
   const hash = Buffer.from(str).toString("base64");
   try {
     const body = Body(hash);
