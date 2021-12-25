@@ -39,7 +39,7 @@ const EpisodesSlider: FC<EpisodesProps> = observer(
               <SwiperSlide
                 className={style.episode}
                 key={key}
-                //onClick={() => changeEpisode(item.number)}
+                onClick={() => changeEpisode(item.number)}
               >
                 <Link
                   href={{

@@ -11,8 +11,6 @@ const useEpisodes = (data: ISeason[], season: number): EpisodesProps => {
     768: { slidesPerView: data.length < 5 ? data.length : 5 },
   };
   const changeEpisode = (episode: number) => {
-    Playlist.setSeason(season);
-    Playlist.setEpisode(episode);
     Layout.setWatch(true);
     window.scrollTo(0, 0);
   };
