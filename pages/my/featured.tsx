@@ -1,5 +1,5 @@
 import React from "react";
-import AdminMenu from "../../Components/Cabinet/AdminMenu";
+import AdminMenu from "../../components/Cabinet/AdminMenu";
 
 const Featured = () => {
   return (

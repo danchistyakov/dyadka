@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import AdminMenu from "../../Components/Cabinet/AdminMenu";
+import AdminMenu from "../../components/Cabinet/AdminMenu";
 import { useRouter } from "next/router";
 import Auth from "../../Store/Auth";
 import { observer } from "mobx-react-lite";
 
-const History = () => {
+const Health = () => {
   const router = useRouter();
 
   useEffect(() => {
@@ -22,4 +22,4 @@ const History = () => {
   );
 };
 
-export default History;
+export default Health;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import AdminMenu from "../../Components/Cabinet/AdminMenu";
+import AdminMenu from "../../components/Cabinet/AdminMenu";
 import { useRouter } from "next/router";
 import Auth from "../../Store/Auth";
 import { observer } from "mobx-react-lite";

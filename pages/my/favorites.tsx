@@ -4,12 +4,12 @@ import Link from "next/link";
 import { get } from "idb-keyval";
 import Image from "next/image";
 import Layout from "../../Store/Layout";
-import AdminMenu from "../../Components/Cabinet/AdminMenu";
+import AdminMenu from "../../components/Cabinet/AdminMenu";
 import { useRouter } from "next/router";
 import Auth from "../../Store/Auth";
 import { observer } from "mobx-react-lite";
 import axios from "axios";
-import { API_URL } from "../../Components/Cabinet/http";
+import { API_URL } from "../../components/Cabinet/http";
 
 const Favorite = observer(() => {
   const router = useRouter();
