@@ -1,9 +1,9 @@
 import React, { FC, useEffect, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
-import Staff from "../../../../Components/Staff";
-import Episodes from "../../../../Components/Episodes";
-import FilmInfo from "../../../../Components/Film/Components/FilmInfo";
-import Similar from "../../../../Components/Similar";
+import Staff from "../../../../components/Staff";
+import Episodes from "../../../../components/Episodes";
+import FilmInfo from "../../../../components/Film/components/FilmInfo";
+import Similar from "../../../../components/Similar";
 import Info from "../../../../Store/Info";
 import Video from "../../../../Store/Video";
 import Layout from "../../../../Store/Layout";
@@ -12,7 +12,7 @@ import style from "../../../../styles/Film.module.sass";
 import ErrorPage from "next/error";
 import Head from "next/head";
 import axios from "axios";
-import Player from "../../../../Components/Players";
+import Player from "../../../../components/Players";
 import { IMediaData } from "../../../../interfaces/IMediaData";
 import { observer } from "mobx-react-lite";
 
@@ -24,16 +24,16 @@ interface FilmProps {
 const Film: FC<FilmProps> = ({ data, trailer }) => {
   useEffect(() => {
     const Fetch = async () => {
-      Info.videoCDN(null);
+      /*Info.videoCDN(null);
       Info.setInfo(null);
-      Info.setDetails(null);
+      Info.setDetails(null);*/
       Info.setToken(data.token);
-      Playlist.setSeason(1);
+      /*Playlist.setSeason(1);
       Playlist.setEpisode(1);
       const buffer = Buffer.from(data.slug).toString("base64");
-      Info.setSource(buffer);
+      Info.setSource(buffer);*/
 
-      if (data.media) {
+      /*if (data.media) {
         Video.setUrl(data.media[0].urls[0]);
         Playlist.setQuality(data.media[0].quality);
         Video.setUrls(data.media);
@@ -44,7 +44,7 @@ const Film: FC<FilmProps> = ({ data, trailer }) => {
       }
       Info.setInfo(data);
       Playlist.setTranslations(data.translations.list);
-      /*Layout.watch === "favs"
+      Layout.watch === "favs"
         ? setTimeout(() => Layout.setWatch(true), 2000)
         : Layout.setWatch(false);*/
     };

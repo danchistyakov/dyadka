@@ -55,7 +55,6 @@ const EpisodesSlider: FC<EpisodesProps> = observer(
                     className={style.cover_section}
                     effect="blur"
                     alt=""
-                    //onError={Error}
                     wrapperClassName="error"
                     placeholderSrc="/putin.jpg"
                   />

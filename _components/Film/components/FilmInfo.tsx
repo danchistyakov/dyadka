@@ -4,14 +4,13 @@ import Layout from "../../../Store/Layout";
 //import YouTube from 'react-youtube';
 import { Img } from "react-image";
 import { observer } from "mobx-react-lite";
-import Player from "../../Players";
 import Icons from "../../../Images/Icons";
 import { isBrowser, isMobile } from "react-device-detect";
 import axios from "axios";
 import { API_URL } from "../../Cabinet/http";
 import Auth from "../../../Store/Auth";
 import AuthPopup from "../../Cabinet/AuthPopup";
-import handleFav from "../Hooks/handleFav";
+import handleFav from "../hooks/handleFav";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -136,7 +135,8 @@ const FilmInfo: FC<FilmInfoProps> = observer(({ data, trailer }) => {
                 ...query,
                 season: 1,
                 episode: 1,
-                translationId: data.translations.list[0].id,
+                translationId:
+                  data.translations.list[0]?.id || data.translations.default.id,
               },
             }}
             passHref

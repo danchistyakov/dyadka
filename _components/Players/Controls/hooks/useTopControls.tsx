@@ -14,7 +14,9 @@ const useTopControls = (data: IMediaData): TopControlsProps => {
   const [isContinuing, setContinuing] = useState<boolean>(false);
   const [isListVisible, setListVisibility] = useState<boolean>(false);
   const [translationName, setTranslationName] = useState<string>(
-    defaultTranslation?.name || data.translations.list[0].name
+    defaultTranslation?.name ||
+      data.translations.list[0]?.name ||
+      data.translations.default.name
   );
 
   const translateModal = useRef(null);

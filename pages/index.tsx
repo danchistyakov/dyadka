@@ -1,9 +1,9 @@
 import { FC, useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
-import Hero from "../Components/Hero";
+import Hero from "../components/Hero";
 import Auth from "../Store/Auth";
-import AuthPopup from "../Components/Cabinet/AuthPopup";
+import AuthPopup from "../components/Cabinet/AuthPopup";
 
 const Home = ({ data, activateData }) => {
   console.log(activateData);

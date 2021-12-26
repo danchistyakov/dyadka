@@ -7,10 +7,12 @@ import axios from "axios";
 import useDebounce from "../Hooks/useDebounce";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import FilmsList from "../components/FilmsList";
+import { FilmsListProps } from "../interfaces/IFilmsList";
 
 const Search = ({ results }) => {
   const router = useRouter();
-  const [result, setResult] = useState(results.data);
+  const [result, setResult] = useState<FilmsListProps[]>(results.data);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState(results.query);
 
@@ -40,9 +42,9 @@ const Search = ({ results }) => {
         setLoading(false);
       }
 
-      if (result?.searchFilmsCountResult === 0 && result?.keyboard !== "") {
+      /*if (result?.searchFilmsCountResult === 0 && result?.keyboard !== "") {
         setResult([]);
-      }
+      }*/
     };
     Search();
   }, [debouncedQuery]);
@@ -64,9 +66,9 @@ const Search = ({ results }) => {
             placeholder="Привет от дядьки! ❤️"
           ></input>
         </div>
-        <div className={style.search_results}>
+        <div /*className={style.search_results}*/>
           {!loading ? (
-            result?.map((res, key) => (
+            /*result?.map((res, key) => (
               <div className={style.search_result} key={debouncedQuery + key}>
                 <Link
                   draggable="false"
@@ -87,7 +89,8 @@ const Search = ({ results }) => {
                   </a>
                 </Link>
               </div>
-            ))
+            ))*/
+            <FilmsList data={result} />
           ) : (
             <>
               {Array.from(Array(36), (_, i) => (

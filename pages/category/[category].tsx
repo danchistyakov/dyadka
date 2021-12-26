@@ -4,6 +4,7 @@ import style from "../../styles/Genre.module.sass";
 //import Navigation from "../../Components/Navigation";
 import Link from "next/link";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import FilmsList from "../../components/FilmsList";
 
 const Genre = ({ data }) => {
   const router = useRouter();
@@ -11,8 +12,9 @@ const Genre = ({ data }) => {
 
   return (
     <div>
+      <FilmsList data={data.results} />
       <h1 className={style.genre_title}>{data?.data?.title}</h1>
-      {/*(number > result?.pagesCount) && (<h1 className={style.genre_title}>Результатов поиска оказалось немного меньше :(</h1>)*/}
+      {/*(number > result?.pagesCount) && (<h1 className={style.genre_title}>Результатов поиска оказалось немного меньше :(</h1>)
       <div className={style.genre_section}>
         {data.results.map((res, key) => (
           <div className={style.genre_item} key={category + key}>
@@ -32,7 +34,7 @@ const Genre = ({ data }) => {
             </Link>
           </div>
         ))}
-      </div>
+      </div>*/}
       {/*<Navigation number={result?.pagesCount} />*/}
     </div>
   );
