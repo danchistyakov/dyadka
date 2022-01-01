@@ -24,13 +24,12 @@ const EpisodesSlider: FC<EpisodesProps> = observer(
       <section>
         <div className={style.episodes_section} key={season}>
           <Swiper
-            initialSlide={1}
-            freeMode={true}
-            navigation={navigationEpisodes}
             breakpoints={breakpointsEpisodes}
-            centeredSlidesBounds={true}
             centeredSlides={true}
+            centeredSlidesBounds={true}
             className={style.episodes}
+            initialSlide={1}
+            navigation={navigationEpisodes}
           >
             <div className="swiper-button-prev episodes"></div>
             <div className="swiper-button-next episodes"></div>

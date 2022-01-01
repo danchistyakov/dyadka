@@ -19,20 +19,19 @@ const SeasonsSlider: FC<SeasonsProps> = ({
   return (
     <>
       <Swiper
-        initialSlide={1}
-        freeMode={true}
-        navigation={navigationSeasons}
         breakpoints={breakpointsSeasons}
-        centeredSlidesBounds={true}
         centeredSlides={true}
+        centeredSlidesBounds={true}
         className={styles.seasons}
+        initialSlide={1}
+        navigation={navigationSeasons}
       >
         <div className="swiper-button-prev seasons"></div>
         <div className="swiper-button-next seasons"></div>
-        {data.map((res, key) => (
+        {data.map((res) => (
           <SwiperSlide
             className={styles.season_block}
-            key={season + key}
+            key={res.season}
             onClick={() => setSeason(res.season)}
           >
             <p

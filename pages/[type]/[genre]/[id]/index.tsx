@@ -1,5 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
-import { SkeletonTheme } from "react-loading-skeleton";
+import { FC, useEffect } from "react";
 import Staff from "../../../../components/Staff";
 import Episodes from "../../../../components/Episodes";
 import FilmInfo from "../../../../components/Film/components/FilmInfo";
