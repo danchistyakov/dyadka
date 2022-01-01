@@ -111,8 +111,8 @@ const usePlayer = (data: IMediaData): PlayerProps => {
       }
       const urlString = await GetUrl(
         data,
-        Number(season),
-        Number(episode),
+        Number(season) || 1,
+        Number(episode) || 1,
         translation,
         translationData
       );

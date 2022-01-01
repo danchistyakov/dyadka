@@ -1,12 +1,11 @@
 import { FC, useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import Head from "next/head";
-import Image from "next/image";
 import Hero from "../components/Hero";
 import Auth from "../Store/Auth";
-import AuthPopup from "../components/Cabinet/AuthPopup";
 
 const Home = ({ data, activateData }) => {
-  console.log(activateData);
+  const AuthPopup = dynamic(() => import("../components/Cabinet/AuthPopup"));
   const [authPopup, setAuthPopup] = useState<boolean>(false);
 
   useEffect(() => {
@@ -16,7 +15,8 @@ const Home = ({ data, activateData }) => {
       );
       setAuthPopup(true);
     }
-  }, []);
+  }, [activateData]);
+
   return (
     <div>
       <Head>
