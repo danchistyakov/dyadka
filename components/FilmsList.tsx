@@ -4,25 +4,32 @@ import Link from "next/link";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { FilmsListProps } from "../interfaces/IFilmsList";
 
-const FilmsList: FC<any> = ({ data }) => {
+const FilmsList: FC<any> = ({ data, isLoading }) => {
   return (
     <div className={styles.container}>
-      {data.map(({ poster, title, slug }, key) => (
-        <div className={styles.item} key={key}>
-          <Link href="/[type]/[genre]/[id]" as={slug} passHref>
-            <a>
-              <LazyLoadImage
-                className={styles.poster}
-                alt={title}
-                src={poster}
-              />
-              <div className={styles.search_result_info}>
-                <p className={styles.result_title}>{title}</p>
-              </div>
-            </a>
-          </Link>
-        </div>
-      ))}
+      {!isLoading
+        ? data.map(({ poster, title, slug }, key) => (
+            <div className={styles.item} key={key}>
+              <Link href="/[type]/[genre]/[id]" as={slug} passHref>
+                <a>
+                  <LazyLoadImage
+                    className={styles.poster}
+                    alt={title}
+                    src={poster}
+                  />
+                  <div className={styles.search_result_info}>
+                    <p className={styles.title}>{title}</p>
+                  </div>
+                </a>
+              </Link>
+            </div>
+          ))
+        : Array.from(Array(36), (_, i) => (
+            <div>
+              <div className={`${styles.loader} ${styles.poster}`} />
+              <div className={`${styles.loader} ${styles.title}`} />
+            </div>
+          ))}
     </div>
   );
 };

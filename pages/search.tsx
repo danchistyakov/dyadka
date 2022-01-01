@@ -1,19 +1,16 @@
-import React, { useState, useEffect, useCallback } from "react";
-import Link from "next/link";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import style from "../styles/Search.module.sass";
 import Icons from "../Images/Icons";
 import axios from "axios";
 import useDebounce from "../Hooks/useDebounce";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import FilmsList from "../components/FilmsList";
 import { FilmsListProps } from "../interfaces/IFilmsList";
 
 const Search = ({ results }) => {
   const router = useRouter();
   const [result, setResult] = useState<FilmsListProps[]>(results.data);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const [query, setQuery] = useState(results.query);
 
   const debouncedQuery = useDebounce(query, 500);
@@ -30,21 +27,12 @@ const Search = ({ results }) => {
           undefined,
           { shallow: true }
         );
-        const response = await fetch(`https://api.dyadka.gq/search`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json;charset=utf-8",
-          },
-          body: JSON.stringify({ q: query }),
+        const { data } = await axios.post(`https://api.dyadka.gq/search`, {
+          q: query,
         });
-        const data = await response.json();
         setResult(data.search);
         setLoading(false);
       }
-
-      /*if (result?.searchFilmsCountResult === 0 && result?.keyboard !== "") {
-        setResult([]);
-      }*/
     };
     Search();
   }, [debouncedQuery]);
@@ -60,52 +48,11 @@ const Search = ({ results }) => {
             type="text"
             value={query}
             className={style.search_input}
-            onChange={(e) => {
-              setQuery(e.target.value);
-            }}
+            onChange={(e) => setQuery(e.target.value)}
             placeholder="Привет от дядьки! ❤️"
           ></input>
         </div>
-        <div /*className={style.search_results}*/>
-          {!loading ? (
-            /*result?.map((res, key) => (
-              <div className={style.search_result} key={debouncedQuery + key}>
-                <Link
-                  draggable="false"
-                  href="/[type]/[genre]/[id]"
-                  as={res?.slug}
-                >
-                  <a className={style.search_result}>
-                    <LazyLoadImage
-                      className={style.result_image}
-                      alt={res?.title}
-                      src={`https://cdn.statically.io/img/static.hdrezka.ac/f=auto,q=60/${res?.poster?.substring(
-                        25
-                      )}`}
-                    />
-                    <div className={style.search_result_info}>
-                      <p className={style.result_title}>{res?.title}</p>
-                    </div>
-                  </a>
-                </Link>
-              </div>
-            ))*/
-            <FilmsList data={result} />
-          ) : (
-            <>
-              {Array.from(Array(36), (_, i) => (
-                <div>
-                  <div
-                    className={`${style.search_results_loader} ${style.result_image_loader}`}
-                  />
-                  <div
-                    className={`${style.search_results_loader} ${style.result_title_loader}`}
-                  />
-                </div>
-              ))}
-            </>
-          )}
-        </div>
+        <FilmsList data={result} isLoading={isLoading} />
       </div>
     </section>
   );

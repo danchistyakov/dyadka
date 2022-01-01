@@ -6,6 +6,16 @@
     margin: 2vw 7vw;
 }
 
+.loader {
+    background-color: #202020;
+    background-image: linear-gradient(90deg, #202020, #444, #202020);
+    background-size: 200px 100%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    -webkit-animation: animation-loader 2s ease-in-out infinite;
+    animation: animation-loader 2s ease-in-out infinite;
+}
+
 .item {
     border-radius: 1vw;
     width: 12vw;
@@ -21,10 +31,18 @@
     .container {
         grid-template-columns: 1fr 1fr;
     }
-    .poster,
-    .result_image_loader {
+    .poster {
         width: 40vw;
         height: 60vw;
         border-radius: 3vw;
+    }
+}
+
+@keyframes animation-loader {
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: calc(200px + 100%) 0;
     }
 }
