@@ -106,15 +106,27 @@ const FilmInfo: FC<FilmInfoProps> = observer(({ data, trailer }) => {
               <picture className={style.hero_picture}>
                 <source
                   media="(max-width: 767px)"
-                  srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=100/media/${data.kp_id}/big_app_cinema_media_${data.kp_id}_big.jpg`}
+                  srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,${
+                    width ? `w=${width},` : ""
+                  }q=100/media/${data.kp_id}/big_app_cinema_media_${
+                    data.kp_id
+                  }_big.jpg`}
                 />
                 <source
                   media="(min-width: 767px)"
-                  srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${data.kp_id}/wide_app_cinema_media_${data.kp_id}.jpg`}
+                  srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,${
+                    width ? `w=${width},` : ""
+                  }q=70/media/${data.kp_id}/wide_app_cinema_media_${
+                    data.kp_id
+                  }.jpg`}
                 />
                 <Img
                   src={[
-                    `https://cdn.statically.io/img/blackmedia.top/f=auto,w=${width},q=70/media/${data.kp_id}/wide_app_cinema_media_${data.kp_id}.jpg`,
+                    `https://cdn.statically.io/img/blackmedia.top/f=auto,${
+                      width ? `w=${width},` : ""
+                    }q=70/media/${data.kp_id}/wide_app_cinema_media_${
+                      data.kp_id
+                    }.jpg`,
                     "https://tangerine.gq/putin1.jpg",
                   ]}
                   className={style.hero_poster_img}
