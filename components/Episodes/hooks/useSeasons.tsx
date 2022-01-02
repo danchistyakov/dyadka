@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { SeasonsProps } from "../interfaces/IPlaylist";
 
 const useSeasons = (data): SeasonsProps => {
-  const [season, setSeason] = useState<number>(1);
+  const [season, setSeason] = useState<number>(data[0].season);
   const breakpointsSeasons = {
     320: { slidesPerView: 3.5 },
     768: {

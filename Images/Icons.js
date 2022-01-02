@@ -219,6 +219,8 @@ const Icons = (type) => {
       </svg>
     );
   }
+
+  return <></>;
 };
 
 export default Icons;

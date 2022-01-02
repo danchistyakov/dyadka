@@ -10,7 +10,6 @@ import style from "../../../../styles/Film.module.sass";
 import ErrorPage from "next/error";
 import Head from "next/head";
 import axios from "axios";
-//import Player from "../../../../components/Players";
 import { IMediaData } from "../../../../interfaces/IMediaData";
 import { observer } from "mobx-react-lite";
 

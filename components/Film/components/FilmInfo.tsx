@@ -16,7 +16,7 @@ import { useRouter } from "next/router";
 
 interface FilmInfoProps {
   data: any;
-  trailer: string;
+  trailer: string | null;
 }
 
 const FilmInfo: FC<FilmInfoProps> = observer(({ data, trailer }) => {
@@ -133,7 +133,7 @@ const FilmInfo: FC<FilmInfoProps> = observer(({ data, trailer }) => {
               pathname,
               query: {
                 ...query,
-                season: 1,
+                season: data.seasons[0].season,
                 episode: 1,
                 translationId:
                   data.translations.list[0]?.id || data.translations.default.id,

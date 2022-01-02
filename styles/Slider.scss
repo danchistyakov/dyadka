@@ -1,0 +1,158 @@
+:root {
+    --swiper-navigation-size: 44px;
+}
+
+.swiper-container {
+    display: flex;
+    align-items: center;
+}
+
+.swiper-button-next.swiper-button-disabled,
+.swiper-button-prev.swiper-button-disabled {
+    opacity: 0.35;
+    cursor: auto;
+    pointer-events: none;
+}
+
+.swiper-button-next.seasons:after,
+.swiper-button-prev.seasons:after {
+    font-family: swiper-icons;
+    font-size: 1vw;
+    text-transform: none !important;
+    letter-spacing: 0;
+    text-transform: none;
+    font-variant: initial;
+    line-height: 1;
+}
+
+.swiper-button-prev.seasons,
+.swiper-container-rtl .swiper-button-next.seasons {
+    left: 0;
+    right: auto;
+}
+
+.swiper-button-prev.seasons:after,
+.swiper-container-rtl .swiper-button-next.seasons:after {
+    content: "prev";
+}
+
+.swiper-button-next.seasons,
+.swiper-container-rtl .swiper-button-prev.seasons {
+    right: 0;
+    left: auto;
+}
+
+.swiper-button-next.seasons:after,
+.swiper-container-rtl .swiper-button-prev.seasons:after,
+.swiper-button-next.similar:after {
+    content: "next";
+}
+
+.swiper-button-lock {
+    display: none;
+}
+
+////////////////////////////
+.swiper-button-next,
+.swiper-button-prev {
+    position: absolute;
+    width: 2vw;
+    height: 2vw;
+    border-radius: 100px;
+    padding: 1.25vw;
+    z-index: 10;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #212121;
+    color: #fff;
+    &.swiper-button-disabled {
+        display: none;
+    }
+}
+
+.swiper-button-next.swiper-button-disabled,
+.swiper-button-prev.swiper-button-disabled {
+    opacity: 0.35;
+    cursor: auto;
+    pointer-events: none;
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+    font-family: swiper-icons;
+    font-size: 1.25vw;
+    text-transform: none !important;
+    letter-spacing: 0;
+    text-transform: none;
+    font-variant: initial;
+    line-height: 1;
+}
+
+.swiper-button-prev,
+.swiper-container-rtl {
+    left: 10px;
+    right: auto;
+}
+
+.swiper-button-prev:after,
+.swiper-container-rtl {
+    content: "prev";
+}
+
+.swiper-button-next,
+.swiper-container-rtl,
+.swiper-button-next {
+    right: 10px;
+    left: auto;
+}
+
+.swiper-button-next:after,
+.swiper-container-rtl {
+    content: "next";
+}
+
+.swiper-button-lock {
+    display: none;
+}
+
+.swiper-button-prev.slider,
+.swiper-button-next.slider {
+    width: 3.5vw;
+    height: 3.5vw;
+}
+
+.swiper-button-prev.slider {
+    left: 3vw;
+    right: auto;
+}
+
+.swiper-button-next.slider {
+    right: 3vw;
+    left: auto;
+}
+
+@media (max-width: 767px) {
+    .swiper-button-next,
+    .swiper-button-prev,
+    .swiper-button-prev.slider,
+    .swiper-button-next.slider {
+        width: 10vw;
+        height: 10vw;
+        //margin-top: -8vw
+    }
+    .swiper-button-next:after,
+    .swiper-button-prev:after {
+        font-size: 4vw;
+    }
+    .swiper-button-next.seasons,
+    .swiper-button-prev.seasons {
+        width: 8vw;
+        height: 8vw;
+    }
+    .swiper-button-next.seasons:after,
+    .swiper-button-prev.seasons:after {
+        font-size: 4vw;
+    }
+}

@@ -22,7 +22,7 @@
       "next-env.d.ts",
       "**/*.ts",
       "**/*.tsx"
-    ],
+, "pages/_error.jsx"    ],
     "exclude": [
       "node_modules"
     ]

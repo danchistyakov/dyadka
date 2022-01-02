@@ -34,33 +34,35 @@ const EpisodesSlider: FC<EpisodesProps> = observer(
             <div className="swiper-button-prev episodes"></div>
             <div className="swiper-button-next episodes"></div>
 
-            {data[season - 1].episodes.map((item, key) => (
-              <SwiperSlide
-                className={style.episode}
-                key={key}
-                onClick={() => changeEpisode(item.number)}
-              >
-                <Link
-                  href={{
-                    pathname,
-                    query: { ...query, season, episode: item.number },
-                  }}
-                  passHref
-                  shallow
-                  replace
+            {(data[season - 1]?.episodes || data[0]?.episodes).map(
+              (item, key) => (
+                <SwiperSlide
+                  className={style.episode}
+                  key={key}
+                  onClick={() => changeEpisode(item.number)}
                 >
-                  <LazyLoadImage
-                    src={item.poster}
-                    className={style.cover_section}
-                    effect="blur"
-                    alt=""
-                    wrapperClassName="error"
-                    placeholderSrc="/putin.jpg"
-                  />
-                </Link>
-                <p className={style.episode_number}>{item.number}-я серия</p>
-              </SwiperSlide>
-            ))}
+                  <Link
+                    href={{
+                      pathname,
+                      query: { ...query, season, episode: item.number },
+                    }}
+                    passHref
+                    shallow
+                    replace
+                  >
+                    <LazyLoadImage
+                      src={item.poster}
+                      className={style.cover_section}
+                      effect="blur"
+                      alt=""
+                      wrapperClassName="error"
+                      placeholderSrc="/putin.jpg"
+                    />
+                  </Link>
+                  <p className={style.episode_number}>{item.number}-я серия</p>
+                </SwiperSlide>
+              )
+            )}
           </Swiper>
         </div>
       </section>

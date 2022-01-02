@@ -106,16 +106,27 @@ const usePlayer = (data: IMediaData): PlayerProps => {
           (item) => item.id === Number(translationId)
         );
       } else {
-        translation = data.translations.list[0].id;
+        if (data.isSeries) {
+          translation =
+            data.translations.list[0].id || data.translations.default.id;
+        }
+        translation =
+          data.translations.list[0].id || data.translations.default.id;
         translationData = data.translations.list[0];
       }
-      const urlString = await GetUrl(
-        data,
-        Number(season) || 1,
-        Number(episode) || 1,
-        translation,
-        translationData
-      );
+      let urlString;
+      if (!translationData && !data.isSeries) {
+        urlString = data.media[0].urls[0];
+      } else {
+        urlString = await GetUrl(
+          data,
+          Number(season) || 1,
+          Number(episode) || 1,
+          translation,
+          translationData
+        );
+      }
+
       setUrl(urlString);
       setPlaying(true);
     };
