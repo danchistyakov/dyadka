@@ -72,7 +72,7 @@ const FilmInfo: FC<FilmInfoProps> = observer(({ data, trailer }) => {
       {authError && <AuthPopup setAuthPopup={setAuthPopup} />}
       <div className={`${style.screen} ${expand ? style.expand : ""}`}>
         {!Layout?.watch ? (
-          <div className={style.preview} key={data.kp_id}>
+          <div className={style.preview}>
             {!trailer && isBrowser && (
               <div className={style.hero_poster}>
                 <picture className={style.hero_picture}>
@@ -143,13 +143,21 @@ const FilmInfo: FC<FilmInfoProps> = observer(({ data, trailer }) => {
           <Link
             href={{
               pathname,
-              query: {
-                ...query,
-                season: data.seasons[0].season,
-                episode: 1,
-                translationId:
-                  data.translations.list[0]?.id || data.translations.default.id,
-              },
+              query: data.isSeries
+                ? {
+                    ...query,
+                    season: data.seasons[0].season,
+                    episode: 1,
+                    translationId:
+                      data.translations.list[0]?.id ||
+                      data.translations.default.id,
+                  }
+                : {
+                    ...query,
+                    translationId:
+                      data.translations.list[0]?.id ||
+                      data.translations.default.id,
+                  },
             }}
             passHref
             shallow
