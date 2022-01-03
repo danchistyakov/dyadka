@@ -17,9 +17,7 @@ const FilmsList: FC<any> = ({ data, isLoading }) => {
                     alt={title}
                     src={poster}
                   />
-                  <div className={styles.search_result_info}>
-                    <p className={styles.title}>{title}</p>
-                  </div>
+                  <p className={styles.title}>{title}</p>
                 </a>
               </Link>
             </div>

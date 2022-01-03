@@ -38,9 +38,11 @@
 
 .translations_list {
     position: absolute;
+    overflow-y: auto;
     top: 2vw;
     right: 0;
     width: 17vw;
+    height: 20vw;
     background: #2b2a2f;
     padding: 1vw;
     display: flex;
@@ -106,8 +108,9 @@
     .translations_list {
         min-width: 40vw;
         width: auto;
-        top: 2.5vw;
-        border-radius: 2vw;
+        top: 7vw;
+        border-radius: 3vw;
+        height: 60vw;
     }
     .translation_preview {
         font-size: 4vw;

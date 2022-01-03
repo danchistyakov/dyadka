@@ -127,7 +127,7 @@ const FilmInfo: FC<FilmInfoProps> = observer(({ data, trailer }) => {
                     }q=70/media/${data.kp_id}/wide_app_cinema_media_${
                       data.kp_id
                     }.jpg`,
-                    "https://tangerine.gq/putin1.jpg",
+                    "/putin.jpg",
                   ]}
                   className={style.hero_poster_img}
                 />

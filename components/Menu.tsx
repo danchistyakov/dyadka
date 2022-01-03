@@ -1,30 +1,31 @@
-import React, { useState } from "react";
-import style from "../styles/Menu.module.sass";
+import { FC, useState } from "react";
+import style from "../styles/Menu.module.scss";
 import Icons from "../Images/Icons";
 import Link from "next/link";
 import { observer } from "mobx-react-lite";
 import Auth from "../Store/Auth";
 import { useRouter } from "next/router";
 
-const Menu = observer(({ setOpen }) => {
+const Menu: FC<any> = ({ setOpen }) => {
   const nav = [
-    { title: "Сейчас смотрят", link: "watching" },
-    { title: "Новинки", link: "last" },
-    { title: "Фильмы", link: "films" },
-    { title: "Сериалы", link: "series" },
-    { title: "Мультфильмы", link: "cartoons" },
-    { title: "Телепередачи", link: "show" },
-    { title: "Аниме", link: "animation" },
+    { title: "Сейчас смотрят", href: "watching" },
+    { title: "Новинки", href: "last" },
+    { title: "Фильмы", href: "films" },
+    { title: "Сериалы", href: "series" },
+    { title: "Мультфильмы", href: "cartoons" },
+    { title: "Телепередачи", href: "show" },
+    { title: "Аниме", href: "animation" },
   ];
   const lklinks = [
-    { link: "/my/favorites", title: "Избранное" },
-    { link: "/my/featured", title: "Рекомендации" },
-    { link: "/my/health", title: "Проверка систем" },
-    { link: "/my/history", title: "История посещений" },
-    { link: "/my/settings", title: "Настройки" },
+    { href: "/my/favorites", title: "Избранное" },
+    { href: "/my/featured", title: "Рекомендации" },
+    { href: "/my/health", title: "Проверка систем" },
+    { href: "/my/history", title: "История посещений" },
+    { href: "/my/settings", title: "Настройки" },
   ];
 
   const [myOpened, setMyOpen] = useState(false);
+  const { pathname } = useRouter();
 
   const Logout = async () => {
     setOpen(false);
@@ -34,14 +35,10 @@ const Menu = observer(({ setOpen }) => {
   return (
     <nav className={style.mobile_menu}>
       <div className={style.menu_items}>
-        {nav.map((res, key) => (
-          <Link
-            href="/category/[category]"
-            as={`/category/${res.link}`}
-            key={key}
-          >
+        {nav.map(({ href, title }, key) => (
+          <Link href={`/category/${href}`} key={key} passHref>
             <a onClick={() => setOpen(false)}>
-              <div className={style.menu_item}>{res.title}</div>
+              <div className={style.menu_item}>{title}</div>
             </a>
           </Link>
         ))}
@@ -67,13 +64,13 @@ const Menu = observer(({ setOpen }) => {
 
         {myOpened && (
           <div className={style.lk_items}>
-            {lklinks.map((res, key) => (
-              <Link href={res.link} key={key}>
+            {lklinks.map(({ href, title }, key) => (
+              <Link href={href} key={key}>
                 <a
                   className={style.menu_subitem}
                   onClick={() => setOpen(false)}
                 >
-                  {res.title}
+                  {title}
                 </a>
               </Link>
             ))}
@@ -85,5 +82,5 @@ const Menu = observer(({ setOpen }) => {
       </div>
     </nav>
   );
-});
-export default Menu;
+};
+export default observer(Menu);

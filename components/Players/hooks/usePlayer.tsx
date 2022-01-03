@@ -66,7 +66,7 @@ const usePlayer = (data: IMediaData): PlayerProps => {
   const nextEpisode = (season: number, episode: number) => {
     const seasonsAmount = data.seasons.length;
     const seasonLength = data.seasons[season - 1].episodes.length;
-    console.log(seasonLength);
+
     if (episode < seasonLength) {
       return router.push(
         {

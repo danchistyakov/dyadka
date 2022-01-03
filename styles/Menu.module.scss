@@ -1,0 +1,48 @@
+.mobile_menu {
+    display: none;
+}
+
+@media (max-width: 767px) {
+    .mobile_menu {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: #16151a;
+    }
+    .menu_items {
+        margin-top: 13vw;
+        height: 90vh;
+        overflow-y: auto;
+    }
+    .menu_item {
+        font-size: 4vw;
+        text-transform: uppercase;
+        padding: 5vw;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .arrow_icon {
+        transform: rotate(180deg);
+        width: 6vw;
+        &.expanded {
+            transform: rotate(0deg);
+        }
+    }
+    .menu_subitem {
+        font-size: 3.5vw;
+        text-transform: uppercase;
+        padding: 3vw 8vw;
+    }
+    .menu_subitem:nth-child(1) {
+        padding-top: 0;
+    }
+    .lk_items {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+}

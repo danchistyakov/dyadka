@@ -45,7 +45,7 @@ const CabinetMenu: FC = observer(() => {
     return <a className={style.header_button}>Загрузка...</a>;
   } else {
     return (
-      <div>
+      <>
         {!Auth.isAuth ? (
           <div
             className={style.header_button}
@@ -78,7 +78,7 @@ const CabinetMenu: FC = observer(() => {
           </div>
         )}
         {authpopup && <AuthPopup setAuthPopup={setAuthPopup} />}
-      </div>
+      </>
     );
   }
 });

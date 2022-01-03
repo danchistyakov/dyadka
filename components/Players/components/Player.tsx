@@ -169,15 +169,7 @@ const Player: FC<PlayerProps> = ({
   return (
     <section>
       {!isPirate ? (
-        <FullScreen
-          handle={fullScreenHandle}
-          className="player"
-          //ref={playerContainer}
-          //tabIndex={0}
-          /*onKeyDown={(e) => {
-            handleKeys(e);
-          }}*/
-        >
+        <FullScreen handle={fullScreenHandle} className="player">
           <div
             className="player_screen"
             tabIndex={0}
@@ -247,7 +239,7 @@ const Player: FC<PlayerProps> = ({
         </FullScreen>
       ) : (
         <PiratePlayer
-          kpId={Info.info.kp_id}
+          kpId={data.kp_id}
           season={Number(season)}
           episode={Number(episode)}
           handlePirate={handlePirate}
