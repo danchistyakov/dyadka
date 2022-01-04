@@ -3,16 +3,16 @@ $blue: #3f2aff;
     position: sticky;
     top: 0;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     z-index: 5;
-    padding: 0.4vw;
+    margin: 0.5vw 2vw;
     background-color: #16151a;
 }
 
 .logo {
     font-size: 2vw;
-    padding: 1vw;
+    padding: 0.5vw;
 }
 
 .menu_icon,
@@ -109,6 +109,7 @@ $blue: #3f2aff;
 .search_icon {
     width: 3vw;
     height: 3vw;
+    margin-right: 2vw;
     border-radius: 0.5vw;
     transition: 0.3s;
     padding: 0.5vw;
@@ -140,7 +141,7 @@ $blue: #3f2aff;
     .container {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: space-between;
         padding: 1vw 4vw;
     }
     .logo {

@@ -32,7 +32,7 @@ const Header: FC = () => {
   return (
     <header className={styles.container}>
       {authPopup && <AuthPopup setAuthPopup={setAuthPopup} />}
-      <div className={styles.links}>
+      <>
         {!opened ? (
           <Icons
             icon="MenuIcon"
@@ -65,7 +65,7 @@ const Header: FC = () => {
             <Icons icon="PersonIcon" />
           </span>
         </div>
-      </div>
+      </>
       <nav className={styles.nav}>
         <div className={styles.categories}>
           {nav?.map(({ href, title }, key) => (
