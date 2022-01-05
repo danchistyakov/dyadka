@@ -1,6 +1,6 @@
-import React from "react";
+import { FC } from "react";
 
-const Footer = () => {
+const Footer: FC = () => {
   return (
     <footer>
       <p>2021. Все права защищены. Adm-hdkino@yandex.ru</p>
