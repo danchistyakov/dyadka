@@ -4,35 +4,30 @@ import PlayerOptions from "../../../Store/PlayerOptions";
 import Video from "../../../Store/Video";
 import axios from "axios";
 import { IMediaData, ITranslation } from "../../../interfaces/IMediaData";
+import { $data } from "../../../api/IndexApi";
 
 const GetUrl = async (
   info: IMediaData,
   season: number | null,
   episode: number | null,
-  translation: number,
-  translationData: ITranslation
+  translation: number
 ) => {
-  const { isSeries, slug, token } = info;
-  const source = Buffer.from(slug).toString("base64");
-  const Body = (hash: string) => {
+  const { isSeries } = info;
+  const Body = () => {
     if (isSeries) {
       return {
-        source,
         translation,
         season,
         episode,
-        token,
       };
     } else {
-      return { source, hash, translation, token };
+      return { translation };
     }
   };
-  const str = JSON.stringify(translationData?.params) || "";
-  console.log(str);
-  const hash = Buffer.from(str).toString("base64");
+
   try {
-    const body = Body(hash);
-    const { data } = await axios.post("https://api.dyadka.gq/geturl", {
+    const body = Body();
+    const { data } = await $data.post("/geturl", {
       ...body,
     });
     const { media } = data;

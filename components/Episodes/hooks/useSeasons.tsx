@@ -3,6 +3,7 @@ import { SeasonsProps } from "../interfaces/IPlaylist";
 
 const useSeasons = (data): SeasonsProps => {
   const [season, setSeason] = useState<number>(data[0].season);
+  console.log(data.length);
   const breakpointsSeasons = {
     320: { slidesPerView: 3.5 },
     768: {

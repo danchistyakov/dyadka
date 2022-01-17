@@ -39,12 +39,12 @@ const EpisodesSlider: FC<EpisodesProps> = observer(
                 <SwiperSlide
                   className={style.episode}
                   key={key}
-                  onClick={() => changeEpisode(item.number)}
+                  onClick={() => changeEpisode(item.episode)}
                 >
                   <Link
                     href={{
                       pathname,
-                      query: { ...query, season, episode: item.number },
+                      query: { ...query, season, episode: item.episode },
                     }}
                     passHref
                     shallow
@@ -59,7 +59,7 @@ const EpisodesSlider: FC<EpisodesProps> = observer(
                       placeholderSrc="/putin.jpg"
                     />
                   </Link>
-                  <p className={style.episode_number}>{item.number}-я серия</p>
+                  <p className={style.episode_number}>{item.episode}-я серия</p>
                 </SwiperSlide>
               )
             )}

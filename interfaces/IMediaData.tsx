@@ -4,44 +4,54 @@ interface IMedia {
 }
 
 export interface IEpisode {
-  number: number;
+  episode: number;
   poster: string;
 }
 
 export interface ISeason {
-  season: 1;
+  season: number;
   episodes: IEpisode[];
   length: number;
 }
 
 export interface ITranslation {
   id: number;
-  name: string;
-  params: { is_camrip: string; is_ads: string; is_director: string } | null;
+  episode: string;
+  title: string;
+  season: string;
 }
 
-export interface ITranslations {
-  list: ITranslation[];
-  default: ITranslation;
+export interface ISimilar {
+  kpId: number;
+  poster: string;
+  title: string;
+}
+
+export interface IStaff {
+  kpId: number;
+  poster: string;
+  title: string;
 }
 
 export interface IMediaData {
   age: string;
-  country: string;
+  countries: string;
+  description: string;
   genres: string;
   id: number;
-  kp_id: number;
+  isSeries: boolean;
+  kpId: number;
   media: IMedia[] | null;
-  origtitle: string;
+  origTitle: string;
+  posterBig: string;
   ratings: {
     kinopoisk: string;
     imdb: string;
   };
-  isSeries: boolean;
-  slug: string;
+  similars: ISimilar[];
+  staff: IStaff[];
   title: string;
-  token: string;
-  translations: ITranslations;
+  translations: ITranslation[];
   seasons: ISeason[];
-  year: string;
+  year: number;
 }

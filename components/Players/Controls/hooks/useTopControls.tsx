@@ -8,15 +8,10 @@ const useTopControls = (data: IMediaData): TopControlsProps => {
   const { pathname, query } = router;
   const { season, episode, translationId } = query;
   const { isSeries, title, translations } = data;
-  const defaultTranslation = data.translations.list.find(
-    (item) => item.id === Number(translationId)
-  );
   const [isContinuing, setContinuing] = useState<boolean>(false);
   const [isListVisible, setListVisibility] = useState<boolean>(false);
   const [translationName, setTranslationName] = useState<string>(
-    defaultTranslation?.name ||
-      data.translations.list[0]?.name ||
-      data.translations.default.name
+    data.translations[0].title
   );
 
   const translateModal = useRef(null);
@@ -40,7 +35,7 @@ const useTopControls = (data: IMediaData): TopControlsProps => {
 
   const handleList = (e) => {
     e.stopPropagation();
-    if (translations.list.length > 1) {
+    if (translations.length > 1) {
       setListVisibility((prev) => !prev);
     }
   };

@@ -8,7 +8,6 @@ import PlayerOptions from "../../../Store/PlayerOptions";
 import { observer } from "mobx-react-lite";
 import ReactPlayer from "react-player";
 import { FullScreen } from "react-full-screen";
-import GetUrl from "../hooks/GetUrl";
 import Video from "../../../Store/Video";
 import { isMobile } from "react-device-detect";
 import Volume from "../../../Store/Volume";
@@ -239,7 +238,7 @@ const Player: FC<PlayerProps> = ({
         </FullScreen>
       ) : (
         <PiratePlayer
-          kpId={data.kp_id}
+          kpId={data.kpId}
           season={Number(season)}
           episode={Number(episode)}
           handlePirate={handlePirate}

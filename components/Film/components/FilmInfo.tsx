@@ -82,7 +82,7 @@ const FilmInfo: FC<FilmInfoProps> = observer(({ data, trailer }) => {
                   />
                   {!fallback ? (
                     <img
-                      src={`https://cdn.statically.io/img/blackmedia.top/f=auto,q=50/media/${data.kp_id}/wide_app_cinema_media_${data.kp_id}.jpg`}
+                      src={data.posterBig}
                       className={style.hero_poster_img}
                       onError={() => setFallback(true)}
                     />
@@ -146,17 +146,13 @@ const FilmInfo: FC<FilmInfoProps> = observer(({ data, trailer }) => {
               query: data.isSeries
                 ? {
                     ...query,
-                    season: data.seasons[0].season,
+                    season: 1,
                     episode: 1,
-                    translationId:
-                      data.translations.list[0]?.id ||
-                      data.translations.default.id,
+                    translationId: data.translations[0].id || 0,
                   }
                 : {
                     ...query,
-                    translationId:
-                      data.translations.list[0]?.id ||
-                      data.translations.default.id,
+                    translationId: data.translations[0].id || 0,
                   },
             }}
             passHref
@@ -171,12 +167,12 @@ const FilmInfo: FC<FilmInfoProps> = observer(({ data, trailer }) => {
         )}
         <h1 className={style.film_title}>{data.title} смотреть онлайн</h1>
         <div>
-          <p className={style.film_eng_title}>{data.origtitle}</p>
+          <p className={style.film_eng_title}>{data.origTitle}</p>
         </div>
         <div>
           <div className={style.film_info}>
             <p>
-              {data.year} • {data.genres} • {data.country} • {data.age}
+              {data.year} • {data.genres} • {data.countries} • {data.age}
             </p>
           </div>
         </div>

@@ -8,14 +8,16 @@ const FilmsList: FC<any> = ({ data, isLoading }) => {
   return (
     <div className={styles.container}>
       {!isLoading
-        ? data.map(({ poster, title, slug }, key) => (
-            <div className={styles.item} key={key}>
-              <Link href="/[type]/[genre]/[id]" as={slug} passHref>
+        ? data.data?.map(({ kpId, poster, title }) => (
+            <div className={styles.item} key={kpId}>
+              <Link href={`/media/${kpId}`} passHref>
                 <a>
                   <LazyLoadImage
-                    className={styles.poster}
                     alt={title}
+                    className={styles.poster}
+                    placeholderSrc={data.defaultPoster}
                     src={poster}
+                    wrapperClassName={styles.error}
                   />
                   <p className={styles.title}>{title}</p>
                 </a>

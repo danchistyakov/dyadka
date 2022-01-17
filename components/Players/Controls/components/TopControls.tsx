@@ -55,7 +55,7 @@ const TopControls: FC<TopControlsProps> = ({
       <div className={styles.top_right}>
         <div className={styles.translation_preview} onClick={handleList}>
           {translationName}
-          {translations.list.length > 1 &&
+          {translations.length > 1 &&
             (isListVisible ? (
               <Icons
                 icon="ExpandLessIcon"
@@ -68,15 +68,15 @@ const TopControls: FC<TopControlsProps> = ({
               />
             ))}
         </div>
-        {isListVisible && translations.list.length > 1 && (
+        {isListVisible && translations.length > 1 && (
           <div className={styles.translations_list} /*ref={translateModal}*/>
-            {translations.list.map((res) => (
+            {translations.map(({ id, title }) => (
               <span
                 className={styles.translation_item}
-                onClick={() => handleTranslation(res.id, res.name, res.params)}
-                key={res.id}
+                onClick={() => handleTranslation(id, title, null)}
+                key={id}
               >
-                {res.name}
+                {title}
               </span>
             ))}
           </div>

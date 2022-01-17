@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 import { FullScreenHandle } from "react-full-screen";
-import { IMediaData, ITranslations } from "../../../../interfaces/IMediaData";
+import { IMediaData, ITranslation } from "../../../../interfaces/IMediaData";
 
 export interface ControlsProps {
   //children: JSX.Element;
@@ -23,7 +23,7 @@ export interface TopControlsProps {
   title: string;
   season: number;
   episode: number;
-  translations: ITranslations;
+  translations: ITranslation[];
   isContinuing: boolean;
   handleContinue: () => void;
   handleList: (e: any) => void;

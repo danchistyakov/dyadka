@@ -102,17 +102,15 @@ const usePlayer = (data: IMediaData): PlayerProps => {
       let translation: number;
       if (translationId) {
         translation = Number(translationId);
-        translationData = data.translations.list.find(
+        translationData = data.translations.find(
           (item) => item.id === Number(translationId)
         );
       } else {
         if (data.isSeries) {
-          translation =
-            data.translations.list[0].id || data.translations.default.id;
+          translation = data.translations[0].id;
         }
-        translation =
-          data.translations.list[0].id || data.translations.default.id;
-        translationData = data.translations.list[0];
+        translation = data.translations[0].id;
+        translationData = data.translations[0];
       }
       let urlString;
       if (!translationData && !data.isSeries) {
@@ -122,8 +120,7 @@ const usePlayer = (data: IMediaData): PlayerProps => {
           data,
           Number(season) || 1,
           Number(episode) || 1,
-          translation,
-          translationData
+          translation
         );
       }
 

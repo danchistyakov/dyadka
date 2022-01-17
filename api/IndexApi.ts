@@ -1,11 +1,11 @@
 import axios from "axios";
 
 const $data = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
 
 const $auth = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
 
 const authInterceptor = (config: any) => {
