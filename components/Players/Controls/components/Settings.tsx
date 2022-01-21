@@ -1,31 +1,34 @@
-import React, { useState, useEffect, useRef } from "react";
-import style from "../styles/Settings.module.sass";
-import Playlist from "../store/Playlist";
-import Icons from "../Images/Icons";
-import { observer } from "mobx-react-lite";
-import { toJS } from "mobx";
-import Video from "../store/Video";
-import PlayerOptions from "../store/PlayerOptions";
+import {FC, useState, useEffect, useRef} from 'react';
+import style from '../../../../styles/Settings.module.sass';
+import Playlist from '../../../../store/Playlist';
+import Icons from '../../../../Images/Icons';
+import {observer} from 'mobx-react-lite';
+import {toJS} from 'mobx';
+import Video from '../../../../store/Video';
+import PlayerOptions from '../../../../store/PlayerOptions';
+import usePlayer from '@components/Players/hooks/usePlayer';
+import {SettingsProps} from '@components/Players/Controls/interfaces/ISettings';
 
-const Settings = observer(() => {
+const Settings: FC<SettingsProps> = observer(({data}) => {
   const [qvisible, setqVisible] = useState(false);
   const [svisible, setsVisible] = useState(false);
   const [speed, setSpeed] = useState(false);
   const settingsModal = useRef(null);
+  const {handleQuality, qualityId, urls} = usePlayer(data);
 
   useEffect(() => {
     const onClick = (e) =>
       settingsModal.current?.contains(e.target) ||
       (setsVisible(false), setSpeed(false), setqVisible(false));
-    document.addEventListener("click", onClick);
-    return () => document.removeEventListener("click", onClick);
+    document.addEventListener('click', onClick);
+    return () => document.removeEventListener('click', onClick);
   }, []);
 
-  const handleQuality = (item, key) => {
-    PlayerOptions.setBuffering(true);
-    setqVisible(false);
-    Playlist.setQuality(item?.quality, key);
-  };
+  // const handleQuality = (item, key) => {
+  //   PlayerOptions.setBuffering(true);
+  //   setqVisible(false);
+  //   Playlist.setQuality(item?.quality, key);
+  // };
 
   return (
     <div>
@@ -67,7 +70,7 @@ const Settings = observer(() => {
                     <span className={style.option_name}>Качество:</span>
                     <span className={style.preview_clickable}>
                       <span className={style.preview_value}>
-                        {Playlist?.quality?.name || "..."}
+                        {urls[qualityId]?.quality || '...'}
                       </span>
                       <span className={style.settings_chevron}>
                         <Icons icon="ChevronRightIcon" />
@@ -115,13 +118,13 @@ const Settings = observer(() => {
                   <span className={style.option_name}>Качество</span>
                 </div>
                 <div className={style.choice_list}>
-                  {toJS(Video?.urls)?.map((item, key) => (
+                  {urls.map((item, key) => (
                     <span
                       key={key}
                       className={style.settings_choice}
-                      onClick={() => handleQuality(item, key)}
+                      onClick={() => handleQuality(key)}
                     >
-                      {item?.quality}
+                      {item.quality}
                     </span>
                   ))}
                 </div>

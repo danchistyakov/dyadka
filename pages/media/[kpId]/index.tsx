@@ -52,6 +52,7 @@ export const getServerSideProps = async (context) => {
   const {data} = await $data.post(`/film`, {
     kpId,
   });
+  console.log(data)
 
   const trailer = null;
 

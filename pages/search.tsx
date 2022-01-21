@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react';
 import {useRouter} from 'next/router';
 import style from '../styles/Search.module.scss';
 import Icons from '../Images/Icons';
-import useDebounce from '../Hooks/useDebounce';
+import useDebounce from '../hooks/useDebounce';
 import FilmsList from '../components/FilmsList';
 import {FilmsListProps} from '../interfaces/IFilmsList';
 import {$data} from '../api/IndexApi';

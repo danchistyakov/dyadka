@@ -1,4 +1,4 @@
-interface IMedia {
+export interface IMedia {
   quality: string;
   streams: string[];
 }

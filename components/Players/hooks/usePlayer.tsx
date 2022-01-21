@@ -1,8 +1,7 @@
 import {useRouter} from 'next/router';
 import {ChangeEvent, useEffect, useState} from 'react';
 import {FullScreen, useFullScreenHandle} from 'react-full-screen';
-import {IMediaData, ITranslation} from '../../../interfaces/IMediaData';
-import Volume from '../../../store/Volume';
+import {IMedia, IMediaData, ITranslation} from '../../../interfaces/IMediaData';
 import {PlayerProps} from '../interfaces/IPlayer';
 import GetUrl from './GetUrl';
 
@@ -12,6 +11,8 @@ const usePlayer = (data: IMediaData): PlayerProps => {
   const [isPlaying, setPlaying] = useState(true);
   const [isPirate, setPirate] = useState<boolean>(false);
   const [url, setUrl] = useState<string | null>(null);
+  const [urls, setUrls] = useState<IMedia[]>([]);
+  const [qualityId, setQualityId] = useState<number>(2);
   const [volume, setVolume] = useState<number>(100);
   const fullScreenHandle = useFullScreenHandle();
   const router = useRouter();
@@ -29,6 +30,10 @@ const usePlayer = (data: IMediaData): PlayerProps => {
   const handlePlaying = (value: boolean) => {
     setPlaying(value);
   };
+
+  const handleQuality = (id: number) => {
+    setQualityId(id);
+  }
 
   const handleVolume = (e: ChangeEvent<HTMLInputElement>) => {
     setVolume(Number(e.target.value));
@@ -112,24 +117,26 @@ const usePlayer = (data: IMediaData): PlayerProps => {
         translation = data.translations[0].id;
         translationData = data.translations[0];
       }
-      let urlString;
-      if (!translationData && !data.isSeries) {
-        urlString = data.urls[0].streams[0];
-      } else {
-        urlString = await GetUrl(
-          data.kpId,
-          data.isSeries,
-          season || '1',
-          episode || '1',
-          translation
-        );
-      }
-
-      setUrl(urlString);
+      const urlStrings = await GetUrl(
+        data.kpId,
+        data.isSeries,
+        season || '1',
+        episode || '1',
+        translation
+      );
+      console.log(urlStrings)
+      setUrls(urlStrings);
+      setUrl(urlStrings[qualityId].streams[0]);
       setPlaying(true);
     };
     Fetch();
   }, [data, translationId, season, episode]);
+
+  useEffect(() => {
+    const url = urls[qualityId]?.streams[0];
+    setUrl(url);
+  }, [qualityId])
+  console.log(qualityId)
 
   useEffect(() => {
     if (!fullScreenHandle.active) {
@@ -147,11 +154,14 @@ const usePlayer = (data: IMediaData): PlayerProps => {
     handleMute,
     handlePirate,
     handlePlaying,
+    handleQuality,
     handleVolume,
     prevEpisode,
     nextEpisode,
     fullScreenHandle,
+    qualityId,
     url,
+    urls,
     volume,
   };
 };

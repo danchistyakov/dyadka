@@ -1,46 +1,43 @@
-import React, { FC, useState, useEffect, useRef } from "react";
-import { toJS } from "mobx";
-import Playlist from "../../../store/Playlist";
-import Auth from "../../../store/Auth";
-import Info from "../../../store/Info";
-import PlayerControls from "../../../store/PlayerControls";
-import PlayerOptions from "../../../store/PlayerOptions";
-import { observer } from "mobx-react-lite";
-import ReactPlayer from "react-player";
-import { FullScreen } from "react-full-screen";
-import Video from "../../../store/Video";
-import { isMobile } from "react-device-detect";
-import Volume from "../../../store/Volume";
-import Icons from "../../../Images/Icons";
-import { throttle } from "throttle-debounce";
-import PiratePlayer from "./PiratePlayer";
-import sendTime from "../hooks/sendTime";
-import Controls from "../Controls";
-import { PlayerProps } from "../interfaces/IPlayer";
-import { useRouter } from "next/router";
+import React, {FC, useState, useEffect, useRef} from 'react';
+import {toJS} from 'mobx';
+import Playlist from '@store/Playlist';
+import Auth from '@store/Auth';
+import Info from '@store/Info';
+import PlayerControls from '@store/PlayerControls';
+import PlayerOptions from '@store/PlayerOptions';
+import {observer} from 'mobx-react-lite';
+import ReactPlayer from 'react-player';
+import {FullScreen} from 'react-full-screen';
+import Video from '@store/Video';
+import {isMobile} from 'react-device-detect';
+import Volume from '@store/Volume';
+import Icons from '../../../Images/Icons';
+import {throttle} from 'throttle-debounce';
+import PiratePlayer from './PiratePlayer';
+import sendTime from '../hooks/sendTime';
+import Controls from '../Controls';
+import {PlayerProps} from '../interfaces/IPlayer';
+import {useRouter} from 'next/router';
+import usePlayer from '@components/Players/hooks/usePlayer';
 
 var timer;
 
 const Player: FC<PlayerProps> = ({
-  data,
-  fullScreenHandle,
-  isBuffering,
-  isMuted,
-  isPirate,
-  isPlaying,
-  handleBuffering,
-  handleMute,
-  handlePirate,
-  handlePlaying,
-  handleVolume,
-  prevEpisode,
-  nextEpisode,
-  url,
-  volume,
-}) => {
-  const { query } = useRouter();
-  const { season, episode } = query;
-
+                                   data,
+                                   fullScreenHandle,
+                                   isBuffering,
+                                   isMuted,
+                                   isPirate,
+                                   isPlaying,
+                                   handleBuffering,
+                                   handlePirate,
+                                   handlePlaying,
+                                   nextEpisode,
+                                   url,
+                                   volume,
+                                 }) => {
+  const {query} = useRouter();
+  const {season, episode} = query;
   const [count, setCount] = useState(1);
   const playerContainer = useRef(null);
   const playerRef = useRef(null);
@@ -58,47 +55,31 @@ const Player: FC<PlayerProps> = ({
   );
 
   PlayerControls.setCurrentDuration(
-    playerRef.current ? playerRef.current.getDuration() : "00:00"
+    playerRef.current ? playerRef.current.getDuration() : '00:00'
   );
 
   /*useEffect(() => {
     continuePlaying(Auth.isAuth, Auth.user.email, Info.info.id);
   }, [Auth.isAuth, Auth.user.email, Info.info.id]);*/
 
-  useEffect(() => {
-    const Quality = async () => {
-      if (Playlist.quality?.id) {
-        const id = Number(Playlist.quality.id);
-        const videos = toJS(Video?.urls);
-        const time = PlayerControls?.currentTime;
-        Video.setUrl(videos[id].urls[0]);
-        PlayerOptions.setBuffering(true);
-        if (time) {
-          setTimeout(() => playerRef.current?.seekTo(time), 1000);
-        }
-        PlayerOptions.setBuffering(false);
-      }
-    };
-    Quality();
-  }, [Playlist.quality?.id]);
-
+  console.log(url);
   const handleKeys = (e) => {
-    if (e.code === "Space") {
+    if (e.code === 'Space') {
       e.preventDefault();
       PlayerControls.setPlaying(!PlayerControls?.playing);
     }
 
-    if (e.code === "ArrowLeft") {
+    if (e.code === 'ArrowLeft') {
       e.preventDefault();
       playerRef.current.seekTo(playerRef.current.getCurrentTime() - 5);
     }
 
-    if (e.code === "ArrowRight") {
+    if (e.code === 'ArrowRight') {
       e.preventDefault();
       playerRef.current.seekTo(playerRef.current.getCurrentTime() + 5);
     }
 
-    if (e.code === "ArrowUp") {
+    if (e.code === 'ArrowUp') {
       e.preventDefault();
       PlayerControls.setMute(false);
       if (Volume.volume <= 0.95) {
@@ -108,7 +89,7 @@ const Player: FC<PlayerProps> = ({
       }
     }
 
-    if (e.code === "ArrowDown") {
+    if (e.code === 'ArrowDown') {
       e.preventDefault();
       if (Volume.volume >= 0.05) {
         Volume.setVolume(Number(Volume.volume - 0.05).toFixed(2));
@@ -120,8 +101,8 @@ const Player: FC<PlayerProps> = ({
   };
 
   const handleMouseMove = () => {
-    controlsRef.current.style.visibility = "visible";
-    document.body.style.cursor = "auto";
+    controlsRef.current.style.visibility = 'visible';
+    document.body.style.cursor = 'auto';
     setCount(0);
   };
 
@@ -132,12 +113,12 @@ const Player: FC<PlayerProps> = ({
       send();
     }
     if (count > 3 && fullScreenHandle.active) {
-      controlsRef.current.style.visibility = "hidden";
-      document.body.style.cursor = "none";
+      controlsRef.current.style.visibility = 'hidden';
+      document.body.style.cursor = 'none';
     }
 
     if (
-      controlsRef.current.style.visibility === "visible" &&
+      controlsRef.current.style.visibility === 'visible' &&
       fullScreenHandle.active
     ) {
       setCount(count + 1);
@@ -154,12 +135,12 @@ const Player: FC<PlayerProps> = ({
     if (e.detail === 1) {
       timer = setTimeout(() => handlePlaying(!isPlaying), 200);
     } else if (e.detail === 2) {
-      if (action === "rewind") {
+      if (action === 'rewind') {
         playerRef.current.getCurrentTime() > 5
           ? playerRef.current.seekTo(playerRef.current.getCurrentTime() - 5)
           : playerRef.current.seekTo(0);
       }
-      if (action === "forward") {
+      if (action === 'forward') {
         playerRef.current.seekTo(playerRef.current.getCurrentTime() + 5);
       }
     }
@@ -194,16 +175,16 @@ const Player: FC<PlayerProps> = ({
             {isMobile && (
               <div
                 className="left_rewind"
-                onClick={(e) => onClickHandler(e, "rewind")}
+                onClick={(e) => onClickHandler(e, 'rewind')}
               ></div>
             )}
             <ReactPlayer
               url={url}
               muted={isMuted}
               playing={isPlaying}
-              width={"100%"}
-              height={"100%"}
-              style={{ margin: "auto" }}
+              width={'100%'}
+              height={'100%'}
+              style={{margin: 'auto'}}
               ref={playerRef}
               volume={volume / 100}
               playbackRate={Playlist?.speed}
@@ -215,24 +196,14 @@ const Player: FC<PlayerProps> = ({
             {isMobile && (
               <div
                 className="right_forward"
-                onClick={(e) => onClickHandler(e, "forward")}
+                onClick={(e) => onClickHandler(e, 'forward')}
               ></div>
             )}
           </div>
           <div className="controls" ref={controlsRef}>
             <Controls
               data={data}
-              fullScreenHandle={fullScreenHandle}
-              isMuted={isMuted}
-              isPlaying={isPlaying}
-              handleMute={handleMute}
-              handlePirate={handlePirate}
-              handlePlaying={handlePlaying}
               handleSeekChange={handleSeekChange}
-              handleVolume={handleVolume}
-              prevEpisode={prevEpisode}
-              nextEpisode={nextEpisode}
-              volume={volume}
             />
           </div>
         </FullScreen>

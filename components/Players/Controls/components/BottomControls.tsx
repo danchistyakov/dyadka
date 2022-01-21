@@ -1,37 +1,38 @@
-import React, { FC, Dispatch, SetStateAction, useState } from "react";
-import Settings from "../../../Settings";
-import PlayerControls from "../../../../store/PlayerControls";
-import Volume from "../../../../store/Volume";
-import { observer } from "mobx-react-lite";
-import { withStyles } from "@material-ui/core/styles";
-import Slider from "@material-ui/core/Slider";
-import Tooltip from "@material-ui/core/Tooltip";
-import styles from "../styles/BottomControls.module.scss";
-import Icons from "../../../../Images/Icons";
-import formatTime from "../../hooks/formatTime";
-import { useRouter } from "next/router";
-import { BottomControlsProps } from "../interfaces/IControls";
+import {FC,useState} from 'react';
+import Settings from './Settings';
+import PlayerControls from '@store/PlayerControls';
+import {observer} from 'mobx-react-lite';
+import {withStyles} from '@material-ui/core/styles';
+import Slider from '@material-ui/core/Slider';
+import Tooltip from '@material-ui/core/Tooltip';
+import styles from '../styles/BottomControls.module.scss';
+import Icons from '../../../../Images/Icons';
+import formatTime from '../../hooks/formatTime';
+import {useRouter} from 'next/router';
+import {BottomControlsProps} from '../interfaces/IControls';
+import usePlayer from '@components/Players/hooks/usePlayer';
+import useBottomControls from '@components/Players/Controls/hooks/useBottomControls';
 
-const BottomControls: FC<BottomControlsProps> = ({
-  isMuted,
-  isPlaying,
-  fullScreenHandle,
-  prevEpisode,
-  nextEpisode,
-  handleMute,
-  handlePirate,
-  handlePlaying,
-  handleSeekChange,
-  handleVolume,
-  volume,
-}) => {
+const BottomControls: FC<BottomControlsProps> = ({data, handleSeekChange}) => {
   const [remaining, setRemaining] = useState(false);
   const [slider, setSlider] = useState(false);
-  const { query } = useRouter();
-  const { season, episode } = query;
+  const {query} = useRouter();
+  const {season, episode} = query;
+  const {
+    isMuted,
+    isPlaying,
+    handleMute,
+    handlePirate,
+    handlePlaying,
+    handleVolume,
+    prevEpisode,
+    nextEpisode,
+    fullScreenHandle,
+    volume
+  } = usePlayer(data);
 
   const ValueLabelComponent = (props) => {
-    const { children, open, value } = props;
+    const {children, open, value} = props;
 
     return (
       <Tooltip open={open} enterTouchDelay={0} placement="top" title={value}>
@@ -47,22 +48,22 @@ const BottomControls: FC<BottomControlsProps> = ({
     thumb: {
       height: 16,
       width: 16,
-      backgroundColor: "#fff",
-      border: "2px solid currentColor",
+      backgroundColor: '#fff',
+      border: '2px solid currentColor',
       marginTop: -4,
       marginLeft: -8,
-      "&:focus, &:hover, &$active": {
-        boxShadow: "inherit",
+      '&:focus, &:hover, &$active': {
+        boxShadow: 'inherit',
       },
     },
     active: {},
     valueLabel: {
-      left: "calc(-50% + 4px)",
+      left: 'calc(-50% + 4px)',
     },
     track: {
       height: 8,
       borderRadius: 4,
-      backgroundColor: "#ff4f12",
+      backgroundColor: '#ff4f12',
     },
     rail: {
       height: 8,
@@ -117,8 +118,8 @@ const BottomControls: FC<BottomControlsProps> = ({
             {!remaining
               ? formatTime(PlayerControls?.currentTime)
               : `-${formatTime(
-                  PlayerControls?.currentDuration - PlayerControls?.currentTime
-                )}`}{" "}
+                PlayerControls?.currentDuration - PlayerControls?.currentTime
+              )}`}{' '}
             / {formatTime(PlayerControls?.currentDuration)}
           </p>
         </div>
@@ -169,7 +170,7 @@ const BottomControls: FC<BottomControlsProps> = ({
               </span>
             )}
           </div>
-          <Settings />
+          <Settings data={data}/>
           <span>
             {!fullScreenHandle?.active ? (
               <Icons

@@ -12,6 +12,7 @@ const GetUrl = async (
     if (isSeries) {
       return {
         kpId,
+        isSeries,
         translation,
         season,
         episode,
@@ -27,23 +28,7 @@ const GetUrl = async (
     });
     const {urls} = data;
     PlayerOptions.setError(false);
-    return urls[0].streams[0];
-    /*if (Playlist.quality.name) {
-          const filtered = media.find(
-            (item) => item.quality === Playlist.quality.name
-          );
-
-          if (filtered) {
-            Video.setUrl(filtered.urls[0]);
-            Playlist.setQuality(filtered.quality, null);
-          } else {
-            Video.setUrl(media[0].urls[0]);
-            Playlist.setQuality(media[0].quality, null);
-          }
-        } else {
-          Playlist.setQuality(media[0].quality, null);
-          setResult(media[0].urls[0]);
-        }*/
+    return urls;
   } catch (err) {
     PlayerOptions.setError(true);
   }
