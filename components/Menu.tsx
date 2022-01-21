@@ -3,7 +3,7 @@ import style from "../styles/Menu.module.scss";
 import Icons from "../Images/Icons";
 import Link from "next/link";
 import { observer } from "mobx-react-lite";
-import Auth from "../Store/Auth";
+import Auth from "../store/Auth";
 import { useRouter } from "next/router";
 
 const Menu: FC<any> = ({ setOpen }) => {

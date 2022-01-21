@@ -1,5 +1,5 @@
+import {SimilarItem} from '../../../interfaces/IMediaData';
+
 export interface SimilarProps {
-  kpId: number;
-  poster: string;
-  title: string;
+  data: SimilarItem[];
 }

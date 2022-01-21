@@ -1,6 +1,5 @@
+import {StaffItem} from '../../../interfaces/IMediaData';
+
 export interface StaffProps {
-  kpId: number;
-  poster: string;
-  role: string;
-  title: string;
+  data: StaffItem[];
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import Auth from "../Store/Auth";
+import Auth from "../store/Auth";
 import style from "../styles/Auth.module.sass";
 import { useRouter } from "next/router";
 

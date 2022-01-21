@@ -1,6 +1,6 @@
 interface IMedia {
   quality: string;
-  urls: string[];
+  streams: string[];
 }
 
 export interface IEpisode {
@@ -21,15 +21,16 @@ export interface ITranslation {
   season: string;
 }
 
-export interface ISimilar {
+export interface SimilarItem {
   kpId: number;
   poster: string;
   title: string;
 }
 
-export interface IStaff {
+export interface StaffItem {
   kpId: number;
   poster: string;
+  role: string;
   title: string;
 }
 
@@ -41,17 +42,17 @@ export interface IMediaData {
   id: number;
   isSeries: boolean;
   kpId: number;
-  media: IMedia[] | null;
   origTitle: string;
+  playlist: ISeason[];
   posterBig: string;
   ratings: {
     kinopoisk: string;
     imdb: string;
   };
-  similars: ISimilar[];
-  staff: IStaff[];
+  similar: SimilarItem[];
+  staff: StaffItem[];
   title: string;
   translations: ITranslation[];
-  seasons: ISeason[];
+  urls: IMedia[] | null;
   year: number;
 }

@@ -1,6 +1,6 @@
 import { FC, useState, Dispatch, SetStateAction } from "react";
 import styles from "../../styles/Cabinet/AuthPopup.module.scss";
-import Auth from "../../Store/Auth";
+import Auth from "../../store/Auth";
 import { observer } from "mobx-react-lite";
 import Icons from "../../Images/Icons";
 

@@ -2,7 +2,7 @@ import { FC, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import Hero from "../components/Hero";
-import Auth from "../Store/Auth";
+import Auth from "../store/Auth";
 
 const Home = ({ data, activateData }) => {
   const AuthPopup = dynamic(() => import("../components/Cabinet/AuthPopup"));

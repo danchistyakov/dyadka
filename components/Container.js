@@ -1,6 +1,6 @@
 import React from 'react'
 import { observer } from 'mobx-react-lite';
-import Layout from '../Store/Layout';
+import Layout from '../store/Layout';
 
 const Container = observer(() => (
     <>

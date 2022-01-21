@@ -1,7 +1,7 @@
 import { FC, useState, useEffect } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import style from "./styles/Similar.module.sass";
-import Layout from "../../Store/Layout";
+import Layout from "../../store/Layout";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation } from "swiper/core";

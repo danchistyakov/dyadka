@@ -1,6 +1,6 @@
 import { FC, useEffect, useState, useRef } from "react";
 import { observer } from "mobx-react-lite";
-import Auth from "../../Store/Auth";
+import Auth from "../../store/Auth";
 import Link from "next/link";
 import style from "../../styles/Cabinet/CabinetMenu.module.scss";
 import AuthPopup from "./AuthPopup";

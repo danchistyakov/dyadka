@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Auth from "../Store/Auth";
+import Auth from "../store/Auth";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import AdminMenu from "../components/Cabinet/AdminMenu";

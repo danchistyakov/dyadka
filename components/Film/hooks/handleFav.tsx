@@ -1,10 +1,10 @@
 import { Dispatch, SetStateAction } from "react";
 import axios from "axios";
-import Auth from "../../../Store/Auth";
+import Auth from "../../../store/Auth";
 
 interface handleFavProps {
   id: number;
-  kp_id: number;
+  kpId: number;
   title: string;
   slug: string;
   isFavorite: boolean;
@@ -13,7 +13,7 @@ interface handleFavProps {
 }
 
 const handleFav = async (
-  { id, kp_id, title, slug }: handleFavProps,
+  { id, kpId, title, slug }: handleFavProps,
   isFavorite,
   setAuthPopup,
   setFavorite
@@ -29,7 +29,7 @@ const handleFav = async (
         action: "add",
         email: "4i.danila@gmail.com",
         id,
-        poster: `https://kinopoiskapiunofficial.tech/images/posters/kp_small/${kp_id}.jpg`,
+        poster: `https://kinopoiskapiunofficial.tech/images/posters/kp_small/${kpId}.jpg`,
         title,
         slug,
       },
@@ -50,7 +50,7 @@ const handleFav = async (
         action: "remove",
         email: "4i.danila@gmail.com",
         id: id,
-        poster: `https://kinopoiskapiunofficial.tech/images/posters/kp_small/${kp_id}.jpg`,
+        poster: `https://kinopoiskapiunofficial.tech/images/posters/kp_small/${kpId}.jpg`,
         title: title,
       },
       {

@@ -1,31 +1,32 @@
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
-import style from "../../../styles/Filminfo.module.sass";
-import Layout from "../../../Store/Layout";
+import {Dispatch, FC, SetStateAction, useEffect, useState} from 'react';
+import style from '../../../styles/Filminfo.module.sass';
+import Layout from '../../../store/Layout';
 //import YouTube from 'react-youtube';
-import { Img } from "react-image";
-import { observer } from "mobx-react-lite";
-import Icons from "../../../Images/Icons";
-import { isBrowser, isMobile } from "react-device-detect";
-import axios from "axios";
-import { API_URL } from "../../Cabinet/http";
-import Auth from "../../../Store/Auth";
-import AuthPopup from "../../Cabinet/AuthPopup";
-import handleFav from "../hooks/handleFav";
-import Link from "next/link";
-import { useRouter } from "next/router";
+import {Img} from 'react-image';
+import {observer} from 'mobx-react-lite';
+import Icons from '../../../Images/Icons';
+import {isBrowser, isMobile} from 'react-device-detect';
+import axios from 'axios';
+import {API_URL} from '../../Cabinet/http';
+import Auth from '../../../store/Auth';
+import AuthPopup from '../../Cabinet/AuthPopup';
+import handleFav from '../hooks/handleFav';
+import Link from 'next/link';
+import {useRouter} from 'next/router';
+import {IMediaData} from '../../../interfaces/IMediaData';
 
 interface FilmInfoProps {
-  data: any;
+  data: IMediaData;
   trailer: string | null;
 }
 
-const FilmInfo: FC<FilmInfoProps> = observer(({ data, trailer }) => {
+const FilmInfo: FC<FilmInfoProps> = observer(({data, trailer}) => {
   const [isFavorite, setFavorite] = useState(false);
   const [width, setWidth] = useState(null);
-  const [background, setBackground] = useState("poster");
+  const [background, setBackground] = useState('poster');
   const [fallback, setFallback] = useState(false);
   const [authError, setAuthPopup] = useState(false);
-  const { pathname, query } = useRouter();
+  const {pathname, query} = useRouter();
 
   const handleWatch = () => {
     Layout.setWatch(true);
@@ -34,7 +35,7 @@ const FilmInfo: FC<FilmInfoProps> = observer(({ data, trailer }) => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      if (localStorage.getItem("token")) {
+      if (localStorage.getItem('token')) {
         await Auth.checkAuth();
       }
     };
@@ -70,7 +71,7 @@ const FilmInfo: FC<FilmInfoProps> = observer(({ data, trailer }) => {
   return (
     <section className={style.film_hero}>
       {authError && <AuthPopup setAuthPopup={setAuthPopup} />}
-      <div className={`${style.screen} ${expand ? style.expand : ""}`}>
+      <div className={`${style.screen} ${expand ? style.expand : ''}`}>
         {!Layout?.watch ? (
           <div className={style.preview}>
             {!trailer && isBrowser && (
@@ -78,7 +79,7 @@ const FilmInfo: FC<FilmInfoProps> = observer(({ data, trailer }) => {
                 <picture className={style.hero_picture}>
                   <source
                     media="(max-width: 767px)"
-                    srcSet={`https://cdn.statically.io/img/kinopoiskapiunofficial.tech/f=auto,q=50/images/posters/kp/${data.kp_id}.jpg`}
+                    srcSet={`https://cdn.statically.io/img/kinopoiskapiunofficial.tech/f=auto,q=50/images/posters/kp/${data.kpId}.jpg`}
                   />
                   {!fallback ? (
                     <img
@@ -107,27 +108,27 @@ const FilmInfo: FC<FilmInfoProps> = observer(({ data, trailer }) => {
                 <source
                   media="(max-width: 767px)"
                   srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,${
-                    width ? `w=${width},` : ""
-                  }q=100/media/${data.kp_id}/big_app_cinema_media_${
-                    data.kp_id
+                    width ? `w=${width},` : ''
+                  }q=100/media/${data.kpId}/big_app_cinema_media_${
+                    data.kpId
                   }_big.jpg`}
                 />
                 <source
                   media="(min-width: 767px)"
                   srcSet={`https://cdn.statically.io/img/blackmedia.top/f=auto,${
-                    width ? `w=${width},` : ""
-                  }q=70/media/${data.kp_id}/wide_app_cinema_media_${
-                    data.kp_id
+                    width ? `w=${width},` : ''
+                  }q=70/media/${data.kpId}/wide_app_cinema_media_${
+                    data.kpId
                   }.jpg`}
                 />
                 <Img
                   src={[
                     `https://cdn.statically.io/img/blackmedia.top/f=auto,${
-                      width ? `w=${width},` : ""
-                    }q=70/media/${data.kp_id}/wide_app_cinema_media_${
-                      data.kp_id
+                      width ? `w=${width},` : ''
+                    }q=70/media/${data.kpId}/wide_app_cinema_media_${
+                      data.kpId
                     }.jpg`,
-                    "/putin.jpg",
+                    '/putin.jpg',
                   ]}
                   className={style.hero_poster_img}
                 />
@@ -145,15 +146,15 @@ const FilmInfo: FC<FilmInfoProps> = observer(({ data, trailer }) => {
               pathname,
               query: data.isSeries
                 ? {
-                    ...query,
-                    season: 1,
-                    episode: 1,
-                    translationId: data.translations[0].id || 0,
-                  }
+                  ...query,
+                  season: 1,
+                  episode: 1,
+                  translationId: data.translations[0].id || 0,
+                }
                 : {
-                    ...query,
-                    translationId: data.translations[0].id || 0,
-                  },
+                  ...query,
+                  translationId: data.translations[0].id || 0,
+                },
             }}
             passHref
             shallow
@@ -189,9 +190,9 @@ const FilmInfo: FC<FilmInfoProps> = observer(({ data, trailer }) => {
         <div className={style.buttons_block}>
           {!isFavorite && (
             <button
-              onClick={() => {
+              /*onClick={() => {
                 handleFav(data, isFavorite, setAuthPopup, setFavorite);
-              }}
+              }}*/
               className={style.film_info_button}
             >
               <Icons className={style.film_info_icon} icon="LikeIcon" />
@@ -199,9 +200,9 @@ const FilmInfo: FC<FilmInfoProps> = observer(({ data, trailer }) => {
           )}
           {isFavorite && (
             <button
-              onClick={() => {
+              /*onClick={() => {
                 handleFav(data, isFavorite, setAuthPopup, setFavorite);
-              }}
+              }}*/
               className={style.film_info_button}
             >
               <Icons className={style.film_info_icon} icon="LikeActiveIcon" />

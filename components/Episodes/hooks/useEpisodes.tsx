@@ -1,5 +1,5 @@
 import { ISeason } from "../../../interfaces/IMediaData";
-import Layout from "../../../Store/Layout";
+import Layout from "../../../store/Layout";
 import { EpisodesProps } from "../interfaces/IPlaylist";
 
 const useEpisodes = (data: ISeason[], season: number): EpisodesProps => {

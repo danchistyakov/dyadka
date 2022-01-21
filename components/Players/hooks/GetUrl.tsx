@@ -1,39 +1,33 @@
-import { useState, useEffect, Dispatch, SetStateAction } from "react";
-import Playlist from "../../../Store/Playlist";
-import PlayerOptions from "../../../Store/PlayerOptions";
-import Video from "../../../Store/Video";
-import axios from "axios";
-import { IMediaData, ITranslation } from "../../../interfaces/IMediaData";
-import { $data } from "../../../api/IndexApi";
+import PlayerOptions from '../../../store/PlayerOptions';
+import {$data} from '../../../api/IndexApi';
 
 const GetUrl = async (
-  info: IMediaData,
-  season: number | null,
-  episode: number | null,
+  kpId: number,
+  isSeries: boolean,
+  season: any,
+  episode: any,
   translation: number
 ) => {
-  const { isSeries } = info;
   const Body = () => {
     if (isSeries) {
       return {
+        kpId,
         translation,
         season,
         episode,
       };
     } else {
-      return { translation };
+      return {kpId, translation};
     }
   };
 
   try {
-    const body = Body();
-    const { data } = await $data.post("/geturl", {
-      ...body,
+    const {data} = await $data.post('/geturl', {
+      ...Body(),
     });
-    const { media } = data;
-    Video.setUrls(media);
+    const {urls} = data;
     PlayerOptions.setError(false);
-    return media[0].urls[0];
+    return urls[0].streams[0];
     /*if (Playlist.quality.name) {
           const filtered = media.find(
             (item) => item.quality === Playlist.quality.name

@@ -1,11 +1,13 @@
-import { Dispatch, SetStateAction } from "react";
-import { SwiperOptions } from "swiper";
-import { IEpisode, ISeason } from "../../../interfaces/IMediaData";
+import {Dispatch, SetStateAction} from 'react';
+import {SwiperOptions} from 'swiper';
+import {IEpisode, ISeason} from '../../../interfaces/IMediaData';
 
 interface Breakpoints {
   [width: number]: SwiperOptions;
+
   [ratio: string]: SwiperOptions;
 }
+
 export interface PlaylistProps {
   data: ISeason[];
 }

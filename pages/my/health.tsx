@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import AdminMenu from "../../components/Cabinet/AdminMenu";
 import { useRouter } from "next/router";
-import Auth from "../../Store/Auth";
+import Auth from "../../store/Auth";
 import { observer } from "mobx-react-lite";
 
 const Health = () => {

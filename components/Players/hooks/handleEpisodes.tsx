@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import Info from "../../../Store/Info";
+import Info from "../../../store/Info";
 
 export const prevEpisode = async (
   season: number,

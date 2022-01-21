@@ -1,7 +1,7 @@
 import { FC } from "react";
 import style from "../styles/Playlist.module.scss";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import Playlist from "../../../Store/Playlist";
+import Playlist from "../../../store/Playlist";
 import { observer } from "mobx-react-lite";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation } from "swiper/core";

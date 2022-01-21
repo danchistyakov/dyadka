@@ -1,7 +1,7 @@
 import React, { FC, Dispatch, SetStateAction, useState } from "react";
 import Settings from "../../../Settings";
-import PlayerControls from "../../../../Store/PlayerControls";
-import Volume from "../../../../Store/Volume";
+import PlayerControls from "../../../../store/PlayerControls";
+import Volume from "../../../../store/Volume";
 import { observer } from "mobx-react-lite";
 import { withStyles } from "@material-ui/core/styles";
 import Slider from "@material-ui/core/Slider";

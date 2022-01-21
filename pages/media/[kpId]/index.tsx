@@ -1,23 +1,23 @@
-import { FC } from "react";
-import dynamic from "next/dynamic";
-import Staff from "../../../components/Staff";
-import Episodes from "../../../components/Episodes";
-import FilmInfo from "../../../components/Film/components/FilmInfo";
-import Similar from "../../../components/Similar";
-import Layout from "../../../Store/Layout";
-import style from "../../../styles/Film.module.sass";
-import ErrorPage from "next/error";
-import Head from "next/head";
-import { IMediaData } from "../../../interfaces/IMediaData";
-import { $data } from "../../../api/IndexApi";
+import {FC} from 'react';
+import dynamic from 'next/dynamic';
+import Staff from '../../../components/Staff';
+import Episodes from '../../../components/Episodes';
+import FilmInfo from '../../../components/Film/components/FilmInfo';
+import Similar from '../../../components/Similar';
+import Layout from '../../../store/Layout';
+import style from '../../../styles/Film.module.sass';
+import ErrorPage from 'next/error';
+import Head from 'next/head';
+import {IMediaData} from '../../../interfaces/IMediaData';
+import {$data} from '../../../api/IndexApi';
 
 interface FilmProps {
   data: IMediaData;
   trailer: string | null;
 }
 
-const Film: FC<FilmProps> = ({ data, trailer }) => {
-  const Player = dynamic(() => import("../../../components/Players"));
+const Film: FC<FilmProps> = ({data, trailer}) => {
+  const Player = dynamic(() => import('../../../components/Players'));
 
   if (data) {
     return (
@@ -35,9 +35,9 @@ const Film: FC<FilmProps> = ({ data, trailer }) => {
           </div>
         )}
         <div className={style.film_container}>
-          {data.isSeries && <Episodes data={data.seasons} />}
+          {data.isSeries && <Episodes data={data.playlist} />}
           <Staff data={data.staff} />
-          <Similar data={data.similars} />
+          <Similar data={data.similar} />
         </div>
       </section>
     );
@@ -47,12 +47,11 @@ const Film: FC<FilmProps> = ({ data, trailer }) => {
 };
 
 export const getServerSideProps = async (context) => {
-  const { kpId } = context.params;
+  const {kpId} = context.params;
 
-  const { data } = await $data.post(`/film`, {
+  const {data} = await $data.post(`/film`, {
     kpId,
   });
-  console.log(data);
 
   const trailer = null;
 

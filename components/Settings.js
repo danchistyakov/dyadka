@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import style from "../styles/Settings.module.sass";
-import Playlist from "../Store/Playlist";
+import Playlist from "../store/Playlist";
 import Icons from "../Images/Icons";
 import { observer } from "mobx-react-lite";
 import { toJS } from "mobx";
-import Video from "../Store/Video";
-import PlayerOptions from "../Store/PlayerOptions";
+import Video from "../store/Video";
+import PlayerOptions from "../store/PlayerOptions";
 
 const Settings = observer(() => {
   const [qvisible, setqVisible] = useState(false);

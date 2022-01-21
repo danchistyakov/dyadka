@@ -33,7 +33,7 @@ const Controls: FC<ControlsProps> = ({
           handleVolume,
           isMuted,
           isPlaying,
-          data.seasons,
+          data.playlist,
           prevEpisode,
           nextEpisode,
           volume

@@ -1,10 +1,10 @@
-import { useRouter } from "next/router";
-import { ChangeEvent, useEffect, useState } from "react";
-import { FullScreen, useFullScreenHandle } from "react-full-screen";
-import { IMediaData, ITranslation } from "../../../interfaces/IMediaData";
-import Volume from "../../../Store/Volume";
-import { PlayerProps } from "../interfaces/IPlayer";
-import GetUrl from "./GetUrl";
+import {useRouter} from 'next/router';
+import {ChangeEvent, useEffect, useState} from 'react';
+import {FullScreen, useFullScreenHandle} from 'react-full-screen';
+import {IMediaData, ITranslation} from '../../../interfaces/IMediaData';
+import Volume from '../../../store/Volume';
+import {PlayerProps} from '../interfaces/IPlayer';
+import GetUrl from './GetUrl';
 
 const usePlayer = (data: IMediaData): PlayerProps => {
   const [isBuffering, setBuffering] = useState<boolean>(true);
@@ -15,8 +15,8 @@ const usePlayer = (data: IMediaData): PlayerProps => {
   const [volume, setVolume] = useState<number>(100);
   const fullScreenHandle = useFullScreenHandle();
   const router = useRouter();
-  const { pathname, query } = router;
-  const { translationId, season, episode } = query;
+  const {pathname, query} = router;
+  const {translationId, season, episode} = query;
 
   const handleBuffering = (value: boolean) => {
     setBuffering(value);
@@ -43,20 +43,20 @@ const usePlayer = (data: IMediaData): PlayerProps => {
       return router.push(
         {
           pathname,
-          query: { ...query, episode: episode - 1 },
+          query: {...query, episode: episode - 1},
         },
         undefined,
-        { shallow: true }
+        {shallow: true}
       );
     }
     if (season > 1) {
       return router.push(
         {
           pathname,
-          query: { ...query, season: season - 1, episode: 1 },
+          query: {...query, season: season - 1, episode: 1},
         },
         undefined,
-        { shallow: true }
+        {shallow: true}
       );
     }
 
@@ -64,17 +64,17 @@ const usePlayer = (data: IMediaData): PlayerProps => {
   };
 
   const nextEpisode = (season: number, episode: number) => {
-    const seasonsAmount = data.seasons.length;
-    const seasonLength = data.seasons[season - 1].episodes.length;
+    const seasonsAmount = data.playlist.length;
+    const seasonLength = data.playlist[season - 1].episodes.length;
 
     if (episode < seasonLength) {
       return router.push(
         {
           pathname,
-          query: { ...query, episode: episode + 1 },
+          query: {...query, episode: episode + 1},
         },
         undefined,
-        { shallow: true }
+        {shallow: true}
       );
     }
 
@@ -86,10 +86,10 @@ const usePlayer = (data: IMediaData): PlayerProps => {
       return router.push(
         {
           pathname,
-          query: { ...query, season: season + 1, episode: 1 },
+          query: {...query, season: season + 1, episode: 1},
         },
         undefined,
-        { shallow: true }
+        {shallow: true}
       );
     }
   };
@@ -114,12 +114,13 @@ const usePlayer = (data: IMediaData): PlayerProps => {
       }
       let urlString;
       if (!translationData && !data.isSeries) {
-        urlString = data.media[0].urls[0];
+        urlString = data.urls[0].streams[0];
       } else {
         urlString = await GetUrl(
-          data,
-          Number(season) || 1,
-          Number(episode) || 1,
+          data.kpId,
+          data.isSeries,
+          season || '1',
+          episode || '1',
           translation
         );
       }
@@ -132,7 +133,7 @@ const usePlayer = (data: IMediaData): PlayerProps => {
 
   useEffect(() => {
     if (!fullScreenHandle.active) {
-      document.body.style.cursor = "auto";
+      document.body.style.cursor = 'auto';
     }
   }, [fullScreenHandle.active]);
 
