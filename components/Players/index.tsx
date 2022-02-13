@@ -1,9 +1,13 @@
 import React from "react";
-import Player from "./components/Player";
-import usePlayer from "./hooks/usePlayer";
+import DyadkaPlayer from "./components/DyadkaPlayer";
+import {useStore} from 'effector-react';
+import {$player} from '@models/Player';
+import PiratePlayer from '@components/Players/components/PiratePlayer';
 
-const Players = ({ data }) => {
-  return <Player {...usePlayer(data)} />;
+const Players = () => {
+  const {isPirate} = useStore($player);
+
+  return isPirate ? <PiratePlayer /> : <DyadkaPlayer />;
 };
 
 export default Players;

@@ -3,6 +3,8 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import style from "./styles/Staff.module.scss";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { StaffProps } from "./interfaces/IStaff";
+import {useStore} from 'effector-react/ssr';
+import {$data} from '@models/FilmData';
 
 const breakpointsSimilar = {
   320: { slidesPerView: 3.5 },
@@ -14,7 +16,9 @@ const navigationSimilar = {
   prevEl: ".swiper-button-prev.similar",
 };
 
-const Staff: FC<StaffProps> = ({ data }) => {
+const Staff: FC = () => {
+  const {staff} = useStore($data);
+
   return (
     <section className={style.container}>
       <Swiper
@@ -29,7 +33,7 @@ const Staff: FC<StaffProps> = ({ data }) => {
         <div className="swiper-button-prev similar"></div>
         <div className="swiper-button-next similar"></div>
 
-        {data?.map(({ kpId, poster, role, title }) => (
+        {staff?.map(({ kpId, poster, role, title }) => (
           <SwiperSlide key={kpId} className={style.item}>
             <LazyLoadImage src={poster} className={style.poster} />
             <p className={style.name}>{title}</p>

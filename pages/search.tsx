@@ -1,11 +1,11 @@
 import {useState, useEffect} from 'react';
 import {useRouter} from 'next/router';
 import style from '../styles/Search.module.scss';
-import Icons from '../Images/Icons';
+import Icons from '../images/Icons';
 import useDebounce from '../hooks/useDebounce';
 import FilmsList from '../components/FilmsList';
 import {FilmsListProps} from '../interfaces/IFilmsList';
-import {$data} from '../api/IndexApi';
+import {$api} from '@api/ApiConfig';
 
 const Search = ({data: defaultData, query: defaultQuery}) => {
   const router = useRouter();
@@ -29,7 +29,7 @@ const Search = ({data: defaultData, query: defaultQuery}) => {
           undefined,
           {shallow: true}
         );
-        const {data} = await $data.post('/search', {
+        const {data} = await $api.post('/search', {
           query: userQuery,
         });
         setResult(data);
@@ -62,7 +62,7 @@ export const getServerSideProps = async (context) => {
   let {query} = context.query;
   query = query ? query : '';
 //console.log(process.env.NEXT_PUBLIC_API_URL)
-  const {data} = await $data.post('/search', {
+  const {data} = await $api.post('/search', {
     query,
   });
 

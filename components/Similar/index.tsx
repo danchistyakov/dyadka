@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import style from "./styles/Similar.module.sass";
 import Layout from "../../store/Layout";
@@ -6,7 +6,8 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation } from "swiper/core";
 import Link from "next/link";
-import { SimilarProps } from "./interfaces/ISimilar";
+import {useStore} from 'effector-react/ssr';
+import {$data} from '@models/FilmData';
 
 SwiperCore.use([Navigation]);
 
@@ -20,10 +21,12 @@ const navigationSimilar = {
   prevEl: ".swiper-button-prev.similar",
 };
 
-const Similar: FC<SimilarProps> = ({ data }) => {
+const Similar: FC = () => {
+  const {similar} = useStore($data);
+
   return (
     <section>
-      {data?.length > 0 && (
+      {similar?.length > 0 && (
         <div className={style.similar_container}>
           <h3 className={style.section_title}>Похожие фильмы и сериалы</h3>
           <Swiper
@@ -38,7 +41,7 @@ const Similar: FC<SimilarProps> = ({ data }) => {
             <div className="swiper-button-prev similar"></div>
             <div className="swiper-button-next similar"></div>
 
-            {data?.map(({ kpId, poster, title }) => (
+            {similar?.map(({ kpId, poster, title }) => (
               <SwiperSlide
                 className={style.similar_item}
                 key={kpId}

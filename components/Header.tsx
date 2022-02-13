@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import styles from "../styles/Header.module.scss";
-import Icons from "../Images/Icons";
+import Icons from "../images/Icons";
 import CabinetMenu from "./Cabinet/CabinetMenu";
 import Menu from "./Menu";
 import AuthPopup from "./Cabinet/AuthPopup";

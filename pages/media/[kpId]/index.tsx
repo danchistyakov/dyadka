@@ -1,67 +1,55 @@
 import {FC} from 'react';
 import dynamic from 'next/dynamic';
-import Staff from '../../../components/Staff';
-import Episodes from '../../../components/Episodes';
-import FilmInfo from '../../../components/Film/components/FilmInfo';
-import Similar from '../../../components/Similar';
-import Layout from '../../../store/Layout';
-import style from '../../../styles/Film.module.sass';
-import ErrorPage from 'next/error';
+import Staff from '@components/Staff';
+import Playlist from '@components/Playlist';
+import FilmInfo from '@components/Film/components/FilmInfo';
+import Similar from '@components/Similar';
+import Layout from '@store/Layout';
+import style from '@styles/Film.module.sass';
 import Head from 'next/head';
-import {IMediaData} from '../../../interfaces/IMediaData';
-import {$data} from '../../../api/IndexApi';
+import {useStore} from 'effector-react/ssr';
+import {serialize, fork, allSettled} from 'effector';
+import {$data, dataFx} from '@models/FilmData';
+import {root} from '@models/Root';
+import {$isVisible} from '@models/Player';
 
-interface FilmProps {
-  data: IMediaData;
-  trailer: string | null;
-}
+const Film: FC = () => {
+  const Player = dynamic(() => import('@components/Players'));
+  const {isSeries, title} = useStore($data);
+  const isVisible = useStore($isVisible);
 
-const Film: FC<FilmProps> = ({data, trailer}) => {
-  const Player = dynamic(() => import('../../../components/Players'));
-
-  if (data) {
-    return (
-      <section>
-        <Head>
-          <title>
-            {data.title} — смотреть у Дядьки онлайн без регистрации и СМС
-          </title>
-        </Head>
-        {!Layout.watch ? (
-          <FilmInfo data={data} trailer={trailer} />
-        ) : (
-          <div className={style.film_player}>
-            <Player data={data} />
-          </div>
-        )}
-        <div className={style.film_container}>
-          {data.isSeries && <Episodes data={data.playlist} />}
-          <Staff data={data.staff} />
-          <Similar data={data.similar} />
+  return (
+    <section>
+      <Head>
+        <title>
+          {title} — смотреть у Дядьки онлайн без регистрации и СМС
+        </title>
+      </Head>
+      {isVisible ? (
+        <div className={style.film_player}>
+          <Player />
         </div>
-      </section>
-    );
-  } else {
-    return <ErrorPage statusCode={404} />;
-  }
+      ) : (
+        <FilmInfo />
+      )}
+      <div className={style.film_container}>
+        {isSeries && <Playlist />}
+        <Staff />
+        <Similar />
+      </div>
+    </section>
+  );
 };
 
 export const getServerSideProps = async (context) => {
   const {kpId} = context.params;
-
-  const {data} = await $data.post(`/film`, {
-    kpId,
-  });
-  console.log(data)
-
-  const trailer = null;
-
+  const scope = fork(root);
+  await allSettled(dataFx, {scope, params: Number(kpId)});
   return {
     props: {
-      data,
-      trailer,
+      store: serialize(scope, {onlyChanges: true}),
     },
-  };
+  }
 };
 
 export default Film;

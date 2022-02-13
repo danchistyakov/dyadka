@@ -2,7 +2,7 @@ import { FC, useState, Dispatch, SetStateAction } from "react";
 import styles from "../../styles/Cabinet/AuthPopup.module.scss";
 import Auth from "../../store/Auth";
 import { observer } from "mobx-react-lite";
-import Icons from "../../Images/Icons";
+import Icons from "../../images/Icons";
 
 interface AuthPopupProps {
   setAuthPopup: Dispatch<SetStateAction<boolean>>;

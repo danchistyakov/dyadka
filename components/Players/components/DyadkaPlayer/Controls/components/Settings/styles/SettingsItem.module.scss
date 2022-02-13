@@ -1,0 +1,27 @@
+.container {
+  width: 10vw;
+  margin: 1vw;
+}
+
+.title {
+  padding: 0 1vw 1vw .2vw;
+  border-bottom: 1px solid #59595d;
+  display: flex;
+  align-items: center;
+  font-size: 1vw;
+  cursor: pointer;
+  & * {
+    color: #59595d;
+  }
+}
+
+.left_chevron {
+  padding-right: 0.4vw;
+  width: 2vw;
+  height: 2vw;
+  display: flex;
+  align-items: center;
+  & svg {
+    fill: #59595d
+  }
+}

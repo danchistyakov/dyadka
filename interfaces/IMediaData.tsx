@@ -1,6 +1,24 @@
+export interface PlaylistStatus {
+  seasons: ISeason[];
+  season: number;
+  episode: number;
+}
+
 export interface IMedia {
   quality: string;
   streams: string[];
+}
+
+export interface getUrlsPayload {
+  kpId: number;
+  translation: number;
+  isSeries: boolean;
+  season?: number;
+  episode?: number;
+}
+
+export interface getUrlsData {
+  urls: IMedia[];
 }
 
 export interface IEpisode {
@@ -16,9 +34,7 @@ export interface ISeason {
 
 export interface ITranslation {
   id: number;
-  episode: string;
   title: string;
-  season: string;
 }
 
 export interface SimilarItem {
