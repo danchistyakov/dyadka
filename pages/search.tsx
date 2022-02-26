@@ -64,10 +64,16 @@ const Search = ({ data: defaultData, query: defaultQuery }) => {
 };
 
 export const getServerSideProps = async (context) => {
-  const { query } = context.query ?? { query: "" };
-  const { data } = await $api.post("/search", {
-    query,
-  });
+  let { query } = context;
+  //let query = "";
+
+  if (Object.keys(query).length > 0) {
+    query = query.query;
+  } else {
+    query = "";
+  }
+
+  const { data } = await $api.post("/search", { query });
 
   return {
     props: {
