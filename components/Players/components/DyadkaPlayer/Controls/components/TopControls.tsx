@@ -16,7 +16,7 @@ const TopControls: FC = () => {
           <p>{title}.</p>
           {isSeries && (
             <p>
-              Сезон {season}. Серия {episode}
+              &nbsp;Сезон {season}. Серия {episode}
             </p>
           )}
         </div>

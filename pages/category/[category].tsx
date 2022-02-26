@@ -5,6 +5,7 @@ import style from "../../styles/Genre.module.sass";
 import Link from "next/link";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import FilmsList from "../../components/FilmsList";
+import { $api } from "@api/ApiConfig";
 
 const Genre = ({ data }) => {
   const router = useRouter();
@@ -65,11 +66,8 @@ export const getStaticPaths = async () => {
 }*/
 
 export const getServerSideProps = async (context) => {
-  const category = context.params.category;
-  const response = await fetch(
-    `https://api.dyadka.gq/categories?category=${category}`
-  );
-  const data = await response.json();
+  const { category } = context.params;
+  const { data } = await $api.get(`/categories?category=${category}`);
   console.log(data);
   return {
     props: {

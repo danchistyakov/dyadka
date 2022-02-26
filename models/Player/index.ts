@@ -13,9 +13,11 @@ export const setVisibility = root.createEvent<boolean>();
 export const setDuration = root.createEvent<number>();
 export const setProgress = root.createEvent<any>();
 export const setBuffering = root.createEvent<boolean>();
+export const setControls = root.createEvent<boolean>();
 export const setMute = root.createEvent<boolean>();
 export const setPirate = root.createEvent<boolean>();
 export const setPlaying = root.createEvent<boolean>();
+export const negativePlaying = root.createEvent();
 export const setSpeed = root.createEvent<number>();
 export const setVolume = root.createEvent<number>();
 export const setFullscreen = createEvent<boolean>();
@@ -24,7 +26,13 @@ export const exitFullscreen = createEvent();
 
 export const playerContainerGate =
   createGate<MutableRefObject<HTMLInputElement | null>>();
+
+export const controlsGate = createGate<MutableRefObject<HTMLInputElement | null>>();
+
 export const playerGate = createGate<MutableRefObject<HTMLInputElement | null>>();
+
+export const $controls =
+  createStore<MutableRefObject<HTMLInputElement | null> | null>(null);
 
 export const $playerContainer =
   createStore<MutableRefObject<HTMLInputElement | null> | null>(null);
@@ -62,7 +70,8 @@ export const $isPirate = root
 
 export const $isPlaying = root
   .createStore<boolean>(true)
-  .on(setPlaying, (_, isPlaying: boolean) => isPlaying);
+  .on(setPlaying, (_, isPlaying: boolean) => isPlaying)
+  .on(negativePlaying, (isPlaying: boolean) => !isPlaying);
 
 export const $speed = root
   .createStore<number>(1)

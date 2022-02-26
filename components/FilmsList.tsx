@@ -15,7 +15,9 @@ const FilmsList: FC<any> = ({ data, isLoading }) => {
                   <LazyLoadImage
                     alt={title}
                     className={styles.poster}
-                    placeholderSrc={data.defaultPoster}
+                    placeholderSrc={
+                      "https://cdn.statically.io/img/i.pinimg.com/f=auto,q=60,h=300/originals/42/2f/83/422f83814d816e55ce6a633f35ec63a4.jpg"
+                    }
                     src={poster}
                     wrapperClassName={styles.error}
                   />

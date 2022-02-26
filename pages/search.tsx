@@ -1,15 +1,16 @@
-import {useState, useEffect} from 'react';
-import {useRouter} from 'next/router';
-import style from '../styles/Search.module.scss';
-import Icons from '../images/Icons';
-import useDebounce from '../hooks/useDebounce';
-import FilmsList from '../components/FilmsList';
-import {FilmsListProps} from '../interfaces/IFilmsList';
-import {$api} from '@api/ApiConfig';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import style from "../styles/Search.module.scss";
+import Icons from "../images/Icons";
+import useDebounce from "../hooks/useDebounce";
+import FilmsList from "../components/FilmsList";
+import { FilmsListProps } from "../interfaces/IFilmsList";
+import { $api } from "@api/ApiConfig";
+import Head from "next/head";
 
-const Search = ({data: defaultData, query: defaultQuery}) => {
+const Search = ({ data: defaultData, query: defaultQuery }) => {
   const router = useRouter();
-  const {pathname, query} = router;
+  const { pathname, query } = router;
 
   const [result, setResult] = useState<FilmsListProps[]>(defaultData);
   const [isLoading, setLoading] = useState(false);
@@ -24,12 +25,12 @@ const Search = ({data: defaultData, query: defaultQuery}) => {
         router.push(
           {
             pathname,
-            query: {...query, query: userQuery},
+            query: { ...query, query: userQuery },
           },
           undefined,
-          {shallow: true}
+          { shallow: true }
         );
-        const {data} = await $api.post('/search', {
+        const { data } = await $api.post("/search", {
           query: userQuery,
         });
         setResult(data);
@@ -41,6 +42,10 @@ const Search = ({data: defaultData, query: defaultQuery}) => {
 
   return (
     <section>
+      <Head>
+        <title>Поиск по дядьке: {userQuery}</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <div className={style.container}>
         <span className={style.icon}>
           <Icons icon="SearchIcon" />
@@ -59,10 +64,8 @@ const Search = ({data: defaultData, query: defaultQuery}) => {
 };
 
 export const getServerSideProps = async (context) => {
-  let {query} = context.query;
-  query = query ? query : '';
-//console.log(process.env.NEXT_PUBLIC_API_URL)
-  const {data} = await $api.post('/search', {
+  const { query } = context.query ?? { query: "" };
+  const { data } = await $api.post("/search", {
     query,
   });
 

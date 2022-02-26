@@ -9,21 +9,13 @@ import AuthPopup from "./Cabinet/AuthPopup";
 
 const Header: FC = () => {
   const nav = [
-    {
-      title: "Сейчас смотрят",
-      href: "/category/watching",
-      as: "/category/[category]",
-    },
-    { title: "Новинки", href: "/category/last", as: "/category/[category]" },
-    { title: "Фильмы", href: "/films", as: "/[type]" },
-    { title: "Сериалы", href: "/series", as: "/[type]" },
-    { title: "Мультфильмы", href: "/cartoons", as: "/[type]" },
-    {
-      title: "Телепередачи",
-      href: "/show",
-      as: "/[type]",
-    },
-    { title: "Аниме", href: "/animation", as: "/[type]" },
+    { title: "Сейчас смотрят", href: "/category/watching" },
+    { title: "Новинки", href: "/category/last" },
+    { title: "Фильмы", href: "/category/films" },
+    { title: "Сериалы", href: "/category/series" },
+    { title: "Мультфильмы", href: "/category/cartoons" },
+    { title: "Телепередачи", href: "/category/show" },
+    { title: "Аниме", href: "/category/animation" },
   ];
 
   const [opened, setOpen] = useState<boolean>(false);
