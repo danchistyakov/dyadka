@@ -1,10 +1,8 @@
 import {ChangeEvent} from 'react';
-import {FullScreenHandle} from 'react-full-screen';
 import {IMedia, IMediaData} from '../../../interfaces/IMediaData';
 
 export interface PlayerProps {
   data: IMediaData;
-  fullScreenHandle: FullScreenHandle;
   isBuffering: boolean;
   isMuted: boolean;
   isPirate: boolean;

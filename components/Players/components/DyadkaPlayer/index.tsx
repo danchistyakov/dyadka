@@ -24,7 +24,6 @@ import { onKeyboard } from "../../utils/PlayerUtils";
 import usePlayer from "../../hooks/usePlayer";
 
 let timer;
-let controlsTimer;
 
 const DyadkaPlayer: FC = () => {
   const { isBuffering, isMuted, isPlaying, speed, volume } = useStore($player);

@@ -14,8 +14,6 @@ const navigationSlider = {
 };
 
 const Hero = ({ data }) => {
-  console.log(data);
-
   return (
     <Swiper
       spaceBetween={20}

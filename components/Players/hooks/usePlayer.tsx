@@ -1,6 +1,5 @@
 // import {useRouter} from 'next/router';
 // import {ChangeEvent, useEffect, useState} from 'react';
-// import {FullScreen, useFullScreenHandle} from 'react-full-screen';
 // import {IMedia, IMediaData, ITranslation} from '../../../interfaces/IMediaData';
 // import {PlayerProps} from '../interfaces/IPlayer';
 // import GetUrl from './GetUrl';

@@ -1,5 +1,3 @@
-import {ChangeEvent} from 'react';
-import {FullScreenHandle} from 'react-full-screen';
 import {IMediaData, ITranslation} from '@interfaces/IMediaData';
 
 export interface ControlsProps {
