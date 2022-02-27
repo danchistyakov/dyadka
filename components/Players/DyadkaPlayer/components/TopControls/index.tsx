@@ -13,10 +13,10 @@ const TopControls: FC = () => {
     <div className={styles.container}>
       <div className={styles.top_left}>
         <div className={styles.episode_info}>
-          <p>{title}.</p>
+          <p>{title}.&nbsp;</p>
           {isSeries && (
             <p>
-              &nbsp;Сезон {season}. Серия {episode}
+              Сезон {season}. Серия {episode}
             </p>
           )}
         </div>
