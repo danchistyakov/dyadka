@@ -22,6 +22,15 @@ const usePlayer = () => {
   };
 
   useEffect(() => {
+    if (controlsTimeoutRef.current === null) {
+      controlsTimeoutRef.current = setTimeout(() => {
+        controlsRef.current.style.visibility = 'hidden';
+        document.body.style.cursor = 'none';
+      }, 3000);
+    }
+  }, []);
+
+  useEffect(() => {
     if (!isPlaying) {
       clearTimeout(controlsTimeoutRef.current);
     }
