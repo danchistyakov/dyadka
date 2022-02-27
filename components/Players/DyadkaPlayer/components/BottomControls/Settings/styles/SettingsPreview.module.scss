@@ -21,13 +21,35 @@
 }
 
 @media (max-width: 1024px) {
+    .container {
+        margin: 2vw;
+    }
     .title {
         font-size: 1.5vw;
+        margin-right: 1.5vw;
+    }
+    .value {
+        font-size: 1.5vw;
+    }
+    .icon {
+        width: 2vw;
+        height: 2vw;
     }
 }
 
 @media (max-width: 767px) {
+    .container {
+        margin: 4vw;
+    }
     .title {
         font-size: 3.5vw;
+        margin-right: 3vw;
+    }
+    .value {
+        font-size: 3.5vw;
+    }
+    .icon {
+        width: 4vw;
+        height: 4vw;
     }
 }

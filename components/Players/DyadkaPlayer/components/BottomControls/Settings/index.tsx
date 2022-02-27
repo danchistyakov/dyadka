@@ -32,38 +32,36 @@ const Settings: FC<SettingsProps> = ({ onClose }) => {
 
   return (
     <div className={styles.container} onClick={(e) => e.stopPropagation()} ref={settingsModal}>
-      <div className={styles.list}>
-        {!settingsSection.quality && !settingsSection.speed && (
-          <>
-            <SettingsPreview
-              onClick={() => setSettingsSection((prev) => ({ ...prev, quality: true }))}
-              title='Качество'
-              value={qualities[quality].value}
-            />
-            <SettingsPreview
-              onClick={() => setSettingsSection((prev) => ({ ...prev, speed: true }))}
-              title='Скорость'
-              value={SpeedList[speed].value}
-            />
-          </>
-        )}
-        {settingsSection.quality && (
-          <SettingsItem
-            data={qualities}
-            onChoose={setQualityFn}
-            onClose={closeSection}
-            title={'Качество'}
+      {!settingsSection.quality && !settingsSection.speed && (
+        <>
+          <SettingsPreview
+            onClick={() => setSettingsSection((prev) => ({ ...prev, quality: true }))}
+            title='Качество'
+            value={qualities[quality].value}
           />
-        )}
-        {settingsSection.speed && (
-          <SettingsItem
-            data={SpeedList}
-            onChoose={setSpeedFn}
-            onClose={closeSection}
-            title={'Скорость'}
+          <SettingsPreview
+            onClick={() => setSettingsSection((prev) => ({ ...prev, speed: true }))}
+            title='Скорость'
+            value={SpeedList[speed].value}
           />
-        )}
-      </div>
+        </>
+      )}
+      {settingsSection.quality && (
+        <SettingsItem
+          data={qualities}
+          onChoose={setQualityFn}
+          onClose={closeSection}
+          title={'Качество'}
+        />
+      )}
+      {settingsSection.speed && (
+        <SettingsItem
+          data={SpeedList}
+          onChoose={setSpeedFn}
+          onClose={closeSection}
+          title={'Скорость'}
+        />
+      )}
     </div>
   );
 };
