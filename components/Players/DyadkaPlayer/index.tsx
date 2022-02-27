@@ -1,5 +1,5 @@
-import { FC, useRef, KeyboardEvent } from "react";
-import { useEvent, useGate, useStore } from "effector-react/ssr";
+import { FC, useRef, KeyboardEvent } from 'react';
+import { useEvent, useGate, useStore } from 'effector-react/ssr';
 import {
   $player,
   negativePlaying,
@@ -7,37 +7,27 @@ import {
   setBuffering,
   setDuration,
   setProgress,
-} from "@models/Player";
-import styles from "./styles/DyadkaPlayer.module.scss";
-import PlayerControls from "@store/PlayerControls";
-import PlayerOptions from "@store/PlayerOptions";
-import ReactPlayer from "react-player";
-import { isMobile } from "react-device-detect";
-import Icons from "../../../images/Icons";
-import TopControls from "./components/TopControls";
-import BottomControls from "./components/BottomControls";
-import { setNextEpisode } from "@models/Playlist";
-import { $url } from "@models/Video";
-import { onKeyboard } from "./utils/PlayerUtils";
-import usePlayer from "./hooks/usePlayer";
+} from '@models/Player';
+import styles from './styles/DyadkaPlayer.module.scss';
+import PlayerControls from '@store/PlayerControls';
+import PlayerOptions from '@store/PlayerOptions';
+import ReactPlayer from 'react-player';
+import { isMobile } from 'react-device-detect';
+import Icons from '../../../images/Icons';
+import TopControls from './components/TopControls';
+import BottomControls from './components/BottomControls';
+import { setNextEpisode } from '@models/Playlist';
+import { $url } from '@models/Video';
+import { onKeyboard } from './utils/PlayerUtils';
+import usePlayer from './hooks/usePlayer';
+import { SpeedList } from '@constants/PlayerSettings';
 
 let timer;
 
 const DyadkaPlayer: FC = () => {
   const { isBuffering, isMuted, isPlaying, speed, volume } = useStore($player);
-  const [
-    negativePlayingFn,
-    setBufferingFn,
-    onDurationFn,
-    onProgressFn,
-    setNextEpisodeFn,
-  ] = useEvent([
-    negativePlaying,
-    setBuffering,
-    setDuration,
-    setProgress,
-    setNextEpisode,
-  ]);
+  const [negativePlayingFn, setBufferingFn, onDurationFn, onProgressFn, setNextEpisodeFn] =
+    useEvent([negativePlaying, setBuffering, setDuration, setProgress, setNextEpisode]);
   const url = useStore($url);
   const playerContainerRef = useRef<HTMLInputElement | null>(null);
   useGate(playerContainerGate, playerContainerRef);
@@ -73,12 +63,12 @@ const DyadkaPlayer: FC = () => {
     if (e.detail === 1) {
       timer = setTimeout(() => negativePlayingFn(), 200);
     } else if (e.detail === 2) {
-      if (action === "rewind") {
+      if (action === 'rewind') {
         playerRef.current.getCurrentTime() > 5
           ? playerRef.current.seekTo(playerRef.current.getCurrentTime() - 5)
           : playerRef.current.seekTo(0);
       }
-      if (action === "forward") {
+      if (action === 'forward') {
         playerRef.current.seekTo(playerRef.current.getCurrentTime() + 5);
       }
     }
@@ -95,30 +85,27 @@ const DyadkaPlayer: FC = () => {
       >
         {isBuffering && (
           <div className={styles.player_loading}>
-            <Icons icon="LoadingIcon" />
+            <Icons icon='LoadingIcon' />
           </div>
         )}
         {PlayerOptions.error && (
-          <div className="player_error">
-            <p className="error_text">Пыня упаль, посылаем Пушистика за пакетами!</p>
-            <Icons icon="LoadingIcon" />
+          <div className='player_error'>
+            <p className='error_text'>Пыня упаль, посылаем Пушистика за пакетами!</p>
+            <Icons icon='LoadingIcon' />
           </div>
         )}
         {isMobile && (
-          <div
-            className="left_rewind"
-            onClick={(e) => onClickHandler(e, "rewind")}
-          ></div>
+          <div className='left_rewind' onClick={(e) => onClickHandler(e, 'rewind')}></div>
         )}
         <ReactPlayer
           url={url}
           muted={isMuted}
           playing={isPlaying}
-          width={"100%"}
-          height={"100%"}
+          width={'100%'}
+          height={'100%'}
           ref={playerRef}
           volume={1}
-          playbackRate={speed}
+          playbackRate={SpeedList[speed].value}
           onDuration={onDurationFn}
           onProgress={onProgressFn}
           onEnded={setNextEpisodeFn}
@@ -126,10 +113,7 @@ const DyadkaPlayer: FC = () => {
           onBufferEnd={() => setBufferingFn(false)}
         />
         {isMobile && (
-          <div
-            className="right_forward"
-            onClick={(e) => onClickHandler(e, "forward")}
-          ></div>
+          <div className='right_forward' onClick={(e) => onClickHandler(e, 'forward')}></div>
         )}
       </div>
       <div className={styles.controls} ref={controlsRef}>

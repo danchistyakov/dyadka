@@ -1,33 +1,34 @@
-import React from 'react';
-import styles from '../styles/Settings.module.scss';
+import { FC } from 'react';
+import styles from '../styles/SettingsItem.module.scss';
 import Icons from '@images/Icons';
-import { setSpeed } from '@models/Player';
+import { SettingsItemProps } from '../interfaces/ISettings';
 
-const SettingsItem = () => {
+const SettingsItem: FC<SettingsItemProps> = ({ data, onChoose, onClose, title }) => {
   return (
     <div className={styles.container}>
       <div
-        className={styles.title}
+        className={styles.header}
         onClick={(e) => {
           e.stopPropagation();
-          //setsVisible(false);
+          onClose();
         }}
       >
-        <span className={styles.left_chevron}>
-          <Icons icon='ChevronLeftIcon' />
+        <span>
+          <Icons className={styles.icon} icon='ChevronLeftIcon' />
         </span>
-        <span className={styles.option_name}>Скорость</span>
+        <span className={styles.title}>{title}</span>
       </div>
-      <div className={styles.choice_list}>
-        {[0.5, 1, 1.5, 2].map((rate, key) => (
+      <div className={styles.list}>
+        {data.map(({ id, value }) => (
           <span
-            key={key}
-            className={styles.settings_choice}
+            key={id}
+            className={styles.item}
             onClick={() => {
-              setSpeed(rate);
+              onChoose(id);
+              onClose();
             }}
           >
-            {rate}
+            {value}
           </span>
         ))}
       </div>

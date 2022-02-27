@@ -33,7 +33,7 @@
     align-items: center;
 }
 
-.bottom_icon {
+.icon {
     cursor: pointer;
     width: 1.7vw;
     height: 1.7vw;
@@ -74,7 +74,7 @@
 }
 
 @media (max-width: 1024px) {
-    .bottom_icon {
+    .icon {
         width: 2.5vw;
         height: 2.5vw;
     }
@@ -97,7 +97,7 @@
 }
 
 @media (max-width: 767px) {
-    .bottom_icon {
+    .icon {
         width: 6vw;
         height: 6vw;
     }

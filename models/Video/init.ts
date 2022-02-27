@@ -1,9 +1,9 @@
-import { sample } from "effector";
-import { $data, $kpId, $translation } from "@models/FilmData";
-import { $episode, $season } from "@models/Playlist";
-import { getUrlsPayload } from "@interfaces/IMediaData";
-import { $url, getUrlsFx } from "@models/Video";
-import { $isBuffering, $isPlaying, playerContainerGate } from "@models/Player";
+import { sample } from 'effector';
+import { $data, $kpId, $translation } from '@models/FilmData';
+import { $episode, $season } from '@models/Playlist';
+import { getUrlsPayload } from '@interfaces/IMediaData';
+import { $quality, $url, $urls, getUrlsFx } from '@models/Video';
+import { $isBuffering, $isPlaying, playerContainerGate } from '@models/Player';
 
 sample({
   clock: [playerContainerGate.open, $translation, $episode],
@@ -34,4 +34,11 @@ sample({
   clock: [$translation, $episode],
   fn: () => true,
   target: [$isBuffering, $isPlaying],
+});
+
+sample({
+  clock: [$quality],
+  source: { quality: $quality, urls: $urls },
+  fn: ({ quality, urls }): string => urls[quality].streams[0],
+  target: $url,
 });

@@ -1,0 +1,33 @@
+.container {
+    display: flex;
+    align-items: center;
+    margin: 1.5vw;
+    cursor: pointer;
+}
+
+.title {
+    margin-right: 1vw;
+}
+
+.value {
+    margin-right: 1vw;
+}
+
+.icon {
+    position: absolute;
+    right: 0;
+    width: 1vw;
+    height: 1vw;
+}
+
+@media (max-width: 1024px) {
+    .title {
+        font-size: 1.5vw;
+    }
+}
+
+@media (max-width: 767px) {
+    .title {
+        font-size: 3.5vw;
+    }
+}
