@@ -1,9 +1,12 @@
 import { combine, sample } from "effector";
 import { $seasons } from "@models/FilmData";
 import { ISeason } from "@interfaces/IMediaData";
-import { showPlayer } from "@components/Players/utils/PlayerUtils";
+import { showPlayer } from "@components/Players/DyadkaPlayer/utils/PlayerUtils";
 import { setVisibility } from "@models/Player";
-import { nextEpisode, prevEpisode } from "@components/Players/utils/changeEpisode";
+import {
+  nextEpisode,
+  prevEpisode,
+} from "@components/Players/DyadkaPlayer/utils/changeEpisode";
 import {
   $episode,
   $season,

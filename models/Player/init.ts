@@ -2,7 +2,7 @@ import { forward, sample } from "effector";
 import {
   onEnterFullscreen,
   onExitFullscreen,
-} from "@components/Players/utils/PlayerUtils";
+} from "@components/Players/DyadkaPlayer/utils/PlayerUtils";
 import {
   $controls,
   $isFullscreen,

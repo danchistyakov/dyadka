@@ -1,13 +1,11 @@
-import { MutableRefObject } from "react";
+import { MouseEvent, MutableRefObject } from "react";
 import { combine, createEvent, createStore } from "effector";
 import { root } from "@models/Root";
 import { createGate } from "effector-react";
-import { setTranslation } from "@models/FilmData";
-import { setEpisode } from "@models/Playlist";
 import {
   formatProgress,
   formatTime,
-} from "@components/Players/components/DyadkaPlayer/utils/PlayerUtils";
+} from "@components/Players/DyadkaPlayer/utils/PlayerUtils";
 
 export const setVisibility = root.createEvent<boolean>();
 export const setDuration = root.createEvent<number>();
@@ -18,6 +16,7 @@ export const setMute = root.createEvent<boolean>();
 export const setPirate = root.createEvent<boolean>();
 export const setPlaying = root.createEvent<boolean>();
 export const negativePlaying = root.createEvent();
+export const setSeekValue = root.createEvent<MouseEvent<HTMLElement>>();
 export const setSpeed = root.createEvent<number>();
 export const setVolume = root.createEvent<number>();
 export const setFullscreen = createEvent<boolean>();
@@ -34,8 +33,17 @@ export const playerGate = createGate<MutableRefObject<HTMLInputElement | null>>(
 export const $controls =
   createStore<MutableRefObject<HTMLInputElement | null> | null>(null);
 
+export const $duration = createStore<string>("0:00").on(setDuration, (_, value) =>
+  formatTime(value)
+);
+
 export const $playerContainer =
   createStore<MutableRefObject<HTMLInputElement | null> | null>(null);
+
+export const $seekValue = createStore<number>(0).on(
+  setSeekValue,
+  (_, e) => e.clientX / e.currentTarget.scrollWidth
+);
 
 export const $isVisible = createStore<boolean>(false).on(
   setVisibility,
@@ -45,10 +53,6 @@ export const $isVisible = createStore<boolean>(false).on(
 export const $progress = createStore<any>({ played: 0, playedFormatted: "0:00" }).on(
   setProgress,
   (_, data) => formatProgress(data)
-);
-
-export const $duration = createStore<string>("0:00").on(setDuration, (_, value) =>
-  formatTime(value)
 );
 
 export const $isBuffering = root
@@ -90,6 +94,7 @@ export const $player = combine({
   isPlaying: $isPlaying,
   playerContainer: $playerContainer,
   progress: $progress,
+  seekValue: $seekValue,
   speed: $speed,
   volume: $volume,
 });

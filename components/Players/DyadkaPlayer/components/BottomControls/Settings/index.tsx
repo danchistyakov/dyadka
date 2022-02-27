@@ -1,9 +1,9 @@
-import {FC, useState, useEffect, useRef} from 'react';
-import style from './styles/Settings.module.scss';
-import Icons from '../../../../../../../images/Icons';
-import {$urls} from '@models/Video';
-import {useStore} from 'effector-react';
-import {$player, setSpeed} from '@models/Player';
+import { FC, useState, useEffect, useRef } from "react";
+import style from "./styles/Settings.module.scss";
+import Icons from "@images/Icons";
+import { $urls } from "@models/Video";
+import { useStore } from "effector-react";
+import { $player, setSpeed } from "@models/Player";
 
 const Settings: FC = () => {
   const [svisible, setsVisible] = useState(false);
@@ -11,16 +11,15 @@ const Settings: FC = () => {
   const [isVisible, setVisible] = useState(false);
 
   const settingsModal = useRef(null);
-  const {speed} = useStore($player);
-  const urls = useStore($urls)
-
+  const { speed } = useStore($player);
+  const urls = useStore($urls);
 
   useEffect(() => {
     const onClick = (e) =>
       settingsModal.current?.contains(e.target) ||
       (setVisible(false), setsVisible(false), setqVisible(false));
-    document.addEventListener('click', onClick);
-    return () => document.removeEventListener('click', onClick);
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
   }, []);
 
   // const handleQuality = (item, key) => {
@@ -91,9 +90,7 @@ const Settings: FC = () => {
                   <span className={style.settings_preview}>
                     <span className={style.option_name}>Скорость:</span>
                     <span className={style.preview_clickable}>
-                      <span className={style.preview_value}>
-                        {speed}
-                      </span>
+                      <span className={style.preview_value}>{speed}</span>
                       <span className={style.settings_chevron}>
                         <Icons icon="ChevronRightIcon" />
                       </span>

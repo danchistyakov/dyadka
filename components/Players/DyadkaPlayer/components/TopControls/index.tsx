@@ -1,5 +1,5 @@
 import { FC } from "react";
-import styles from "../styles/TopControls.module.scss";
+import styles from "./styles/TopControls.module.scss";
 import Translations from "./Translations";
 import { useStore } from "effector-react/ssr";
 import { $playlistData } from "@models/Playlist";

@@ -11,9 +11,6 @@
       "@api/*": [
         "./api/*"
       ],
-      "@app/*": [
-        "./*"
-      ],
       "@components/*": [
         "./components/*"
       ],
@@ -22,6 +19,9 @@
       ],
       "@hooks/*": [
         "./hooks/*"
+      ],
+      "@images/*": [
+        "./images/*"
       ],
       "@interfaces/*": [
         "./interfaces/*"

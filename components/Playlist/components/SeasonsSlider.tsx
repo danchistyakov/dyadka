@@ -1,20 +1,20 @@
-import {FC} from 'react';
-import {Swiper, SwiperSlide} from 'swiper/react';
-import styles from '../styles/Playlist.module.scss';
-import {useEvent, useStore} from 'effector-react/ssr';
-import {$season, setSeason} from '@models/Playlist';
-import {breakpointsSeasons} from '@app/utils/PlaylistSliderConfig';
-import {$seasons} from '@models/FilmData';
+import { FC } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import styles from "../styles/Playlist.module.scss";
+import { useEvent, useStore } from "effector-react/ssr";
+import { $season, setSeason } from "@models/Playlist";
+import { breakpointsSeasons } from "../utils/PlaylistSliderConfig";
+import { $seasons } from "@models/FilmData";
 
 const navigationSeasons = {
-  nextEl: '.swiper-button-next.seasons',
-  prevEl: '.swiper-button-prev.seasons',
+  nextEl: ".swiper-button-next.seasons",
+  prevEl: ".swiper-button-prev.seasons",
 };
 
 const SeasonsSlider: FC = () => {
   const seasons = useStore($seasons);
   const currentSeason = useStore($season);
-  const onSeason = useEvent(setSeason)
+  const onSeason = useEvent(setSeason);
 
   return (
     <>
@@ -36,7 +36,7 @@ const SeasonsSlider: FC = () => {
           >
             <p
               className={`${styles.season}${
-                res.season === currentSeason ? ` ${styles.active}` : ''
+                res.season === currentSeason ? ` ${styles.active}` : ""
               }`}
             >
               {res.season}-й сезон

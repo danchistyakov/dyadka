@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../styles/Settings.module.scss';
-import Icons from '@app/images/Icons';
-import {setSpeed} from '@models/Player';
+import Icons from '@images/Icons';
+import { setSpeed } from '@models/Player';
 
 const SettingsItem = () => {
   return (
@@ -13,9 +13,9 @@ const SettingsItem = () => {
           //setsVisible(false);
         }}
       >
-                  <span className={styles.left_chevron}>
-                    <Icons icon="ChevronLeftIcon" />
-                  </span>
+        <span className={styles.left_chevron}>
+          <Icons icon='ChevronLeftIcon' />
+        </span>
         <span className={styles.option_name}>Скорость</span>
       </div>
       <div className={styles.choice_list}>
@@ -27,8 +27,8 @@ const SettingsItem = () => {
               setSpeed(rate);
             }}
           >
-                      {rate}
-                    </span>
+            {rate}
+          </span>
         ))}
       </div>
     </div>

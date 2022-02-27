@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useEvent, useList, useStore } from "effector-react/ssr";
-import styles from "../styles/Translations.module.scss";
-import Icons from "../../../../../../images/Icons";
+import styles from "./styles/Translations.module.scss";
+import Icons from "@images/Icons";
 import { $translations, $translationsData, setTranslation } from "@models/FilmData";
 
 const Translations = () => {

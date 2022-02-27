@@ -9,19 +9,17 @@ import {
   setProgress,
 } from "@models/Player";
 import styles from "./styles/DyadkaPlayer.module.scss";
-import Auth from "@store/Auth";
 import PlayerControls from "@store/PlayerControls";
 import PlayerOptions from "@store/PlayerOptions";
 import ReactPlayer from "react-player";
 import { isMobile } from "react-device-detect";
-import Icons from "../../../../images/Icons";
-import sendTime from "../../hooks/sendTime";
-import TopControls from "./Controls/components/TopControls";
-import BottomControls from "./Controls/components/BottomControls";
+import Icons from "../../../images/Icons";
+import TopControls from "./components/TopControls";
+import BottomControls from "./components/BottomControls";
 import { setNextEpisode } from "@models/Playlist";
 import { $url } from "@models/Video";
-import { onKeyboard } from "../../utils/PlayerUtils";
-import usePlayer from "../../hooks/usePlayer";
+import { onKeyboard } from "./utils/PlayerUtils";
+import usePlayer from "./hooks/usePlayer";
 
 let timer;
 
@@ -42,10 +40,8 @@ const DyadkaPlayer: FC = () => {
   ]);
   const url = useStore($url);
   const playerContainerRef = useRef<HTMLInputElement | null>(null);
-  const playerRef = useRef<any | null>(null);
-  const controlsRef = useRef<HTMLInputElement | null>(null);
   useGate(playerContainerGate, playerContainerRef);
-  const { onMouseMove } = usePlayer(controlsRef);
+  const { onMouseMove, controlsRef, playerRef } = usePlayer();
 
   //useGate(PlayerGate);
   // const send = throttle(5000, () =>
@@ -98,7 +94,7 @@ const DyadkaPlayer: FC = () => {
         onClick={(e) => onClickHandler(e, null)}
       >
         {isBuffering && (
-          <div className="player_loading">
+          <div className={styles.player_loading}>
             <Icons icon="LoadingIcon" />
           </div>
         )}
@@ -120,7 +116,6 @@ const DyadkaPlayer: FC = () => {
           playing={isPlaying}
           width={"100%"}
           height={"100%"}
-          //style={{margin: 'auto'}}
           ref={playerRef}
           volume={1}
           playbackRate={speed}
@@ -137,7 +132,7 @@ const DyadkaPlayer: FC = () => {
           ></div>
         )}
       </div>
-      <div className="controls" ref={controlsRef}>
+      <div className={styles.controls} ref={controlsRef}>
         <TopControls />
         <BottomControls />
       </div>
