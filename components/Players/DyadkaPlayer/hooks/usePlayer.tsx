@@ -9,33 +9,34 @@ const usePlayer = () => {
   const controlsRef = useRef(null);
   const playerRef = useRef(null);
 
-  const onMouseMove = () => {
+  const hideControls = () => {
+    if (isFullscreen && isPlaying) {
+      controlsRef.current.style.visibility = 'hidden';
+      document.body.style.cursor = 'none';
+    }
+  };
+
+  const showControls = () => {
     clearTimeout(controlsTimeoutRef.current);
     controlsRef.current.style.visibility = 'visible';
     document.body.style.cursor = 'auto';
+  };
+
+  const onMouseMove = () => {
+    showControls();
     if (isFullscreen && isPlaying) {
-      controlsTimeoutRef.current = setTimeout(() => {
-        controlsRef.current.style.visibility = 'hidden';
-        document.body.style.cursor = 'none';
-      }, 3000);
+      controlsTimeoutRef.current = setTimeout(hideControls, 3000);
     }
   };
 
   useEffect(() => {
-    if (controlsTimeoutRef.current === null) {
-      controlsTimeoutRef.current = setTimeout(() => {
-        controlsRef.current.style.visibility = 'hidden';
-        document.body.style.cursor = 'none';
-      }, 3000);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!isPlaying) {
-      clearTimeout(controlsTimeoutRef.current);
+    if (!isPlaying || !isFullscreen) {
+      showControls();
+    } else {
+      controlsTimeoutRef.current = setTimeout(hideControls, 3000);
     }
     return () => clearTimeout(controlsTimeoutRef.current);
-  }, [isPlaying]);
+  }, [isFullscreen, isPlaying]);
 
   useUpdateEffect(() => {
     playerRef.current.seekTo(seekValue);
