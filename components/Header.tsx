@@ -6,18 +6,9 @@ import Icons from '../images/Icons';
 import CabinetMenu from './Cabinet/CabinetMenu';
 import Menu from './Menu';
 import AuthPopup from './Cabinet/AuthPopup';
+import { HeaderNavigation } from '@constants/Navigation';
 
 const Header: FC = () => {
-  const nav = [
-    { title: 'Сейчас смотрят', href: '/category/watching' },
-    { title: 'Новинки', href: '/category/last' },
-    { title: 'Фильмы', href: '/category/films' },
-    { title: 'Сериалы', href: '/category/series' },
-    { title: 'Мультфильмы', href: '/category/cartoons' },
-    { title: 'Телепередачи', href: '/category/show' },
-    { title: 'Аниме', href: '/category/animation' },
-  ];
-
   const [opened, setOpen] = useState<boolean>(false);
   const [authPopup, setAuthPopup] = useState<boolean>(false);
   const { asPath } = useRouter();
@@ -52,7 +43,7 @@ const Header: FC = () => {
       </>
       <nav className={styles.nav}>
         <div className={styles.categories}>
-          {nav?.map(({ href, title }, key) => (
+          {HeaderNavigation?.map(({ href, title }, key) => (
             <div key={key}>
               <Link href={href} passHref>
                 <a className={`${styles.item}${asPath === href ? ` ${styles.item_active}` : ''}`}>
