@@ -32,7 +32,6 @@ const MyApp: FC<AppProps & { err: any }> = ({ Component, pageProps, err }) => {
     },
   });
   if (typeof window !== 'undefined') clientScope = scope;
-  console.log('scope', serialize(scope));
 
   return (
     <Provider value={scope}>
