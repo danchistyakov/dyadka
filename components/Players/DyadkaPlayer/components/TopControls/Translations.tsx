@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useEvent, useList, useStore } from "effector-react/ssr";
-import styles from "./styles/Translations.module.scss";
-import Icons from "@images/Icons";
-import { $translations, $translationsData, setTranslation } from "@models/FilmData";
+import React, { useEffect, useRef, useState } from 'react';
+import { useEvent, useList, useStore } from 'effector-react/ssr';
+import styles from './styles/Translations.module.scss';
+import Icons from '@images/Icons';
+import { $translations, $translationsData, setTranslation } from '@models/FilmData';
 
 const Translations = () => {
   const [isVisible, setVisibility] = useState<boolean>(false);
@@ -18,10 +18,9 @@ const Translations = () => {
   };
 
   useEffect(() => {
-    const onClick = (e) =>
-      translateModal.current?.contains(e.target) || setVisibility(false);
-    document.addEventListener("click", onClick);
-    return () => document.removeEventListener("click", onClick);
+    const onClick = (e) => translateModal.current?.contains(e.target) || setVisibility(false);
+    document.addEventListener('click', onClick);
+    return () => document.removeEventListener('click', onClick);
   }, []);
 
   const translationsUI = useList($translations, ({ id, title }) => (
@@ -39,12 +38,12 @@ const Translations = () => {
   return (
     <div className={styles.container}>
       <div className={styles.selector} onClick={handleList}>
-        <p>{translation.title}</p>
+        <p>{translation?.title || 'Оригинальный'}</p>
         {translations.length > 1 &&
           (isVisible ? (
-            <Icons icon="ExpandLessIcon" className={styles.icon} />
+            <Icons icon='ExpandLessIcon' className={styles.icon} />
           ) : (
-            <Icons icon="ExpandMoreIcon" className={styles.icon} />
+            <Icons icon='ExpandMoreIcon' className={styles.icon} />
           ))}
       </div>
       {isVisible && translations.length > 1 && (

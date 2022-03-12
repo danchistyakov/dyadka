@@ -17,10 +17,3 @@ sample({
   source: { isFullscreen: $isFullscreen, fullscreenRef: $playerContainer },
   fn: (sourceData) => onToggleFullscreen(sourceData),
 });
-
-// sample({
-//   clock: exitFullscreen,
-//   source: $playerContainer,
-//   fn: onExitFullscreen,
-//   target: $isFullscreen,
-// });

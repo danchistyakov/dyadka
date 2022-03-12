@@ -6,7 +6,7 @@ import { $quality, $url, $urls, getUrlsFx } from '@models/Video';
 import { $isBuffering, $isPlaying, playerContainerGate } from '@models/Player';
 
 sample({
-  clock: [playerContainerGate.open, $translation, $episode],
+  clock: [$translation, $episode],
   source: {
     data: $data,
     kpId: $kpId,

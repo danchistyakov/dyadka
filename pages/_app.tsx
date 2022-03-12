@@ -12,19 +12,27 @@ import NProgress from 'nprogress'; //nprogress module
 import 'nprogress/nprogress.css'; //styles of nprogress
 import Router from 'next/router';
 import 'react-lazy-load-image-component/src/effects/blur.css';
-import Link from 'next/link';
-import { Provider } from 'effector-react/ssr';
-import { fork } from 'effector';
-import { root } from '@models/Root';
+import { Provider } from 'effector-react/scope';
+import { Scope, fork, serialize } from 'effector';
 
-export const isBrowser = () => typeof window !== 'undefined';
+let clientScope: Scope;
 
 const MyApp: FC<AppProps & { err: any }> = ({ Component, pageProps, err }) => {
   Router.events.on('routeChangeStart', () => NProgress.start());
   Router.events.on('routeChangeComplete', () => NProgress.done());
   Router.events.on('routeChangeError', () => NProgress.done());
 
-  const scope = fork(root, { values: pageProps.store });
+  //const scope = fork(root, { values: pageProps.store });
+
+  //const scope = useScope(pageProps.initialState);
+  const scope = fork({
+    values: {
+      ...(clientScope && serialize(clientScope)),
+      ...pageProps.initialState,
+    },
+  });
+  if (typeof window !== 'undefined') clientScope = scope;
+  console.log('scope', serialize(scope));
 
   return (
     <Provider value={scope}>
