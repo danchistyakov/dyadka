@@ -5,14 +5,7 @@ import { observer } from 'mobx-react-lite';
 import styles from './styles/BottomControls.module.scss';
 import Icons from '@images/Icons';
 import { useStore } from 'effector-react/ssr';
-import {
-  $player,
-  enterFullscreen,
-  exitFullscreen,
-  setMute,
-  setPirate,
-  setPlaying,
-} from '@models/Player';
+import { $player, toggleFullscreen, setMute, setPirate, setPlaying } from '@models/Player';
 import { setNextEpisode, setPrevEpisode } from '@models/Playlist';
 import { useEvent } from 'effector-react/ssr';
 import ProgressBar from './ProgressBar';
@@ -20,8 +13,12 @@ import { formatTime } from '../../utils/PlayerUtils';
 
 const BottomControls: FC = () => {
   const { duration, isFullscreen, isMuted, isPlaying, progress, volume } = useStore($player);
-  const [enterFullscreenFn, exitFullscreenFn, setPrevEpisodeFn, setNextEpisodeFn, setPlayingFn] =
-    useEvent([enterFullscreen, exitFullscreen, setPrevEpisode, setNextEpisode, setPlaying]);
+  const [toggleFullscreenFn, setPrevEpisodeFn, setNextEpisodeFn, setPlayingFn] = useEvent([
+    toggleFullscreen,
+    setPrevEpisode,
+    setNextEpisode,
+    setPlaying,
+  ]);
   const [remaining, setRemaining] = useState(false);
   const [slider, setSlider] = useState(false);
   const [settingsPopup, setSettingsPopup] = useState(false);
@@ -111,9 +108,13 @@ const BottomControls: FC = () => {
           {settingsPopup && <Settings onClose={() => setSettingsPopup(false)} />}
           <span>
             {!isFullscreen ? (
-              <Icons icon='FullscreenIcon' className={styles.icon} onClick={enterFullscreenFn} />
+              <Icons icon='FullscreenIcon' className={styles.icon} onClick={toggleFullscreenFn} />
             ) : (
-              <Icons icon='FullscreenExitIcon' className={styles.icon} onClick={exitFullscreenFn} />
+              <Icons
+                icon='FullscreenExitIcon'
+                className={styles.icon}
+                onClick={toggleFullscreenFn}
+              />
             )}
           </span>
         </div>

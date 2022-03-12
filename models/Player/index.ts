@@ -1,11 +1,8 @@
-import { MouseEvent, MutableRefObject } from "react";
-import { combine, createEvent, createStore } from "effector";
-import { root } from "@models/Root";
-import { createGate } from "effector-react";
-import {
-  formatProgress,
-  formatTime,
-} from "@components/Players/DyadkaPlayer/utils/PlayerUtils";
+import { MouseEvent, MutableRefObject } from 'react';
+import { combine, createEvent, createStore } from 'effector';
+import { root } from '@models/Root';
+import { createGate } from 'effector-react';
+import { formatProgress, formatTime } from '@components/Players/DyadkaPlayer/utils/PlayerUtils';
 
 export const setVisibility = root.createEvent<boolean>();
 export const setDuration = root.createEvent<number>();
@@ -20,37 +17,30 @@ export const setSeekValue = root.createEvent<MouseEvent<HTMLElement>>();
 export const setSpeed = root.createEvent<number>();
 export const setVolume = root.createEvent<number>();
 export const setFullscreen = createEvent<boolean>();
-export const enterFullscreen = createEvent();
-export const exitFullscreen = createEvent();
+export const toggleFullscreen = createEvent();
 
-export const playerContainerGate =
-  createGate<MutableRefObject<HTMLInputElement | null>>();
+export const playerContainerGate = createGate<MutableRefObject<HTMLInputElement | null>>();
 
 export const controlsGate = createGate<MutableRefObject<HTMLInputElement | null>>();
 
 export const playerGate = createGate<MutableRefObject<HTMLInputElement | null>>();
 
-export const $controls =
-  createStore<MutableRefObject<HTMLInputElement | null> | null>(null);
+export const $controls = createStore<MutableRefObject<HTMLInputElement | null> | null>(null);
 
-export const $duration = createStore<string>("0:00").on(setDuration, (_, value) =>
+export const $duration = createStore<string>('0:00').on(setDuration, (_, value) =>
   formatTime(value)
 );
 
-export const $playerContainer =
-  createStore<MutableRefObject<HTMLInputElement | null> | null>(null);
+export const $playerContainer = createStore<MutableRefObject<HTMLInputElement | null> | null>(null);
 
 export const $seekValue = createStore<number>(0).on(
   setSeekValue,
   (_, e) => e.clientX / e.currentTarget.scrollWidth
 );
 
-export const $isVisible = createStore<boolean>(false).on(
-  setVisibility,
-  (_, value) => value
-);
+export const $isVisible = createStore<boolean>(false).on(setVisibility, (_, value) => value);
 
-export const $progress = createStore<any>({ played: 0, playedFormatted: "0:00" }).on(
+export const $progress = createStore<any>({ played: 0, playedFormatted: '0:00' }).on(
   setProgress,
   (_, data) => formatProgress(data)
 );
@@ -77,13 +67,9 @@ export const $isPlaying = root
   .on(setPlaying, (_, isPlaying: boolean) => isPlaying)
   .on(negativePlaying, (isPlaying: boolean) => !isPlaying);
 
-export const $speed = root
-  .createStore<number>(1)
-  .on(setSpeed, (_, speed: number) => speed);
+export const $speed = root.createStore<number>(1).on(setSpeed, (_, speed: number) => speed);
 
-export const $volume = root
-  .createStore<number>(1)
-  .on(setVolume, (_, volume: number) => volume);
+export const $volume = root.createStore<number>(1).on(setVolume, (_, volume: number) => volume);
 
 export const $player = combine({
   duration: $duration,

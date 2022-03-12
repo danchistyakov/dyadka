@@ -1,6 +1,7 @@
 import { KeyboardEvent, MutableRefObject } from 'react';
 import { negativePlaying } from '@models/Player';
 import fscreen from 'fscreen';
+import { ToggleFullscreenParams } from '../interfaces/IPlayerUtils';
 
 export const formatTime = (data: number): string => {
   const date = new Date(data * 1000);
@@ -19,24 +20,13 @@ export const formatProgress = (data: any) => {
   return { played, playedFormatted };
 };
 
-export const onEnterFullscreen = (
-  fullscreenRef: MutableRefObject<HTMLInputElement | null>
-): boolean => {
-  if (fscreen.fullscreenElement) {
+export const onToggleFullscreen = (data: ToggleFullscreenParams): void => {
+  const { isFullscreen, fullscreenRef } = data;
+  if (isFullscreen) {
     fscreen.exitFullscreen();
+  } else {
+    fscreen.requestFullscreen(fullscreenRef.current);
   }
-  fscreen.requestFullscreen(fullscreenRef.current);
-
-  return true;
-};
-
-export const onExitFullscreen = (
-  fullscreenRef: MutableRefObject<HTMLInputElement | null>
-): boolean => {
-  if (fscreen.fullscreenElement === fullscreenRef.current) {
-    fscreen.exitFullscreen();
-  }
-  return false;
 };
 
 export const showPlayer = (): boolean => {

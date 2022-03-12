@@ -9,7 +9,6 @@ import {
   setProgress,
 } from '@models/Player';
 import styles from './styles/DyadkaPlayer.module.scss';
-import PlayerControls from '@store/PlayerControls';
 import PlayerOptions from '@store/PlayerOptions';
 import ReactPlayer from 'react-player';
 import { isMobile } from 'react-device-detect';
@@ -21,6 +20,7 @@ import { $url } from '@models/Video';
 import { onKeyboard } from './utils/PlayerUtils';
 import usePlayer from './hooks/usePlayer';
 import { SpeedList } from '@constants/PlayerSettings';
+import useFullscreen from './hooks/useFullscreen';
 
 let timer;
 
@@ -32,7 +32,7 @@ const DyadkaPlayer: FC = () => {
   const playerContainerRef = useRef<HTMLInputElement | null>(null);
   useGate(playerContainerGate, playerContainerRef);
   const { onMouseMove, controlsRef, playerRef } = usePlayer();
-
+  useFullscreen();
   //useGate(PlayerGate);
   // const send = throttle(5000, () =>
   //   sendTime(
@@ -52,11 +52,6 @@ const DyadkaPlayer: FC = () => {
   /*useEffect(() => {
     continuePlaying(Auth.isAuth, Auth.user.email, Info.info.id);
   }, [Auth.isAuth, Auth.user.email, Info.info.id]);*/
-
-  const handleSeekChange = (e, newValue: number) => {
-    PlayerControls.setPlayed(newValue / 100);
-    playerRef.current.seekTo(newValue / 100);
-  };
 
   const onClickHandler = (e, action) => {
     clearTimeout(timer);
