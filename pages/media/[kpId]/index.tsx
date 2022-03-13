@@ -2,7 +2,7 @@ import { FC } from 'react';
 import dynamic from 'next/dynamic';
 import Staff from '@components/Staff';
 import Playlist from '@components/Playlist';
-import FilmInfo from '@components/Film/components/FilmInfo';
+import FilmInfo from '@components/FilmInfo';
 import Similar from '@components/Similar';
 import styles from './_styles/Film.module.scss';
 import Head from 'next/head';

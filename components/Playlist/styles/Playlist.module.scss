@@ -22,7 +22,7 @@
 }
 
 .nav_section::before {
-    content: "";
+    content: '';
     display: block;
     position: absolute;
     width: 15%;
@@ -73,7 +73,7 @@
 
 @media (max-width: 767px) {
     .container {
-        margin: 8vw 0;
+        margin-bottom: 8vw;
     }
     .season {
         font-size: 4vw;

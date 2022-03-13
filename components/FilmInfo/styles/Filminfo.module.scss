@@ -1,0 +1,123 @@
+.container {
+    background: linear-gradient(180deg, rgba(22, 21, 26, 0) 0%, #16151a 100%);
+    height: 42vw;
+}
+
+.info {
+    position: absolute;
+    bottom: 0;
+    max-width: 40vw;
+    margin: 0 10vw;
+}
+
+.preview {
+    background: linear-gradient(180deg, rgba(22, 21, 26, 0) 0%, #16151a 90%);
+}
+
+.image {
+    width: 100vw;
+    height: 40vw;
+    object-fit: cover;
+    z-index: -1;
+}
+
+.title {
+    margin: 1vw 0;
+    font-weight: 500;
+    font-size: 3vw;
+}
+
+.text {
+    margin: 1vw 0;
+}
+
+.button {
+    margin-right: 0.5vw;
+    background: #1d1d1d;
+    border: none;
+    font-size: 1.2vw;
+    border-radius: 40px;
+    padding: 0.7vw;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.ratings {
+    display: flex;
+    margin: 1vw 0;
+}
+
+.rating {
+    display: grid;
+    justify-items: center;
+    margin-right: 2vw;
+}
+
+.rating_value {
+    font-size: 1.5vw;
+}
+
+.rating_name {
+    font-size: 1vw;
+    margin-top: 0.3vw;
+}
+
+.buttons {
+    display: flex;
+    margin-top: 1vw;
+}
+
+.icon {
+    width: 1.5vw;
+    height: 1.5vw;
+}
+
+@media (max-width: 767px) {
+    .container {
+        margin: 0;
+        height: 130vw;
+    }
+    .image {
+        height: 75vw;
+        z-index: -1;
+    }
+    .info {
+        max-width: 100vw;
+        margin: 0 5vw;
+    }
+    .title {
+        font-size: 7vw;
+        margin: 3vw 0;
+    }
+    .text {
+        margin: 3vw 0;
+        font-size: 4vw;
+    }
+    .button {
+        padding: 2vw;
+        font-size: 3.5vw;
+        margin-right: 3vw;
+    }
+    .ratings {
+        margin: 5vw 0;
+    }
+    .rating {
+        margin-right: 5vw;
+    }
+    .rating_value {
+        font-size: 5vw;
+    }
+    .rating_name {
+        font-size: 3.5vw;
+        margin-top: 1vw;
+    }
+    .buttons {
+        margin: 3vw 0;
+    }
+    .icon {
+        width: 5vw;
+        height: 5vw;
+    }
+}

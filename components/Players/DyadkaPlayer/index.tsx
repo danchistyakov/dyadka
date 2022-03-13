@@ -89,9 +89,9 @@ const DyadkaPlayer: FC = () => {
             <Icons icon='LoadingIcon' />
           </div>
         )}
-        {isMobile && (
+        {/* {isMobile && (
           <div className='left_rewind' onClick={(e) => onClickHandler(e, 'rewind')}></div>
-        )}
+        )} */}
         <ReactPlayer
           url={url}
           muted={isMuted}
@@ -107,9 +107,9 @@ const DyadkaPlayer: FC = () => {
           onBuffer={() => setBufferingFn(true)}
           onBufferEnd={() => setBufferingFn(false)}
         />
-        {isMobile && (
+        {/* {isMobile && (
           <div className='right_forward' onClick={(e) => onClickHandler(e, 'forward')}></div>
-        )}
+        )} */}
       </div>
       <div className={styles.controls} ref={controlsRef}>
         <TopControls />
