@@ -1,7 +1,5 @@
 import { FC, useState } from 'react';
 import Settings from './Settings';
-import PlayerControls from '@store/PlayerControls';
-import { observer } from 'mobx-react-lite';
 import styles from './styles/BottomControls.module.scss';
 import Icons from '@images/Icons';
 import { useStore } from 'effector-react/ssr';
@@ -24,28 +22,23 @@ const BottomControls: FC = () => {
   const [settingsPopup, setSettingsPopup] = useState(false);
 
   return (
-    <div className={styles.bottom_part}>
+    <div className={styles.root}>
       <ProgressBar />
-      <div className={styles.bottom_controls}>
+      <div className={styles.controls}>
         <div className={styles.bottom_left}>
           <Icons icon='SkipPreviousIcon' className={styles.icon} onClick={setPrevEpisodeFn} />
-          {!isPlaying ? (
-            <Icons
-              icon='PlayArrowIcon'
-              className={styles.icon}
-              onClick={() => setPlayingFn(true)}
-            />
-          ) : (
-            <Icons icon='PauseIcon' className={styles.icon} onClick={() => setPlayingFn(false)} />
-          )}
+          <Icons
+            icon={!isPlaying ? 'PlayArrowIcon' : 'PauseIcon'}
+            className={styles.icon}
+            onClick={() => setPlayingFn(!isPlaying)}
+          />
           <Icons icon='SkipNextIcon' className={styles.icon} onClick={setNextEpisodeFn} />
           <p className={styles.player_duration} onClick={() => setRemaining(!remaining)}>
             {!remaining
               ? progress.playedFormatted
-              : `-${formatTime(
-                  PlayerControls?.currentDuration - PlayerControls?.currentTime
-                )}`}{' '}
-            / {duration}
+              : //: `-${formatTime(PlayerControls?.currentDuration - PlayerControls?.currentTime)}`}
+                `-${formatTime(0 - 0)}`}
+            &nbsp;/ {duration}
           </p>
         </div>
         <div className={styles.bottom_right}>
@@ -57,28 +50,14 @@ const BottomControls: FC = () => {
             />
           </span>
           <div className='volume_controls'>
-            <span
-              className='volume_icon'
-              onMouseEnter={() => setSlider(true)}
-              onMouseLeave={() => setSlider(false)}
-            >
-              {!isMuted ? (
-                <Icons
-                  icon='VolumeUpIcon'
-                  className={styles.icon}
-                  onClick={() => setMute(true)}
-                  onMouseEnter={() => setSlider(true)}
-                  onMouseLeave={() => setSlider(true)}
-                />
-              ) : (
-                <Icons
-                  icon='VolumeOffIcon'
-                  className={styles.icon}
-                  onClick={() => setMute(false)}
-                  onMouseEnter={() => setSlider(true)}
-                  onMouseLeave={() => setSlider(false)}
-                />
-              )}
+            <span>
+              <Icons
+                icon={!isMuted ? 'VolumeUpIcon' : 'VolumeOffIcon'}
+                className={styles.icon}
+                onClick={() => setMute(!isMuted)}
+                onMouseEnter={() => setSlider(true)}
+                onMouseLeave={() => setSlider(true)}
+              />
             </span>
             {slider && (
               <span
@@ -107,19 +86,15 @@ const BottomControls: FC = () => {
           </span>
           {settingsPopup && <Settings onClose={() => setSettingsPopup(false)} />}
           <span>
-            {!isFullscreen ? (
-              <Icons icon='FullscreenIcon' className={styles.icon} onClick={toggleFullscreenFn} />
-            ) : (
-              <Icons
-                icon='FullscreenExitIcon'
-                className={styles.icon}
-                onClick={toggleFullscreenFn}
-              />
-            )}
+            <Icons
+              icon={!isFullscreen ? 'FullscreenIcon' : 'FullscreenExitIcon'}
+              className={styles.icon}
+              onClick={toggleFullscreenFn}
+            />
           </span>
         </div>
       </div>
     </div>
   );
 };
-export default observer(BottomControls);
+export default BottomControls;

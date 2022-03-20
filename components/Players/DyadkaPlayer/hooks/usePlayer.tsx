@@ -11,14 +11,18 @@ const usePlayer = () => {
 
   const hideControls = () => {
     if (isFullscreen && isPlaying) {
-      controlsRef.current.style.visibility = 'hidden';
+      //controlsRef.current.style.opacity = '0';
+      controlsRef.current.classList.add('hidden');
+      //controlsRef.current.style.visibility = 'hidden';
       document.body.style.cursor = 'none';
     }
   };
 
   const showControls = () => {
     clearTimeout(controlsTimeoutRef.current);
-    controlsRef.current.style.visibility = 'visible';
+    //controlsRef.current.style.opacity = '1';
+    controlsRef.current.classList.remove('hidden');
+    //controlsRef.current.style.visibility = 'visible';
     document.body.style.cursor = 'auto';
   };
 
