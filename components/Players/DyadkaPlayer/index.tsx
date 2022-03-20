@@ -11,7 +11,6 @@ import {
 import styles from './styles/DyadkaPlayer.module.scss';
 import PlayerOptions from '@store/PlayerOptions';
 import ReactPlayer from 'react-player';
-import { isMobile } from 'react-device-detect';
 import Icons from '../../../images/Icons';
 import TopControls from './components/TopControls';
 import BottomControls from './components/BottomControls';
