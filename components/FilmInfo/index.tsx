@@ -12,7 +12,7 @@ const FilmInfo: FC = () => {
   const data = useStore($data);
   const showPlayer = useEvent(setVisibility);
   const [desktopBackground, setDesktopBackground] = useState(
-    `https://cdn.statically.io/img/blackmedia.top/f=auto,q=70/media/${data.kpId}/wide_app_cinema_media_${data.kpId}.jpg`
+    `https://8b1a9ed1-9ef0-4a16-9948-a5123b2947e7.selcdn.net/insecure/plain/https://blackmedia.top/media/${data.kpId}/wide_app_cinema_media_${data.kpId}.jpg`
   );
 
   return (

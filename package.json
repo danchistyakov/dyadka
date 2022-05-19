@@ -31,6 +31,7 @@
         "swiper": "^6.8.4"
     },
     "devDependencies": {
+        "@babel/plugin-transform-react-jsx-source": "^7.16.7",
         "@types/fscreen": "^1.0.1",
         "@types/node": "^16.11.12",
         "@types/nprogress": "^0.2.0",

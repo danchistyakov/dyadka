@@ -20,7 +20,7 @@ const BottomControls: FC = () => {
   const [remaining, setRemaining] = useState(false);
   const [slider, setSlider] = useState(false);
   const [settingsPopup, setSettingsPopup] = useState(false);
-
+console.log(progress)
   return (
     <div className={styles.root}>
       <ProgressBar />

@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import { AppProps } from 'next/app';
+import {FC} from 'react';
+import {AppProps} from 'next/app';
 import '../models/init';
 import '../styles/App.sass';
 import Header from '../components/Header';
@@ -12,42 +12,34 @@ import NProgress from 'nprogress'; //nprogress module
 import 'nprogress/nprogress.css'; //styles of nprogress
 import Router from 'next/router';
 import 'react-lazy-load-image-component/src/effects/blur.css';
-import { Provider } from 'effector-react/scope';
-import { Scope, fork, serialize } from 'effector';
+import {Provider} from 'effector-react/scope';
+import {Scope, fork, serialize} from 'effector';
 
 let clientScope: Scope;
 
-const MyApp: FC<AppProps & { err: any }> = ({ Component, pageProps, err }) => {
-  Router.events.on('routeChangeStart', () => NProgress.start());
-  Router.events.on('routeChangeComplete', () => NProgress.done());
-  Router.events.on('routeChangeError', () => NProgress.done());
+const MyApp: FC<AppProps & { err: any }> = ({Component, pageProps, err}) => {
+    Router.events.on('routeChangeStart', () => NProgress.start());
+    Router.events.on('routeChangeComplete', () => NProgress.done());
+    Router.events.on('routeChangeError', () => NProgress.done());
 
-  //const scope = fork(root, { values: pageProps.store });
+    //const scope = fork(root, { values: pageProps.store });
 
-  //const scope = useScope(pageProps.initialState);
-  const scope = fork({
-    values: {
-      ...(clientScope && serialize(clientScope)),
-      ...pageProps.initialState,
-    },
-  });
-  if (typeof window !== 'undefined') clientScope = scope;
+    //const scope = useScope(pageProps.initialState);
+    const scope = fork({
+        values: {
+            ...(clientScope && serialize(clientScope)),
+            ...pageProps.initialState,
+        },
+    });
+    if (typeof window !== 'undefined') clientScope = scope;
 
-  return (
-    <Provider value={scope}>
-      <a
-        href='https://www.instagram.com/explore/tags/%D0%BD%D0%B5%D1%82%D0%B2%D0%BE%D0%B9%D0%BD%D0%B5/'
-        target='_blank'
-        rel='noreferrer'
-        className='war'
-      >
-        #НЕТВОЙНЕ
-      </a>
-      <Header />
-      <Component {...pageProps} err={err} />
-      <Footer />
-    </Provider>
-  );
+    return (
+        <Provider value={scope}>
+            <Header/>
+            <Component {...pageProps} err={err}/>
+            <Footer/>
+        </Provider>
+    );
 };
 
 export default MyApp;
