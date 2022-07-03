@@ -5,7 +5,7 @@ import { useStore, useEvent } from 'effector-react/ssr';
 import { $speed } from '@models/Player';
 import SettingsPreview from './components/SettingsPreview';
 import SettingsItem from './components/SettingsItem';
-import { SpeedList } from '@constants/PlayerSettings';
+import { SpeedList } from '@shared/constants/PlayerSettings';
 import { setSpeed } from '@models/Player';
 import { QualityDTO } from './utils/QualityDTO';
 import { SettingsProps } from './interfaces/ISettings';

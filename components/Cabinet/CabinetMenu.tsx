@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import Auth from "../../store/Auth";
 import Link from "next/link";
 import style from "../../styles/Cabinet/CabinetMenu.module.scss";
-import AuthPopup from "./AuthPopup";
+import AuthPopup from "./AuthPopup/AuthPopup";
 
 const CabinetMenu: FC = observer(() => {
   const [authpopup, setAuthPopup] = useState(false);

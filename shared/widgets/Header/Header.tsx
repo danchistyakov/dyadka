@@ -1,12 +1,12 @@
 import { FC, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import styles from '../styles/Header.module.scss';
-import Icons from '../images/Icons';
-import CabinetMenu from './Cabinet/CabinetMenu';
-import Menu from './Menu';
-import AuthPopup from './Cabinet/AuthPopup';
-import { HeaderNavigation } from '@constants/Navigation';
+import styles from './Header.module.scss';
+import Icons from '../../../assets/images/Icons';
+import CabinetMenu from '@components/Cabinet/CabinetMenu';
+import Menu from '@components/Menu';
+import AuthPopup from '@components/Cabinet/AuthPopup/AuthPopup';
+import { HeaderNavigation } from '@shared/constants/Navigation';
 
 const Header: FC = () => {
   const [opened, setOpen] = useState<boolean>(false);

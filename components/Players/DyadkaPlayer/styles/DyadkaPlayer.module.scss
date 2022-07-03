@@ -1,40 +1,45 @@
 .container {
-    height: 35vw;
+  height: 35vw;
 }
 
 .screen {
-    width: 100%;
-    height: 100%;
-    z-index: 1;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.player {
+  width: 100%;
+  height: 100%;
 }
 
 .player_loading {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    background: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.6);
 }
 
 .controls {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    opacity: 1;
-    -webkit-transition: opacity 5s cubic-bezier(0.45, 1.45, 0.8, 1), opacity 0.4s cubic-bezier(0.45, 1.45, 0.8, 1);
-    transition: opacity 5s cubic-bezier(0.45, 1.45, 0.8, 1), opacity 0.4s cubic-bezier(0.45, 1.45, 0.8, 1);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  opacity: 1;
+  -webkit-transition: opacity 5s cubic-bezier(0.45, 1.45, 0.8, 1), opacity 0.4s cubic-bezier(0.45, 1.45, 0.8, 1);
+  transition: opacity 5s cubic-bezier(0.45, 1.45, 0.8, 1), opacity 0.4s cubic-bezier(0.45, 1.45, 0.8, 1);
 }
 
 @media (max-width: 767px) {
-    .container {
-        height: 85vw;
-    }
+  .container {
+    height: 85vw;
+  }
 }

@@ -1,4 +1,4 @@
-import Icons from '@images/Icons';
+import Icons from '../../../../../../../assets/images/Icons';
 import { FC } from 'react';
 import { SettingsPreviewProps } from '../interfaces/ISettings';
 import styles from '../styles/SettingsPreview.module.scss';

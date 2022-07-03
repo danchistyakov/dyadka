@@ -32,6 +32,9 @@
       "@pages/*": [
         "./pages/*"
       ],
+      "@shared/*": [
+        "./shared/*"
+      ],
       "@store/*": [
         "./store/*"
       ],

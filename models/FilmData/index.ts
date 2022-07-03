@@ -1,5 +1,5 @@
 import { IMediaData, ISeason, ITranslation } from '@interfaces/IMediaData';
-import { getData } from '@api/Endpoints';
+import { getData } from '../../shared/api/Endpoints';
 import { root } from '@models/Root';
 import { combine, createStore } from 'effector';
 

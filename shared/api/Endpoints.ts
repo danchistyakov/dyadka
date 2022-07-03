@@ -1,5 +1,5 @@
 import { getUrlsData, getUrlsPayload, IMediaData } from '@interfaces/IMediaData';
-import { $api } from '@api/ApiConfig';
+import { $api } from './ApiConfig';
 
 export const getData = async (kpId: number): Promise<IMediaData> => {
   const { data } = await $api.post('/film', {

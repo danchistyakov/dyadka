@@ -5,7 +5,7 @@ import Hero from '../components/Hero';
 import Auth from '../store/Auth';
 
 const Home = ({ data, activateData }) => {
-  const AuthPopup = dynamic(() => import('@components/Cabinet/AuthPopup'));
+  const AuthPopup = dynamic(() => import('@components/Cabinet/AuthPopup/AuthPopup'));
   const [authPopup, setAuthPopup] = useState<boolean>(false);
 
   useEffect(() => {

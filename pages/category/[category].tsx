@@ -5,7 +5,7 @@ import style from '../../styles/Genre.module.sass';
 import Link from 'next/link';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import FilmsList from '../../components/FilmsList';
-import { $api } from '@api/ApiConfig';
+import { $api } from '../../shared/api/ApiConfig';
 
 const Category = ({ data }) => {
   const router = useRouter();

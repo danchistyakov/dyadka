@@ -27,7 +27,7 @@ sample({
 sample({
   clock: setEpisode,
   source: $episode,
-  fn: showPlayer,
+  fn: () => true,
   target: setVisibility,
 });
 

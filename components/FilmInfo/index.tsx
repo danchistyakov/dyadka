@@ -1,13 +1,13 @@
 import { FC, useState } from 'react';
 import dynamic from 'next/dynamic';
 import styles from './styles/Filminfo.module.scss';
-import Icons from '@images/Icons';
+import Icons from '../../assets/images/Icons';
 import { useEvent, useStore } from 'effector-react/ssr';
 import { $data } from '@models/FilmData';
 import { setVisibility } from '@models/Player';
 
 const FilmInfo: FC = () => {
-  const AuthPopup = dynamic(() => import('@components/Cabinet/AuthPopup'));
+  const AuthPopup = dynamic(() => import('@components/Cabinet/AuthPopup/AuthPopup'));
   const [authError, setAuthPopup] = useState(false);
   const data = useStore($data);
   const showPlayer = useEvent(setVisibility);

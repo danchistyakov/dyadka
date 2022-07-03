@@ -2,7 +2,7 @@ import {FC} from 'react';
 import {AppProps} from 'next/app';
 import '../models/init';
 import '../styles/App.sass';
-import Header from '../components/Header';
+import Header from '@shared/widgets/Header/Header';
 import Footer from '../components/Footer';
 import '../styles/Slider.scss';
 import '../styles/Player.sass';

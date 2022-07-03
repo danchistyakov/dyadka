@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import styles from '../styles/SettingsItem.module.scss';
-import Icons from '@images/Icons';
+import Icons from '../../../../../../../assets/images/Icons';
 import { SettingsItemProps } from '../interfaces/ISettings';
 
 const SettingsItem: FC<SettingsItemProps> = ({ data, onChoose, onClose, title }) => {

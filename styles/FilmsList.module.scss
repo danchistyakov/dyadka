@@ -1,55 +1,60 @@
 .container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-row-gap: 2vw;
-    grid-column-gap: 2vw;
-    margin: 2vw 7vw;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-row-gap: 2vw;
+  grid-column-gap: 2vw;
+  margin: 2vw 7vw;
 }
 
 .loader {
-    background-color: #202020;
-    background-image: linear-gradient(90deg, #202020, #444, #202020);
-    background-size: 200px 100%;
-    background-repeat: no-repeat;
-    border-radius: 4px;
-    -webkit-animation: animation-loader 2s ease-in-out infinite;
-    animation: animation-loader 2s ease-in-out infinite;
+  background-color: #202020;
+  background-image: linear-gradient(90deg, #202020, #444, #202020);
+  background-size: 200px 100%;
+  background-repeat: no-repeat;
+  border-radius: 4px;
+  -webkit-animation: animation-loader 2s ease-in-out infinite;
+  animation: animation-loader 2s ease-in-out infinite;
 }
 
 .poster {
-    border-radius: 1vw;
-    width: 12vw;
-    height: 18vw;
+  border-radius: 1vw;
+  width: 12vw;
+  height: 18vw;
 }
 
 .error {
-    filter: none !important;
-    background-size: contain;
-    background-position: 50%;
-    border-radius: 1vw;
-    width: 12vw;
-    height: 18vw;
-    img {
-        z-index: -1;
-    }
+  filter: none !important;
+  background-size: contain;
+  background-position: 50%;
+  border-radius: 1vw;
+  width: 12vw;
+  height: 18vw;
+
+  img {
+    z-index: -1;
+  }
 }
 
 @media (max-width: 767px) {
-    .container {
-        grid-template-columns: 1fr 1fr;
-    }
-    .poster {
-        width: 40vw;
-        height: 60vw;
-        border-radius: 3vw;
-    }
+  .container {
+    grid-template-columns: 1fr 1fr;
+  }
+  .poster {
+    width: 40vw;
+    height: 60vw;
+    border-radius: 3vw;
+  }
+  .error {
+    width: 40vw;
+    height: 60vw;
+  }
 }
 
 @keyframes animation-loader {
-    0% {
-        background-position: -200px 0;
-    }
-    100% {
-        background-position: calc(200px + 100%) 0;
-    }
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
 }
