@@ -1,46 +1,45 @@
-import { combine, sample } from "effector";
-import { $seasons } from "@models/FilmData";
-import { ISeason } from "@interfaces/IMediaData";
-import { showPlayer } from "@components/Players/DyadkaPlayer/utils/PlayerUtils";
-import { setVisibility } from "@models/Player";
+import {combine, sample} from "effector";
+import {$seasons} from "@models/FilmData";
+import {ISeason} from "@interfaces/IMediaData";
+import {setVisibility} from "@models/Player";
 import {
-  nextEpisode,
-  prevEpisode,
+    nextEpisode,
+    prevEpisode,
 } from "@components/Players/DyadkaPlayer/utils/changeEpisode";
 import {
-  $episode,
-  $season,
-  setEpisode,
-  setEpisodes,
-  setNextEpisode,
-  setPrevEpisode,
-  setSeason,
+    $episode,
+    $season,
+    setEpisode,
+    setEpisodes,
+    setNextEpisode,
+    setPrevEpisode,
+    setSeason,
 } from "@models/Playlist";
 
 sample({
-  clock: [$seasons, setSeason],
-  source: combine({ season: $season, seasons: $seasons }),
-  fn: ({ season, seasons }, _): ISeason => seasons[season - 1],
-  target: setEpisodes,
+    clock: [$seasons, setSeason],
+    source: combine({season: $season, seasons: $seasons}),
+    fn: ({season, seasons}, _): ISeason => seasons[season - 1],
+    target: setEpisodes,
 });
 
 sample({
-  clock: setEpisode,
-  source: $episode,
-  fn: () => true,
-  target: setVisibility,
+    clock: setEpisode,
+    source: $episode,
+    fn: () => true,
+    target: setVisibility,
 });
 
 sample({
-  clock: setPrevEpisode,
-  source: { seasons: $seasons, season: $season, episode: $episode },
-  fn: (sourceData): number => prevEpisode(sourceData),
-  target: setEpisode,
+    clock: setPrevEpisode,
+    source: {seasons: $seasons, season: $season, episode: $episode},
+    fn: (sourceData): number => prevEpisode(sourceData),
+    target: setEpisode,
 });
 
 sample({
-  clock: setNextEpisode,
-  source: { seasons: $seasons, season: $season, episode: $episode },
-  fn: (sourceData): number => nextEpisode(sourceData),
-  target: setEpisode,
+    clock: setNextEpisode,
+    source: {seasons: $seasons, season: $season, episode: $episode},
+    fn: (sourceData): number => nextEpisode(sourceData),
+    target: setEpisode,
 });

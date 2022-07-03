@@ -1,7 +1,7 @@
 import {FC, useRef, KeyboardEvent, useEffect} from 'react';
 import {useEvent, useGate, useStore} from 'effector-react/ssr';
 import {
-    $player, $playerConfig,
+    $player,
     negativePlaying,
     playerContainerGate,
     setBuffering,
