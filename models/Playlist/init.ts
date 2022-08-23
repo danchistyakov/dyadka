@@ -2,10 +2,7 @@ import {combine, sample} from "effector";
 import {$seasons} from "@models/FilmData";
 import {ISeason} from "@interfaces/IMediaData";
 import {setVisibility} from "@models/Player";
-import {
-    nextEpisode,
-    prevEpisode,
-} from "@components/Players/DyadkaPlayer/utils/changeEpisode";
+import {nextEpisode, prevEpisode} from "@components/Players/DyadkaPlayer/utils/changeEpisode";
 import {
     $episode,
     $season,
@@ -40,6 +37,6 @@ sample({
 sample({
     clock: setNextEpisode,
     source: {seasons: $seasons, season: $season, episode: $episode},
-    fn: (sourceData): number => nextEpisode(sourceData),
+    fn: nextEpisode,
     target: setEpisode,
 });

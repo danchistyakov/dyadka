@@ -86,10 +86,6 @@ const usePlayer = () => {
         }, [seekValue]);
 
         useEffect(() => {
-            // playerRef.current.addEventListener('loadstart', event => {
-            //     setBufferingFn(true);
-            // });
-
             playerRef.current.addEventListener('waiting', event => {
                 setBufferingFn(true);
             });
@@ -110,7 +106,13 @@ const usePlayer = () => {
                 setNextEpisodeFn()
             });
 
-
+            return () => {
+                playerRef.current.removeEventListener('waiting');
+                playerRef.current.removeEventListener('playing');
+                playerRef.current.removeEventListener('loadedmetadata');
+                playerRef.current.removeEventListener('canplaythrough');
+                playerRef.current.removeEventListener('ended');
+            }
         }, [])
 
         useEffect(() => {

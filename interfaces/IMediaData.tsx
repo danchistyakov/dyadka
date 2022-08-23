@@ -58,16 +58,16 @@ export interface IMediaData {
   id: number;
   isSeries: boolean;
   kpId: number;
-  origTitle: string;
+  nameOriginal: string;
   playlist: ISeason[];
   posterBig: string;
-  ratings: {
-    kinopoisk: string;
+  rating: {
+    kp: string;
     imdb: string;
   };
   similar: SimilarItem[];
   staff: StaffItem[];
-  title: string;
+  nameRu: string;
   translations: ITranslation[];
   urls: IMedia[] | null;
   year: number;

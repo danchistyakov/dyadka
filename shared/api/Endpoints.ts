@@ -5,12 +5,12 @@ export const getData = async (kpId: number): Promise<IMediaData> => {
   const { data } = await $api.post('/film', {
     kpId,
   });
-  return data;
+  return data.data;
 };
 
 export const getUrl = async (body: getUrlsPayload): Promise<getUrlsData> => {
   const { data } = await $api.post('/geturl', {
     ...body,
   });
-  return data;
+  return data.data;
 };
