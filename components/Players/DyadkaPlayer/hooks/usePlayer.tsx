@@ -107,11 +107,11 @@ const usePlayer = () => {
             });
 
             return () => {
-                playerRef.current.removeEventListener('waiting');
-                playerRef.current.removeEventListener('playing');
-                playerRef.current.removeEventListener('loadedmetadata');
-                playerRef.current.removeEventListener('canplaythrough');
-                playerRef.current.removeEventListener('ended');
+                playerRef.current.removeEventListener('waiting', null);
+                playerRef.current.removeEventListener('playing', null);
+                playerRef.current.removeEventListener('loadedmetadata', null);
+                playerRef.current.removeEventListener('canplaythrough', null);
+                playerRef.current.removeEventListener('ended', null);
             }
         }, [])
 
