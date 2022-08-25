@@ -2,7 +2,6 @@ import { FC } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import style from "./styles/Staff.module.scss";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { StaffProps } from "./interfaces/IStaff";
 import {useStore} from 'effector-react/ssr';
 import {$data} from '@models/FilmData';
 
@@ -33,10 +32,10 @@ const Staff: FC = () => {
         <div className="swiper-button-prev similar"></div>
         <div className="swiper-button-next similar"></div>
 
-        {staff?.map(({ kpId, poster, role, title }) => (
+        {staff.map(({ kpId, poster, role, name }) => (
           <SwiperSlide key={kpId} className={style.item}>
             <LazyLoadImage src={poster} className={style.poster} />
-            <p className={style.name}>{title}</p>
+            <p className={style.name}>{name}</p>
             <p className={style.role}>{role}</p>
           </SwiperSlide>
         ))}

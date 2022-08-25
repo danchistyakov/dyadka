@@ -17,10 +17,6 @@ export interface getUrlsPayload {
   episode?: number;
 }
 
-export interface getUrlsData {
-  urls: IMedia[];
-}
-
 export interface IEpisode {
   episode: number;
   poster: string;
@@ -47,7 +43,7 @@ export interface StaffItem {
   kpId: number;
   poster: string;
   role: string;
-  title: string;
+  name: string;
 }
 
 export interface IMediaData {
